@@ -1,0 +1,142 @@
+# base-files version 3.7-1
+
+# Shell Options
+# #############
+
+# See man bash for more options...
+
+# Don't wait for job termination notification
+# set -o notify
+
+# Don't use ^D to exit
+# set -o ignoreeof
+
+# Completion options
+# ##################
+
+# These completion tuning parameters change the default behavior of bash_completion:
+
+# Define to access remotely checked-out files over passwordless ssh for CVS
+# COMP_CVS_REMOTE=1
+
+# Define to avoid stripping description in --option=description of './configure --help'
+# COMP_CONFIGURE_HINTS=1
+
+# Define to avoid flattening internal contents of tar files
+# COMP_TAR_INTERNAL_PATHS=1
+
+# If this shell is interactive, turn on programmable completion enhancements.
+# Any completions you add in ~/.bash_completion are sourced last.
+# case $- in
+#   *i*) [[ -f /etc/bash_completion ]] && . /etc/bash_completion ;;
+# esac
+
+export PATH="/usr/local/bin:/usr/local/mysql/bin:$PATH"
+
+# History Options
+# ###############
+
+# Don't put duplicate lines in the history.
+export HISTCONTROL="ignoredups"
+
+# Ignore some controlling instructions
+export HISTIGNORE="[   ]*:&:bg:fg:exit"
+
+# Whenever displaying the prompt, write the previous line to disk
+export PROMPT_COMMAND="history -a"
+
+# Colors
+
+YEL='\[\033[0;33m\]'
+RED='\[\033[0;31m\]'
+GREN='\[\033[0;32m\]'
+BLUE='\[\033[0;36m\]'
+DEF='\[\033[00m\]'
+
+# Aliases
+# #######
+
+# Some example alias instructions
+# If these are enabled they will be used instead of any instructions
+# they may mask.  For example, alias rm='rm -i' will mask the rm
+# application.  To override the alias instruction use a \ before, ie
+# \rm will call the real rm not the alias.
+
+# Interactive operation...
+#alias rm='rm -i'
+#alias cp='cp -i'
+#alias mv='mv -i'
+
+# Default to human readable figures
+alias df='df -h'
+alias du='du -h'
+
+# Misc :)
+# alias less='less -r'                          # raw control characters
+# alias whence='type -a'                        # where, of a sort
+# alias grep='grep --color'                     # show differences in colour
+
+# Goes into WWW
+alias cdw="cd ~/www"
+
+# Git aliases
+alias gs="git status"
+alias gc="git commit"
+alias ga="git add ."
+alias gp="git push"
+alias gck="git checkout"
+alias gd="git diff"
+alias gds="git diff --staged"
+alias gb="git branch -a"
+alias glive="gck live && git merge master && gck master"
+alias gstaging="gck staging && git merge dev && gck dev"
+alias gdiff='git log|grep commit|cut -d " " -f2|head -n 2|xargs -n 2 git diff -R|sublime'
+
+# Some shortcuts for different directory listings
+alias ls='ls -GhF'                      # classify files in colour
+alias dir='ls -G --format=vertical'
+alias vdir='ls -G --format=long'
+alias ll='ls -lG'                       # long list
+alias la='ls -lGhA'                     # all but . and ..
+alias l='ls -lGh'
+alias mv='mv -v'
+alias cp='cp -v'
+alias rm='rm -v'
+alias c="clear"
+
+function mkcd() {
+    mkdir $1;
+    cd $1;
+}
+
+# Functions
+# #########
+
+# Adds git status to PS1
+function parse_git_branch_and_add_brackets {
+  BACK_RED='\033[0;41m'
+  DEF='\033[00m'
+  
+  test_repo=$(git status 2> /dev/null) || return
+  branch_name=$(git symbolic-ref -q HEAD 2> /dev/null)
+  branch_name=${branch_name##refs/heads/}
+  branch_name=${branch_name:-DETACHED HEAD}
+  if [ "${branch_name}" = "DETACHED HEAD" ]; then
+	echo -e " "${BACK_RED}"["${branch_name}"]"${DEF}
+  else
+        echo " ["${branch_name}"]"
+  fi
+}
+
+PS1="($YEL\t$DEF) - ${GREN}\u$DEF@${BLUE}\h $YEL\w$RED\$(parse_git_branch_and_add_brackets)$DEF \`RETVAL=\$?;
+if [ \$RETVAL -eq 0 ];
+then echo -n '\[\033[0;32m\]'; echo -n \$RETVAL; echo -n '\[\033[00m\]';
+else echo -n '\[\033[0;31m\]'; echo -n \$RETVAL; echo -n '\[\033[00m\]'; fi\`
+$RED\$ $DEF"
+
+# Editor : VIM (yeah)
+export SVN_EDITOR=vi
+EDITOR=vi
+
+# PATH
+export PATH=/usr/local/bin:/usr/local/mysql/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/libexec

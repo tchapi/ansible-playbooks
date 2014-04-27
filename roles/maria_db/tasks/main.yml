@@ -1,0 +1,20 @@
+---
+- name: Ensure python-soft-prop is installed
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+   - python-software-properties
+- name: Ensure the key is present
+  shell: apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xcbcb082a1bb943db
+- name: Add repository
+  apt_repository:
+    repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian wheezy main'
+    state: present
+  notify:
+  - update apt
+- name: Ensure mariadb is installed
+  apt:
+    pkg: mariadb-server
+    state: latest
+

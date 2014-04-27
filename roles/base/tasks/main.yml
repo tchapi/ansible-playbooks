@@ -1,0 +1,30 @@
+---
+- name: ensure python-apt is installed
+  shell: 'apt-get install -y python-apt'
+- name: update apt
+  apt: update_cache=yes
+- name: upgrade apt
+  apt: upgrade=full
+- name: ensure sudo is installed
+  apt:
+    pkg: sudo
+    state: latest
+- name: add tchap to sudo group
+  command: adduser tchap sudo
+- name: make tchap sudo with no-password
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^tchap ALL\='
+    line: 'tchap ALL=(ALL) NOPASSWD:ALL'
+    validate: 'visudo -cf %s'
+    create: True
+- name: install base packages
+  apt:
+    pkg: "{{ item }}"
+    state: installed
+  with_items:
+   - git
+   - unzip
+   - curl
+   - vim

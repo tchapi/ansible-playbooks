@@ -1,0 +1,16 @@
+---
+- name: ensure php5 cli and php5-mysql/pgsql is installed
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+   - php5
+   - php5-cli
+   - php5-mysql
+   - php5-pgsql
+- name: Add correct timezone
+  lineinfile:
+    dest: /etc/php5/cli/php.ini
+    line: 'date.timezone = "Europe/Paris"'
+    state: present
+    insertafter: "^[Date]"

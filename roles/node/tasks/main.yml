@@ -1,0 +1,10 @@
+---
+- name: ensure node is installed
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+   - nodejs
+   - nodejs-legacy
+- name: Get NPM
+  shell: curl https://npmjs.org/install.sh | sudo sh

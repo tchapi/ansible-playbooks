@@ -1,0 +1,8 @@
+---
+- name: Upgrades and Dist-Upgrades servers
+  hosts: all
+  remote_user: tchap
+  sudo: yes
+
+  roles:
+    - upgrade

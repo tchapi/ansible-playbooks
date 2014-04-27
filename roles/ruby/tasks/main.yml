@@ -1,0 +1,16 @@
+---
+- name: ensure ruby and YUI are installed
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+   - ruby
+   - yui-compressor
+- name: Ensure SASS / COMPASS / LESS are here
+  gem:
+    name: "{{item}}"
+    state: latest
+  with_items:
+   - sass
+   - compass
+   - less

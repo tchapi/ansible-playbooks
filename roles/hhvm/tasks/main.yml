@@ -1,0 +1,14 @@
+---
+- name: Ensure hhvm GPG key is present
+  shell: wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | apt-key add -
+- name: Ensure the custom repo source file is present
+  copy:
+    src: hhvm.list
+    dest: /etc/apt/sources.list.d/hhvm.list
+    backup: yes
+  notify:
+  - update apt
+- name: Install HHVM
+  apt: 
+    name: hhvm
+    state: latest

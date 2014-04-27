@@ -1,0 +1,5 @@
+---
+- name: Copy a correct .bash_profile
+  copy: src=bash_profile dest=/home/tchap/.bash_profile
+- name: Copy a correct .vim_rc
+  copy: src=vimrc dest=/home/tchap/.vimrc

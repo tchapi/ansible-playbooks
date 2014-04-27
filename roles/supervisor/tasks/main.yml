@@ -1,0 +1,13 @@
+---
+- name: ensure supervisor is at the latest version
+  apt:
+    pkg: supervisor
+    state: latest
+- name: remove supervisor lock
+  file: 
+    path: /run/supervisord.lock
+    state: absent
+- name: ensure supervisor is running
+  service: 
+    name: supervisor
+    state: started
