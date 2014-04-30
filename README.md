@@ -2,13 +2,16 @@
 
 A collection of roles and standard playbooks for deploying a common deployment / front application stack. These are mostly for HHVM + PHP and Node + Ghost infrastructures.
 
-_NB : I use a common username for all management processes on my servers, you can configure it globally in each playbook or play — it's the `{{ user }}` var. I would recommend to use a global variable by defining `user` in `<INVENTORY_FILE_LOCATION>/group_vars/all` like that :_
+_I use a common username for all management processes on my servers, you can configure it globally in each playbook or play — it's the `{{ user }}` var. I would recommend to use a global variable by defining `user` in `<INVENTORY_FILE_LOCATION>/group_vars/all` like that :_
 
 ```yaml
 ---
 # Your user
 user: "myUser"
 ```
+
+> NB : Your inventory file should have the two groups `[front-servers]` and `[deploy-servers]`.
+
 
 ## Roles available
 
