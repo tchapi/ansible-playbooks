@@ -1,4 +1,13 @@
 ---
+- name: Ensure the key is present
+  apt_key:
+    url: http://nginx.org/keys/nginx_signing.key
+- name: Add repository
+  apt_repository:
+    repo: 'deb http://nginx.org/packages/debian/ wheezy nginx'
+    state: present
+  notify:
+  - Update apt
 - name: Ensure nginx is at the latest version
   apt:
     pkg: nginx
