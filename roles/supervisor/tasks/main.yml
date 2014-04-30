@@ -1,9 +1,9 @@
 ---
-- name: ensure supervisor is at the latest version
+- name: Ensure supervisor is at the latest version
   apt:
     pkg: supervisor
     state: latest
-- name: remove supervisor lock
+- name: Remove supervisor lock
   file: 
     path: /run/supervisord.lock
     state: absent
@@ -11,7 +11,7 @@
   file:
     path: /etc/supervisor/conf.d
     state: directory
-- name: ensure supervisor is running
+- name: Ensure supervisor is running
   service: 
     name: supervisor
     state: started

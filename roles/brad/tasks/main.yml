@@ -1,7 +1,9 @@
 ---
 - name: Install brad
-  git: repo=git@github.com:tchapi/brad.git dest=/home/tchap/brad
+  git:
+    repo: git@github.com:tchapi/brad.git
+    dest: "/home/{{user}}/brad"
 - name: Gets the configuration
   copy:
     src: brad.conf
-    dest: /home/tchap/brad/brad.conf
+    dest: "/home/{{user}}/brad/brad.conf"

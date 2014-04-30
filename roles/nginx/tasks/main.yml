@@ -19,8 +19,8 @@
     dest: /etc/nginx/nginx.conf
     backup: yes
   notify:
-  - restart nginx
-- name: ensure nginx is running
+  - Restart nginx
+- name: Ensure nginx is running
   service: 
     name: nginx
     state: started

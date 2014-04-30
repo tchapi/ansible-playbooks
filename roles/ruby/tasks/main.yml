@@ -1,5 +1,5 @@
 ---
-- name: ensure ruby and YUI are installed
+- name: Ensure ruby and YUI are installed
   apt:
     pkg: "{{item}}"
     state: latest

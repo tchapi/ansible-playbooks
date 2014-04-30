@@ -1,5 +1,5 @@
 ---
-- name: ensure php5 cli and php5-mysql/pgsql is installed
+- name: Ensure php5 cli and php5-mysql/pgsql is installed
   apt:
     pkg: "{{item}}"
     state: latest

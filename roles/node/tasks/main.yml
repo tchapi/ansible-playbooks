@@ -1,5 +1,5 @@
 ---
-- name: ensure node is installed
+- name: Ensure node is installed
   apt:
     pkg: "{{item}}"
     state: latest

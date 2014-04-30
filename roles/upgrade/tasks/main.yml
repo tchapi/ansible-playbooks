@@ -1,7 +1,7 @@
 ---
-- name: update apt
+- name: Update apt
   apt: update_cache=yes
-- name: upgrade apt
+- name: Upgrade apt
   apt: upgrade=full
-- name: dist-upgrade
+- name: Make a general dist-upgrade
   apt: upgrade=dist

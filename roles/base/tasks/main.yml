@@ -1,25 +1,29 @@
 ---
-- name: ensure python-apt is installed
+- name: Ensure python-apt is installed
   shell: 'apt-get install -y python-apt'
-- name: update apt
+- name: Update apt
   apt: update_cache=yes
-- name: upgrade apt
+- name: Upgrade apt
   apt: upgrade=full
-- name: ensure sudo is installed
+- name: Ensure sudo is installed
   apt:
     pkg: sudo
     state: latest
-- name: add tchap to sudo group
-  command: adduser tchap sudo
-- name: make tchap sudo with no-password
+- name: Add backports debian repo
+  apt_repository:
+    repo: "deb http://ftp.us.debian.org/debian wheezy-backports main"
+    state: present
+- name: "Add user to sudo group"
+  command: "adduser {{user}} sudo"
+- name: "Make user sudo with no-password"
   lineinfile:
     dest: /etc/sudoers
     state: present
-    regexp: '^tchap ALL\='
-    line: 'tchap ALL=(ALL) NOPASSWD:ALL'
+    regexp: "^{{user}} ALL="
+    line: "{{user}} ALL=(ALL) NOPASSWD:ALL"
     validate: 'visudo -cf %s'
     create: True
-- name: install base packages
+- name: Install base packages
   apt:
     pkg: "{{ item }}"
     state: installed
