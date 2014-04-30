@@ -7,5 +7,10 @@
    - nodejs
    - nodejs-legacy
    - sqlite # required for node / ghost generally
-- name: Get NPM
-  shell: curl https://npmjs.org/install.sh | sudo sh
+- name: Check if NPM is here
+  command: "which npm"
+  ignore_errors: yes
+  register: npm_is_here
+- name: Install NPM
+  shell: curl -L https://npmjs.org/install.sh | sudo sh
+  when: npm_is_here.rc != 0
