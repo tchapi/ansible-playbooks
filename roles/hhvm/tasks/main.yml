@@ -1,6 +1,7 @@
 ---
 - name: Ensure hhvm GPG key is present
-  shell: wget -O - http://dl.hhvm.com/conf/hhvm.gpg.key | apt-key add -
+  apt_key:
+    url: http://dl.hhvm.com/conf/hhvm.gpg.key
 - name: Add repository
   apt_repository:
     repo: 'deb http://dl.hhvm.com/debian wheezy main'
@@ -11,6 +12,10 @@
   apt: 
     name: hhvm
     state: latest
+- name: Ensure the /var/www folder is here
+  file:
+    path: /var/www
+    state: directory
 - name: Install Supervisor conf for HHVM
   copy:
     src: hhvm.conf
