@@ -14,7 +14,11 @@
     repo: "deb http://ftp.us.debian.org/debian wheezy-backports main"
     state: present
 - name: "Add user to sudo group"
-  command: "adduser {{user}} sudo"
+  user:
+    name: "{{user}}"
+    append: yes
+    groups: sudo
+    createhome: no
 - name: "Make user sudo with no-password"
   lineinfile:
     dest: /etc/sudoers
