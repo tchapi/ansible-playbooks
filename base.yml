@@ -25,13 +25,15 @@
     - hhvm
     - node
     - maria_db
-    - mongo
+# Other available roles :
+#   - mongo
 
   tasks:
     - name: Ensure the web folder is here
       file:
         path: "/home/{{user}}/www"
         state: directory
+        group: www-data
 
 ## 
 ## Install deployment server configuration
