@@ -1,7 +1,7 @@
 ---
 - name: Upgrades and Dist-Upgrades servers
   hosts: all
-  remote_user: tchap
+  remote_user: "{{user}}"
   sudo: yes
 
   roles:
