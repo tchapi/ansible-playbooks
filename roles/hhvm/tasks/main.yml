@@ -11,3 +11,10 @@
   apt: 
     name: hhvm
     state: latest
+- name: Install Supervisor conf for HHVM
+  copy:
+    src: hhvm.conf
+    dest: /etc/supervisor/conf.d/hhvm.conf
+    backup: yes
+  notify:
+  - reread supervisor conf

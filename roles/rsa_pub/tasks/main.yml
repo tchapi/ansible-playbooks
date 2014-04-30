@@ -1,0 +1,5 @@
+---
+- name: Create the SSH directory.
+  file: state=directory path=/home/tchap/.ssh/
+- name: Add this computer's RSA key to the remote host
+  authorized_key: user='tchap' key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

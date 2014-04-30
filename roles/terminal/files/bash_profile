@@ -138,5 +138,11 @@ $RED\$ $DEF"
 export SVN_EDITOR=vi
 EDITOR=vi
 
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
 # PATH
 export PATH=/usr/local/bin:/usr/local/mysql/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/libexec
+
