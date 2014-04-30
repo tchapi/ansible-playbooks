@@ -88,4 +88,4 @@ Performs a full upgrade on all hosts, basically boiling down to :
 
 ## Licence
 
-These playbooks are released under the MIT licence. Enjoy !!
+These roles and playbooks are released under the MIT licence. Enjoy !!
