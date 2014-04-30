@@ -12,7 +12,7 @@
     repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian wheezy main'
     state: present
   notify:
-  - update apt
+  - Update apt
 - name: Ensure mariadb is installed
   apt:
     pkg: mariadb-server
