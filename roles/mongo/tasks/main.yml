@@ -6,7 +6,7 @@
     repo: 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen'
     state: present
   notify:
-  - update apt
+  - Update apt
 - name: Ensure mariadb is installed
   apt:
     pkg: mongodb-10gen
