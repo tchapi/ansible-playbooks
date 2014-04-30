@@ -6,7 +6,7 @@
     repo: 'deb http://dl.hhvm.com/debian wheezy main'
     state: present
   notify:
-  - update apt
+  - Update apt
 - name: Install HHVM
   apt: 
     name: hhvm
@@ -17,4 +17,4 @@
     dest: /etc/supervisor/conf.d/hhvm.conf
     backup: yes
   notify:
-  - reread supervisor conf
+  - Reread supervisor conf
