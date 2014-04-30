@@ -1,0 +1,58 @@
+---
+
+## 
+## Install base configuration for all servers 
+##
+- name: Install the minimum Ansible + Linux configuration
+  hosts: all
+  remote_user: root # It's important here
+
+  roles:
+    - base
+    - terminal
+
+## 
+## Install webserver configuration
+##
+- name: Install the base config for serving content
+  hosts: front-servers
+  remote_user: "{{user}}"
+  sudo: yes
+
+  roles:
+    - nginx
+    - supervisor
+    - hhvm
+    - node
+    - maria_db
+    - mongo
+
+  tasks:
+    - name: Ensure the web folder is here
+      file:
+        path: "/home/{{user}}/www"
+        state: directory
+
+## 
+## Install deployment server configuration
+##
+- name: Install the base config for deployment
+  hosts: deploy-servers
+  remote_user: "{{user}}"
+  sudo: yes
+
+  roles:
+    - php-cli
+    - ruby
+    - node
+    - brad
+
+  tasks:
+    - name: Ensure the deploy folder is here
+      file:
+        path: "/home/{{user}}/deploy"
+        state: directory
+    - name: Ensure the release folder is here
+      file:
+        path: "/home/{{user}}/release"
+        state: directory
