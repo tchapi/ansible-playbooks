@@ -18,8 +18,15 @@
     state: directory
 - name: Install Supervisor conf for HHVM
   copy:
-    src: hhvm.conf
+    src: hhvm.supervisor.conf
     dest: /etc/supervisor/conf.d/hhvm.conf
     backup: yes
   notify:
   - Reread supervisor conf
+- name: Install Nginx conf for HHVM
+  copy:
+    src: hhvm.nginx.conf
+    dest: /etc/nginx/hhvm.conf
+    backup: yes
+  notify:
+  - Restart nginx

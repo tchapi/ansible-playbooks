@@ -34,5 +34,18 @@
   with_items:
    - git
    - unzip
+   - tar
+   - make
    - curl
    - vim
+   - wget
+   - rsync
+   - cron
+   - gcc
+- name: Ensure rookie packages are not here
+  apt:
+    pkg: "{{ item }}"
+    state: absent
+  with_items:
+   - apache2
+   - php
