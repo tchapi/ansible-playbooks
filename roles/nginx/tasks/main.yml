@@ -12,6 +12,10 @@
   apt:
     pkg: nginx
     state: latest
+- name: Ensure logrotate is at the latest version
+  apt:
+    pkg: logrotate
+    state: latest
 - name: Ensure the log archive folder is here
   file:
     path: /var/log/nginx/archive
@@ -22,6 +26,26 @@
     state: present
     line: '        olddir /var/log/nginx/archive'
     insertafter: '        sharedscripts'
+- name: Ensure the enabled folder is here
+  file:
+    path: /etc/nginx/enabled
+    state: directory
+- name: Ensure the available folder is here
+  file:
+    path: /etc/nginx/available
+    state: directory
+- name: Removes the conf.d directory
+  file:
+    path: /etc/nginx/conf.d
+    state: absent
+- name: Writes the default confs
+  copy:
+    src: default.hhvm.conf
+    dest: /etc/nginx/available/default.hhvm.conf
+- name: Writes the default confs
+  copy:
+    src: default.ghost.conf
+    dest: /etc/nginx/available/default.ghost.conf
 - name: Writes the secured version of the configuration
   copy:
     src: nginx.conf
