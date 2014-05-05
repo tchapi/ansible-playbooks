@@ -1,0 +1,29 @@
+[user]
+        name = tchapi
+        email = regbasket@gmail.com
+[core]
+        excludesfile = ~/.gitignore_global
+[difftool "sourcetree"]
+        cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+        path =
+[push]
+        default = tracking
+[alias]
+        undo = reset --soft HEAD^
+        oneline = log --oneline
+        amend = commit --amend
+        tree = log --graph --decorate --pretty=oneline --abbrev-commit --all
+        myhist = !git log --author=\"$(git config user.name)\" --format=%H |xargs git show --name-only --format=-------------%n%Cred%s%Creset%n%Cblue%h%Creset
+[log]
+        decorate = short
+[color]
+        ui = auto
+        interactive = auto
+        diff = auto
+        branch = auto
+        status = auto
+[pager]
+        status = true
+        show-branch = true
+[format]
+        numbered = auto

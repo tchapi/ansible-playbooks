@@ -32,7 +32,6 @@
     pkg: "{{ item }}"
     state: installed
   with_items:
-   - git
    - unzip
    - tar
    - make

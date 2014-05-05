@@ -1,0 +1,9 @@
+---
+- name: Ensure git is installed
+  apt:
+    pkg: git
+    state: latest
+- name: Ensure global git config is present
+  copy:
+    src: gitconfig
+    dest: "/home/{{user}}/.gitconfig"
