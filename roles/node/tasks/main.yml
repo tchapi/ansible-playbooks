@@ -14,3 +14,4 @@
 - name: Install NPM
   shell: curl -L https://npmjs.org/install.sh | sudo sh
   when: npm_is_here.rc != 0
+  ignore_errors: yes
