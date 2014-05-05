@@ -7,3 +7,7 @@
   copy:
     src: vimrc
     dest: "/home/{{user}}/.vimrc"
+- name: Copy a correct .inputrc
+  copy:
+    src: inputrc
+    dest: "/home/{{user}}/.inputrc"
