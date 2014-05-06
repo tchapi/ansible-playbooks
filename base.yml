@@ -20,6 +20,7 @@
   sudo: yes
 
   roles:
+    - backup
     - nginx
     - supervisor
     - hhvm
@@ -45,6 +46,7 @@
 
   roles:
     - php-cli
+    - git
     - ruby
     - node
     - brad

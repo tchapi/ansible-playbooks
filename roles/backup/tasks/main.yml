@@ -1,0 +1,22 @@
+---
+- name: Create the backup directory.
+  file:
+    state: directory
+    path: "/home/{{user}}/backup/"
+- name: Copy the backup script
+  copy:
+    src: backup.sh
+    dest: "/home/{{user}}/backup/backup.sh"
+    mode: 755 # executable
+- name: Ensure the base directory if written in the conf
+  lineinfile:
+    dest: "/home/{{user}}/backup/backup.sh"
+    insertafter: "# Home root directory"
+    line: "HOME_DIR='/home/{{user}}'"
+- name: Add the cron task for backups
+  cron:
+    user: "{{user}}"
+    name: "Backup"
+    hour: "03"
+    minute: "42"
+    job: "/home/{{user}}/backup/backup.sh"
