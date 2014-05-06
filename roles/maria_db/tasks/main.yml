@@ -5,10 +5,10 @@
     state: latest
   with_items:
    - python-software-properties
-- name: Ensure the key is present
-  apt_key:
-    id: "0xcbcb082a1bb943db"
-    keyserver: keyserver.ubuntu.com
+# - name: Ensure the key is present
+#   apt_key:
+#     id: "0xcbcb082a1bb943db"
+#     keyserver: keyserver.ubuntu.com
 - name: Add repository
   apt_repository:
     repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian wheezy main'
@@ -19,4 +19,14 @@
   apt:
     pkg: mariadb-server
     state: latest
-
+- name: Ensure mariadb is running
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+- name: Create user "backup" if it not present
+  mysql_user:
+    name: backup
+    password: "{{ lookup('password', '/tmp/mysqlpassword length=32') }}"
+    priv: "*.*:SHOW DATABASES,SELECT,LOCK TABLES,RELOAD"
+    state: present

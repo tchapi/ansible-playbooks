@@ -3,16 +3,26 @@
   file:
     state: directory
     path: "/home/{{user}}/backup/"
+    owner: "{{user}}"
+    group: www-data
+    mode: 0755
 - name: Copy the backup script
   copy:
     src: backup.sh
     dest: "/home/{{user}}/backup/backup.sh"
-    mode: 755 # executable
-- name: Ensure the base directory if written in the conf
+    owner: tchap
+    group: www-data
+    mode: 0755
+- name: Ensure the base directory is written in the conf
   lineinfile:
     dest: "/home/{{user}}/backup/backup.sh"
     insertafter: "# Home root directory"
     line: "HOME_DIR='/home/{{user}}'"
+- name: Ensure the backup password is written in the conf
+  lineinfile:
+    dest: "/home/{{user}}/backup/backup.sh"
+    insertafter: "MYSQL_USER='backup'"
+    line: "MYSQL_PASSWORD='{{ lookup('file', '/tmp/mysqlpassword') }}'"
 - name: Add the cron task for backups
   cron:
     user: "{{user}}"
