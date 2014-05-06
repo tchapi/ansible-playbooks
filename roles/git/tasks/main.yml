@@ -7,3 +7,4 @@
   copy:
     src: gitconfig
     dest: "/home/{{user}}/.gitconfig"
+    owner: "{{user}}"
