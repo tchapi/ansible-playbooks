@@ -20,12 +20,12 @@
   sudo: yes
 
   roles:
-    - backup
     - nginx
     - supervisor
     - hhvm
     - node
     - maria_db
+    - backup
 # Other available roles :
 #   - mongo
 
@@ -35,7 +35,13 @@
         path: "/home/{{user}}/www"
         state: directory
         group: www-data
-
+        owner: "{{user}}"
+    - name: Remove the temp password for more security
+      file:
+        path: "/home/{{user}}/www"
+        state: directory
+        group: www-data
+        owner: "{{user}}"
 ## 
 ## Install deployment server configuration
 ##
@@ -56,7 +62,28 @@
       file:
         path: "/home/{{user}}/deploy"
         state: directory
+        owner: "{{user}}"
+        group: www-data
     - name: Ensure the release folder is here
       file:
         path: "/home/{{user}}/release"
         state: directory
+        owner: "{{user}}"
+        group: www-data
+
+## 
+## Cleans up
+##
+- name: Cleans up password files
+  hosts: 127.0.0.1
+  connection: local
+
+  tasks:
+    - name: Delete tmp mysql password
+      file:
+        path: "/tmp/mysqlpassword"
+        state: absent
+
+
+
+
