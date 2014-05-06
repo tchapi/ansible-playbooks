@@ -1,6 +1,6 @@
 ---
-- name: Ensure python-apt is installed
-  shell: 'apt-get install -y python-apt'
+- name: Ensure python-apt and python-mysqldb is installed
+  shell: 'apt-get install -y python-apt python-mysqldb'
 - name: Update apt
   apt: update_cache=yes
 - name: Upgrade apt
