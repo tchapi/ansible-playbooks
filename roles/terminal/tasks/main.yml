@@ -3,11 +3,14 @@
   copy:
     src: bash_profile
     dest: "/home/{{user}}/.bash_profile"
+    owner: "{{user}}"
 - name: Copy a correct .vim_rc
   copy:
     src: vimrc
     dest: "/home/{{user}}/.vimrc"
+    owner: "{{user}}"
 - name: Copy a correct .inputrc
   copy:
     src: inputrc
     dest: "/home/{{user}}/.inputrc"
+    owner: "{{user}}"
