@@ -19,14 +19,40 @@
   apt:
     pkg: mariadb-server
     state: latest
+- name: Writes the UTF-8 version of the configuration
+  copy:
+    src: mariadb.cnf
+    dest: /etc/mysql/conf.d/mariadb.cnf
+- name: Remove TokuDB config file
+  file:
+    path: /etc/mysql/conf.d/tokudb.cnf
+    state: absent
 - name: Ensure mariadb is running
   service:
     name: mysql
     state: started
     enabled: yes
+- name: Sets the root password if needed
+  mysql_user:
+    name: root
+    password: "{{ lookup('password', '/tmp/mysqlrootpassword length=64') }}"
+    state: present
+- name: Writes /root~/.my.cnf with root password
+  copy:
+    src: my.cnf
+    dest: /root/.my.cnf
+    mode: 0600
+    owner: root
+    group: root
+  sudo: yes
+- name: Adds root password
+  lineinfile:
+    dest: /root/.my.cnf
+    insertafter: "user=root"
+    line: "password={{ lookup('file', '/tmp/mysqlrootpassword') }}"
 - name: Create user "backup" if it not present
   mysql_user:
     name: backup
-    password: "{{ lookup('password', '/tmp/mysqlpassword length=32') }}"
+    password: "{{ lookup('password', '/tmp/mysqlbackuppassword length=32') }}"
     priv: "*.*:SHOW DATABASES,SELECT,LOCK TABLES,RELOAD"
     state: present
