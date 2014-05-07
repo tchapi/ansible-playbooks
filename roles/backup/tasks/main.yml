@@ -22,7 +22,7 @@
   lineinfile:
     dest: "/home/{{user}}/backup/backup.sh"
     insertafter: "MYSQL_USER='backup'"
-    line: "MYSQL_PASSWORD='{{ lookup('file', '/tmp/mysqlpassword') }}'"
+    line: "MYSQL_PASSWORD='{{ lookup('file', '/tmp/mysqlbackuppassword') }}'"
 - name: Add the cron task for backups
   cron:
     user: "{{user}}"
