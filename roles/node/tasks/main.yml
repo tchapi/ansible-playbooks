@@ -9,9 +9,9 @@
    - sqlite # required for node / ghost generally
 - name: Check if NPM is here
   command: "which npm"
-  ignore_errors: yes
   register: npm_is_here
+  ignore_errors: yes
 - name: Install NPM
-  shell: curl -L https://npmjs.org/install.sh | sudo sh
-  when: npm_is_here.rc != 0
+  shell: curl -L -k https://npmjs.org/install.sh | sudo sh
+  when: npm_is_here|success
   ignore_errors: yes
