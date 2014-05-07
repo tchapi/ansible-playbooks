@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Home root directory
 # HOME_DIR=""
@@ -37,8 +37,8 @@ if [ "$MYSQL" = "ok" ]; then
     # Dumps everything
     for db in $databases; do
       ([  "$db" = "mysql" ] || [ "$db" = "performance_schema" ]) && continue
-      echo -ne " - $db .."
-      mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip > "$THIS_BACKUP_DIR/mysql/$db.gz"
+      printf " - $db .."
+      mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip > "$THIS_BACKUP_DIR/mysql/$db.sql.gz"
       echo "done."
     done
 
@@ -48,12 +48,12 @@ if [ "$MYSQL" = "ok" ]; then
 
 fi
 
-folders_count=`find $HOME_DIR/www/ -type d | wc -l`
+folders_count=`find $HOME_DIR/www/ -maxdepth 1 -mindepth 1 -type d | wc -l`
 
 if [ "$folders_count" -gt 1 ]; then # ./ counts as one ...
 
   # Retrieves all folders to backup
-  folders=`ls -d $HOME_DIR/www/*/*/ | grep -Ev '$IGNORE_FOLDERS' | grep -Ev '\w\/$IGNORE_PATTERNS'`
+  folders=`ls -d $HOME_DIR/www/*/*/ | grep -Ev "$IGNORE_FOLDERS" | grep -Ev "\w\/$IGNORE_PATTERNS"`
 
   if [ `echo "$folders" | wc -l` -gt 0 ]; then
 
@@ -63,8 +63,8 @@ if [ "$folders_count" -gt 1 ]; then # ./ counts as one ...
 
     # Backup files
     for folder in $folders; do 
-      echo -ne " - $folder .."
-      mkdir $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))
+      printf " - $folder .."
+      mkdir -p $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))
       tar -cPf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar $folder;
       echo "done."
     done
