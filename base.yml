@@ -36,12 +36,7 @@
         state: directory
         group: www-data
         owner: "{{user}}"
-    - name: Remove the temp password for more security
-      file:
-        path: "/home/{{user}}/www"
-        state: directory
-        group: www-data
-        owner: "{{user}}"
+
 ## 
 ## Install deployment server configuration
 ##
@@ -79,11 +74,14 @@
   connection: local
 
   tasks:
-    - name: Delete tmp mysql password
+    - name: Delete tmp mysql root password
       file:
-        path: "/tmp/mysqlpassword"
+        path: "/tmp/mysqlrootpassword"
         state: absent
-
+    - name: Delete tmp mysql backup password
+      file:
+        path: "/tmp/mysqlbackuppassword"
+        state: absent
 
 
 
