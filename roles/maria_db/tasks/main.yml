@@ -5,10 +5,10 @@
     state: latest
   with_items:
    - python-software-properties
-# - name: Ensure the key is present
-#   apt_key:
-#     id: "0xcbcb082a1bb943db"
-#     keyserver: keyserver.ubuntu.com
+- name: Ensure the key is present
+  apt_key:
+    id: "0xcbcb082a1bb943db"
+    keyserver: keyserver.ubuntu.com
 - name: Add repository
   apt_repository:
     repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian wheezy main'
