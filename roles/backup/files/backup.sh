@@ -21,6 +21,10 @@ TIMESTAMP=$(date +"%F_%s")
 THIS_BACKUP_DIR="$BACKUP_DIR/$TIMESTAMP"
 mkdir "$THIS_BACKUP_DIR"
 
+# FTP Stuff
+HOSTNAME=`hostname`
+FTP_HOST="dedibackup-dc2.online.net"
+
 BACKED_UP="NO"
 
 MYSQL=`type mysql >/dev/null 2>&1 && echo "ok" || echo "nok"`
@@ -38,7 +42,7 @@ if [ "$MYSQL" = "ok" ]; then
     for db in $databases; do
       ([  "$db" = "mysql" ] || [ "$db" = "performance_schema" ]) && continue
       printf " - $db .."
-      mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip > "$THIS_BACKUP_DIR/mysql/$db.sql.gz"
+      mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip --best > "$THIS_BACKUP_DIR/mysql/$db.sql.gz"
       echo "done."
     done
 
@@ -65,7 +69,7 @@ if [ "$folders_count" -gt 1 ]; then # ./ counts as one ...
     for folder in $folders; do 
       printf " - $folder .."
       mkdir -p $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))
-      tar -cPf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar $folder;
+      find $folder -type d -o -size -512M -print0 | xargs -0 tar cpzvf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar
       echo "done."
     done
 
@@ -78,9 +82,22 @@ fi
 # Update the "last" symlink
 if [ "$BACKED_UP" = "YES" ]; then
   ln -sfn "$THIS_BACKUP_DIR" "$BACKUP_DIR/last"
+
+  # create a tar of the folder to sync with ftp
+
+  # Syncs last backup with a FTP if any
+  echo "Syncing with FTP :"
+  ftp $FTP_HOST <<EOF
+  binary
+  passive
+  cd "$HOSTNAME"
+  put "| tar cvf - $THIS_BACKUP_DIR" $TIMESTAMP.tar
+  quit
+EOF
+  echo "Backed up. Exiting."
+
 else
   rmdir "$THIS_BACKUP_DIR"
+  echo "Nothing to be done. Exiting."
 fi
 
-# Syncs last backup with a FTP if any
-# TODO
