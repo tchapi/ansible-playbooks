@@ -23,6 +23,19 @@
     backup: yes
   notify:
   - Reread supervisor conf
+- name: Ensure the global config is ok
+  copy:
+    src: config.hdf
+    dest: /etc/hhvm/config.hdf
+- name: Ensure the server config is ok
+  copy:
+    src: server.hdf
+    dest: /etc/hhvm/server.hdf
+- name: Ensure the www directory is correctly written in the conf
+  lineinfile:
+    dest: /etc/hhvm/server.hdf
+    insertafter: "  # SourceRoot = /home/myUser/www/"
+    line: "  SourceRoot = /home/{{user}}/www/"
 - name: Install Nginx conf for HHVM
   copy:
     src: hhvm.nginx.conf
@@ -30,3 +43,7 @@
     backup: yes
   notify:
   - Restart nginx
+- name: Ensure HHVM is running
+  supervisorctl:
+    name: hhvm
+    state: started
