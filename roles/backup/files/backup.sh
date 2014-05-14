@@ -25,6 +25,11 @@ mkdir "$THIS_BACKUP_DIR"
 HOSTNAME=`hostname`
 FTP_HOST="dedibackup-dc2.online.net"
 
+# Colors
+green="\033[32m"
+cyan="\033[36m"
+reset="\033[0m"
+
 BACKED_UP="NO"
 
 MYSQL=`type mysql >/dev/null 2>&1 && echo "ok" || echo "nok"`
@@ -35,7 +40,7 @@ if [ "$MYSQL" = "ok" ]; then
   
   if [ `echo "$databases" | wc -l` -gt 2 ]; then
 
-    echo "Backing up databases :"
+    echo -e "${cyan}Backing up databases${reset} :"
     mkdir "$THIS_BACKUP_DIR/mysql" 
 
     # Dumps everything
@@ -43,7 +48,7 @@ if [ "$MYSQL" = "ok" ]; then
       ([  "$db" = "mysql" ] || [ "$db" = "performance_schema" ]) && continue
       printf " - $db .."
       mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip --best > "$THIS_BACKUP_DIR/mysql/$db.sql.gz"
-      echo "done."
+      echo -e "${green}done${reset}."
     done
 
     BACKED_UP="YES"
@@ -62,15 +67,15 @@ if [ "$folders_count" -gt 1 ]; then # ./ counts as one ...
   if [ `echo "$folders" | wc -l` -gt 0 ]; then
 
     # if folders length > 0...
-    echo "Backing up ugc folders :"
+    echo -e "${cyan}Backing up ugc folders${reset} :"
     mkdir "$THIS_BACKUP_DIR/ugc" 
 
     # Backup files
     for folder in $folders; do 
       printf " - $folder .."
       mkdir -p $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))
-      find $folder -type d -o -size -512M -print0 | xargs -0 tar cpzvf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar
-      echo "done."
+      find $folder -type d -o -size -512M -print0 | xargs -0 tar -cPzvf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar > /dev/null
+      echo -e "${green}done${reset}."
     done
 
     BACKED_UP="YES"
@@ -86,18 +91,18 @@ if [ "$BACKED_UP" = "YES" ]; then
   # create a tar of the folder to sync with ftp
 
   # Syncs last backup with a FTP if any
-  echo "Syncing with FTP :"
+  echo -e "${cyan}Syncing with FTP${reset} :"
   ftp $FTP_HOST <<EOF
   binary
   passive
   cd "$HOSTNAME"
-  put "| tar cvf - $THIS_BACKUP_DIR" $TIMESTAMP.tar
+  put "| tar -cPvf - $THIS_BACKUP_DIR" $TIMESTAMP.tar
   quit
 EOF
-  echo "Backed up. Exiting."
+  echo -e "${green}Backed up${reset}. Exiting."
 
 else
   rmdir "$THIS_BACKUP_DIR"
-  echo "Nothing to be done. Exiting."
+  echo -e "${green}Nothing to be done${reset}. Exiting."
 fi
 

@@ -15,10 +15,13 @@
     mode: 0755
 - name: Copy the .netrc conf file
   copy:
-    src: netrc
     dest: "/home/{{user}}/.netrc"
-    owner: root
+    owner: tchap
     mode: 0600 # needed since it contains a password
+    content: |
+        machine {{ ftp_server }}
+            login {{ ftp_login }}
+            password {{ ftp_password }}
   sudo: yes
 - name: Ensure the base directory is written in the conf
   lineinfile:
