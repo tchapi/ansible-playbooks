@@ -78,10 +78,12 @@
       file:
         path: "/tmp/mysqlrootpassword"
         state: absent
+      ignore_errors: True
     - name: Delete tmp mysql backup password
       file:
         path: "/tmp/mysqlbackuppassword"
         state: absent
+      ignore_errors: True
 
 
 
