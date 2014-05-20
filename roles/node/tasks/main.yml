@@ -8,10 +8,9 @@
    - nodejs-legacy
    - sqlite # required for node / ghost generally
 - name: Check if NPM is here
-  command: "which npm"
+  command: "which npm || echo '0'"
   register: npm_is_here
-  ignore_errors: yes
+  ignore_errors: True
 - name: Install NPM
   shell: curl -L -k https://npmjs.org/install.sh | sudo sh
-  when: npm_is_here|success
-  ignore_errors: yes
+  when: npm_is_here.stdout == 0
