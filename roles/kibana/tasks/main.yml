@@ -22,7 +22,7 @@
       dest: /etc/nginx/available/kibana.conf
       state: present
       regexp: '  server_name           '
-      line: "  server_name           {{ monitoring_server }}"
+      line: "  server_name           {{ monitoring_server }};"
   - name: Write web folder
     lineinfile:
       dest: /etc/nginx/available/kibana.conf
