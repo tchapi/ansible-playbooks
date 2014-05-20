@@ -1,0 +1,28 @@
+---
+- name: Ensure the key is present
+  apt_key:
+    url: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+- name: Add repository
+  apt_repository:
+    repo: 'deb http://packages.elasticsearch.org/logstash/1.4/debian stable main'
+    state: present
+  notify:
+  - Update apt
+- name: Ensure logstash is installed
+  apt:
+    pkg: logstash
+    state: latest
+- name: Ensure the logstash config is ok
+  copy:
+    src: logstash.conf
+    dest: /etc/logstash/conf.d/logstash.conf
+- name: Ensure the host is correctly written in the conf
+  lineinfile:
+    dest: /etc/logstash/conf.d/logstash.conf
+    insertafter: "    # host here"
+    line: "    host => '{{ monitoring_server }}'"
+# - name: Ensure logstash is running
+#   service: 
+#     name: logstash
+#     state: started
+#     enabled: yes

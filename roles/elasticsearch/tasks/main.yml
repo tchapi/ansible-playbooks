@@ -1,0 +1,19 @@
+---
+- name: Ensure the key is present
+  apt_key:
+    url: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+- name: Add repository
+  apt_repository:
+    repo: 'deb http://packages.elasticsearch.org/elasticsearch/1.1/debian stable main'
+    state: present
+  notify:
+  - Update apt
+- name: Ensure elasticsearch is installed
+  apt:
+    pkg: elasticsearch
+    state: latest
+- name: Start elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes

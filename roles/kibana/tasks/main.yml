@@ -1,0 +1,34 @@
+---
+  - name: Ensure kibana folder is here
+    file:
+      path: "/home/{{user}}/kibana"
+      state: directory
+      owner: "{{user}}"
+      group: www-data
+  - name: Download Kibana
+    shell: "cd /home/{{user}} && curl -L https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz | tar -xz -C kibana --strip-components 1"
+  - name: Write config.js line for elasticsearch instance
+    lineinfile:
+      dest: "/home/{{user}}/kibana/config.js"
+      state: present
+      regexp: '    elasticsearch: '
+      line: "    elasticsearch: 'http://{{ monitoring_server }}:80',"
+  - name: Ensure kibana nginx conf is here
+    copy:
+      src: kibana.conf
+      dest: /etc/nginx/available/kibana.conf
+  - name: Write server_name
+    lineinfile:
+      dest: /etc/nginx/available/kibana.conf
+      state: present
+      regexp: '  server_name           '
+      line: "  server_name           {{ monitoring_server }}"
+  - name: Write web folder
+    lineinfile:
+      dest: /etc/nginx/available/kibana.conf
+      state: present
+      regexp: '    root  '
+      line: "    root  /home/{{user}}/kibana;"
+  - name: Ensure kibana nginx conf is enabled
+    shell: "ln -fs /etc/nginx/available/kibana.conf /etc/nginx/enabled/kibana.conf"
+# write a correct /etc/nginx/conf.d/kibana.htpasswd;
