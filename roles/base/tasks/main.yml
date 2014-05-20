@@ -41,10 +41,23 @@
     - cron
     - gcc
     - python-mysqldb # Needed to interact with mysql
+- name: Ensure apache is present before uninstalling it
+  apt:
+    pkg: apache2
+    state: present
+- name: Stop apache if running
+  service:
+    name: apache2
+    state: stopped
+    enabled: False
 - name: Ensure rookie packages are not here
   apt:
     pkg: "{{ item }}"
     state: absent
+    purge: True
+    force: True
   with_items:
    - apache2
    - php
+- name: To be sure that apache is gone
+  shell: "sudo apt-get autoremove && sudo update-rc.d -f apache2 remove"
