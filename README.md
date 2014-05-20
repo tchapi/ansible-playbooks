@@ -10,6 +10,14 @@ _I use a common username for all management processes on my servers, you can con
 user: "myUser"
 ```
 
+If you use an ELK (Elastic Search - Logstash - Kibana) monitoring stacj, you can also indicate it here :
+
+```yaml
+---
+# Your ELK monitoring Server
+monitoring_server: "kibana.myHost.com"
+```
+
 > NB : Your inventory file should have the two groups `[front-servers]` and `[deploy-servers]`.
 
 
@@ -75,6 +83,10 @@ user: "myUser"
   - #### supervisor
 
     Ensures `supervisor` is present and at the latest, and performs various fixes for standard installs.
+
+  - #### logstash
+  - #### elasticsearch
+  - #### kibana
 
   - #### upgrade
 
