@@ -3,7 +3,7 @@
   git:
     repo: git@github.com:tchapi/brad.git
     dest: "/home/{{user}}/brad"
+    accept_hostkey: True
+  sudo: False
 - name: Gets the configuration
-  copy:
-    src: brad.conf
-    dest: "/home/{{user}}/brad/brad.conf"
+  shell: "cd /home/{{user}}/brad/ && curl -L -o brad.conf https://gist.githubusercontent.com/tchapi/30ace54b6a0d66e00c8b/raw/a5af1794444ceb1983254170395cc3cd32d7445c/brad.conf"
