@@ -7,7 +7,7 @@
     state: present
   notify:
   - Update apt
-- name: Ensure mariadb is installed
+- name: Ensure mongo is installed
   apt:
     pkg: mongodb-10gen
     state: latest
