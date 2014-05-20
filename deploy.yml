@@ -69,7 +69,6 @@
     - nginx
     - elasticsearch
     - mongo
-    - logstash
     - kibana
 
 ## 
