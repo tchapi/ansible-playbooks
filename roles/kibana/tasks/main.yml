@@ -31,4 +31,15 @@
       line: "    root  /home/{{user}}/kibana;"
   - name: Ensure kibana nginx conf is enabled
     shell: "ln -fs /etc/nginx/available/kibana.conf /etc/nginx/enabled/kibana.conf"
-# write a correct /etc/nginx/conf.d/kibana.htpasswd;
+  - name: Ensute python-passlib is installed
+    apt:
+      name: python-passlib
+      state: present
+  - name: Create htpasswd
+    htpasswd:
+      path: /etc/nginx/available/kibana.htpasswd
+      name: "{{ user }}"
+      password: "{{ htpasswd }}"
+      owner: root
+      group: www-data
+      mode: 0640
