@@ -21,6 +21,11 @@
     dest: /etc/logstash/conf.d/logstash.conf
     insertafter: "    # host here"
     line: "    host => '{{ monitoring_server }}'"
+- name: Modify logstash to run as adm group to read logs
+  lineinfile:
+    dest: /etc/default/logstash
+    insertafter: "#LS_USER"
+    line: "LS_GROUP=adm"
 # - name: Ensure logstash is running
 #   service: 
 #     name: logstash
