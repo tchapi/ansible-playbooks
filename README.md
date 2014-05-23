@@ -10,7 +10,7 @@ _I use a common username for all management processes on my servers, you can con
 user: "myUser"
 ```
 
-If you use an ELK (Elastic Search - Logstash - Kibana) monitoring stacj, you can also indicate it here :
+If you use an ELK (Elastic Search - Logstash - Kibana) monitoring stack, you can also indicate it here :
 
 ```yaml
 ---
@@ -85,8 +85,16 @@ monitoring_server: "kibana.myHost.com"
     Ensures `supervisor` is present and at the latest, and performs various fixes for standard installs.
 
   - #### logstash
+
+    Ensures logstash is up and running, and parses logs from Nginx, as well as `messages` and `syslog`.
+
   - #### elasticsearch
+
+    Ensures elasticsearch is at the latest version.
+
   - #### kibana
+
+    Downloads the latest release of Kibana and adds the correct nginx conf for it, adding an `htpasswd` configuration file.
 
   - #### upgrade
 
