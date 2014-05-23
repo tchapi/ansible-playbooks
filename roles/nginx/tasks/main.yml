@@ -50,7 +50,12 @@
   copy:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
-    backup: yes
+  notify:
+  - Restart nginx
+- name: Writes the favicon/robots configuration
+  copy:
+    src: favicon.robots.conf
+    dest: /etc/nginx/favicon.robots.conf
   notify:
   - Restart nginx
 - name: Ensure nginx is running
