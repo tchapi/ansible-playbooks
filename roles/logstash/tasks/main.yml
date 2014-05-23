@@ -26,8 +26,8 @@
     dest: /etc/default/logstash
     insertafter: "#LS_USER"
     line: "LS_GROUP=adm"
-# - name: Ensure logstash is running
-#   service: 
-#     name: logstash
-#     state: started
-#     enabled: yes
+- name: Ensure logstash is running
+  service: 
+    name: logstash
+    state: restarted
+    enabled: yes
