@@ -28,6 +28,7 @@ FTP_HOST="dedibackup-dc2.online.net"
 # Colors
 green="\033[32m"
 cyan="\033[36m"
+yellow="\033[33m"
 reset="\033[0m"
 
 BACKED_UP="NO"
@@ -49,11 +50,17 @@ if [ "$MYSQL" = "ok" ]; then
       printf " - $db .."
       mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip --best > "$THIS_BACKUP_DIR/mysql/$db.sql.gz"
       echo -e "${green}done${reset}."
+      logger -p cron.info "Database $db backed up [local]"
     done
 
     BACKED_UP="YES"
 
+  else
+  
+    logger -p cron.info "No database to backup"
+  
   fi
+
 
 fi
 
@@ -73,12 +80,22 @@ if [ "$folders_count" -gt 1 ]; then # ./ counts as one ...
     # Backup files
     for folder in $folders; do 
       printf " - $folder .."
-      mkdir -p $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))
-      find $folder -type d -o -size -512M -print0 | xargs -0 tar -cPzvf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar > /dev/null
-      echo -e "${green}done${reset}."
+      if [ "$(find $folder -type f | wc -l)" -gt 0 ]; then
+        mkdir -p $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))
+        find $folder -type d -o -size -512M -print0 | xargs -0 tar -cPzvf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar > /dev/null
+        echo -e "${green}done${reset}."
+        logger -p cron.info "Folder $(basename $(dirname $folder))/$(basename $folder) backed up [local]"
+      else
+        echo -e "${yellow}empty, not backing up. ${green}done${reset}."
+        logger -p cron.notice "Folder $(basename $(dirname $folder))/$(basename $folder) empty - not backed up [local]"
+      fi
     done
 
     BACKED_UP="YES"
+
+  else
+
+    logger -p cron.info "No folders to backup"
 
   fi
 
@@ -100,6 +117,7 @@ if [ "$BACKED_UP" = "YES" ]; then
   quit
 EOF
   echo -e "${green}Backed up${reset}. Exiting."
+  logger -p cron.info "Backups synced to $FTP_HOST"
 
 else
   rmdir "$THIS_BACKUP_DIR"
