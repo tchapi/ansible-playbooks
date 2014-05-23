@@ -40,7 +40,6 @@
   copy:
     src: hhvm.nginx.conf
     dest: /etc/nginx/hhvm.conf
-    backup: yes
   notify:
   - Restart nginx
 - name: Ensure HHVM is running
