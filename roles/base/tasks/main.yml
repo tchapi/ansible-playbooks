@@ -39,6 +39,7 @@
     - wget
     - rsync
     - cron
+    - htop
     - gcc
     - python-mysqldb # Needed to interact with mysql
 - name: Ensure apache is present before uninstalling it
