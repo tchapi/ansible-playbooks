@@ -80,7 +80,7 @@ alias du='du -h'
 alias cdw="cd ~/www"
 
 # Git aliases
-alias gs="git status"
+alias gs="git status -sb"
 alias gc="git commit"
 alias ga="git add ."
 alias gp="git push"
