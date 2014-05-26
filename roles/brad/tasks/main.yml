@@ -7,3 +7,10 @@
   sudo: False
 - name: Gets the configuration
   shell: "cd /home/{{user}}/brad/ && curl -L -o brad.conf https://gist.githubusercontent.com/tchapi/30ace54b6a0d66e00c8b/raw/a5af1794444ceb1983254170395cc3cd32d7445c/brad.conf"
+- name: Creates the log directory
+  file: 
+    path: /var/log/brad
+    state: directory
+    group: adm
+    owner: root
+    mode: 0660
