@@ -1,0 +1,9 @@
+[program:ghost]
+command = node /home/myUser/www/ghost/prod/index.js
+directory = /home/myUser/www/ghost/prod/
+user = myUser
+autostart = true
+autorestart = true
+stdout_logfile = /var/log/supervisor/ghost.log
+stderr_logfile = /var/log/supervisor/ghost_err.log
+environment = NODE_ENV="production"

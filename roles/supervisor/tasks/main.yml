@@ -15,3 +15,7 @@
   service: 
     name: supervisor
     state: started
+- name: Copy default Ghost configuration
+  copy:
+    src: ghost.conf.default
+    dest: /etc/supervisor/conf.d/ghost.conf.default
