@@ -12,6 +12,10 @@
   apt:
     pkg: elasticsearch
     state: latest
+- name: Copy elasticsearch configuration
+  copy:
+    src: elasticsearch.yml
+    dest: /etc/elasticsearch/elasticsearch.yml
 - name: Start elasticsearch
   service:
     name: elasticsearch
