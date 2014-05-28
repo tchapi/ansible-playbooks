@@ -20,7 +20,11 @@
   lineinfile:
     dest: /etc/logstash/conf.d/logstash.conf
     insertafter: "    # host here"
-    line: "    host => '{{ monitoring_server }}'"
+    line: |
+              host => '{{ monitoring_server }}'
+              port => 8080
+              user => {{ user }}
+              password => "{{ lookup('file', '/tmp/ansible.password.elasticsearch_proxy') }}"
 - name: Modify logstash to run as adm group to read logs
   lineinfile:
     dest: /etc/default/logstash
