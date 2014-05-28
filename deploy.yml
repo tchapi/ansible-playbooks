@@ -1,6 +1,22 @@
 ---
 
 ## 
+## Install monitoring server configuration
+##
+- name: Install the monitoring config
+  hosts: monitoring-servers
+  remote_user: "{{user}}"
+  sudo: yes
+
+  roles:
+    - git
+    - nginx
+    - elasticsearch
+    - logstash
+    - mongo
+    - kibana
+
+## 
 ## Install webserver configuration
 ##
 - name: Install the base config for serving content
@@ -57,22 +73,6 @@
         group: www-data
 
 ## 
-## Install monitoring server configuration
-##
-- name: Install the monitoring config
-  hosts: monitoring-servers
-  remote_user: "{{user}}"
-  sudo: yes
-
-  roles:
-    - git
-    - nginx
-    - elasticsearch
-    - logstash
-    - mongo
-    - kibana
-
-## 
 ## Cleans up
 ##
 - name: Cleans up password files
@@ -82,14 +82,11 @@
   tasks:
     - name: Delete tmp mysql root password
       file:
-        path: "/tmp/mysqlrootpassword"
+        path: "/tmp/ansible.password.*"
         state: absent
       ignore_errors: True
-    - name: Delete tmp mysql backup password
-      file:
-        path: "/tmp/mysqlbackuppassword"
-        state: absent
-      ignore_errors: True
+    - name: Say done
+      shell: "echo 'done.'"
 
 
 
