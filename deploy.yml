@@ -80,7 +80,7 @@
   connection: local
 
   tasks:
-    - name: Delete tmp mysql root password
+    - name: Delete tmp passwords
       file:
         path: "/tmp/ansible.password.*"
         state: absent

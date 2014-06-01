@@ -41,7 +41,7 @@
     src: hhvm.nginx.conf
     dest: /etc/nginx/hhvm.conf
   notify:
-  - Restart nginx
+  - Restart Nginx
 - name: Ensure HHVM is running
   supervisorctl:
     name: hhvm

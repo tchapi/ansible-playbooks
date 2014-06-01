@@ -6,7 +6,7 @@
   supervisorctl:
     name: hhvm
     state: present
-- name: Restart nginx
+- name: Restart Nginx
   service:
     name: nginx
     state: restarted
