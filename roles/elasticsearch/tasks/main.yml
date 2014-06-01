@@ -25,6 +25,10 @@
     dest: /etc/nginx/available/elasticsearch.proxy.conf
     insertafter: "  listen   8080;"
     line: "    server_name  {{ monitoring_server }};"
+- name: Remove htpasswd file
+  file:
+    path: /etc/elasticsearch/elasticsearch.htpasswd
+    state: absent
 - name: Create htpasswd for elasticsearch
   htpasswd:
     path: /etc/elasticsearch/elasticsearch.htpasswd
