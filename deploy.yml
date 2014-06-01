@@ -78,15 +78,15 @@
 - name: Cleans up password files
   hosts: 127.0.0.1
   connection: local
+  sudo: yes
 
   tasks:
     - name: Delete tmp passwords
-      file:
-        path: "/tmp/ansible.password.*"
-        state: absent
+      shell: "rm -f /tmp/ansible.password.*"
       ignore_errors: True
     - name: Say done
-      shell: "echo 'done.'"
+      debug:
+        msg: "Done."
 
 
 
