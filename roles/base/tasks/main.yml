@@ -61,4 +61,4 @@
    - apache2
    - php
 - name: To be sure that apache is gone
-  shell: "sudo apt-get autoremove && sudo update-rc.d -f apache2 remove"
+  shell: "sudo apt-get -y autoremove && sudo update-rc.d -f apache2 remove"
