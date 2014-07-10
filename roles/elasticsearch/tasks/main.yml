@@ -8,9 +8,13 @@
     state: present
   notify:
   - Update apt
-- name: Ensure elasticsearch is installed
+- name: Ensure java is installed
   apt:
     pkg: elasticsearch
+    state: latest
+- name: Ensure elasticsearch is installed
+  apt:
+    pkg: openjdk-7-jre-headless
     state: latest
 - name: Copy elasticsearch configuration
   copy:
