@@ -72,7 +72,7 @@ monitoring_server: "kibana.myHost.com"
 
     Installs the `php5` command line interface (for running in shell, or running Symfony 2 tasks when deploying).
 
-  - #### rsa-pub
+  - #### rsa_pub
 
     Copies over your ssh key to the servers.
 
@@ -95,6 +95,7 @@ monitoring_server: "kibana.myHost.com"
   - #### kibana
 
     Downloads the latest release of Kibana and adds the correct nginx conf for it, adding an `htpasswd` configuration file.
+    Also adds general dashboard for logstash.
 
   - #### upgrade
 
@@ -102,13 +103,21 @@ monitoring_server: "kibana.myHost.com"
 
 ## Playbooks
 
-#### base
+#### base & deploy
 
 Ensures that all servers have the correct basis for management, common administrative tasks and standard packages, that they are up to date, and then applies the webserver play to webservers (front-servers) and the deploy play to deployment-servers.
 
 The playbook is rather straightforward.
 
+When deploying a new server :
+
+    ansible-playbook -v -l myNewServer base.yml
+    # Then
+    ansible-playbook -l myNewServer deploy.yml --ask-vault
+
 #### upgrade
+
+    ansible-playbook upgrade.yml
 
 Performs a full upgrade on all hosts, basically boiling down to :
 
