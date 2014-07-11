@@ -21,6 +21,14 @@
     copy:
       src: kibana.conf
       dest: /etc/nginx/available/kibana.conf
+  - name: Copy web dashboard
+    copy:
+      src: web.json
+      dest: "/home/{{user}}/kibana/app/dashboards/web.json"
+  - name: Copy home dashboard
+    copy:
+      src: home.json
+      dest: "/home/{{user}}/kibana/app/dashboards/home.json"
   - name: Write server_name
     lineinfile:
       dest: /etc/nginx/available/kibana.conf
@@ -35,7 +43,7 @@
       line: "    root  /home/{{user}}/kibana;"
   - name: Ensure kibana nginx conf is enabled
     shell: "ln -fs /etc/nginx/available/kibana.conf /etc/nginx/enabled/kibana.conf"
-  - name: Ensute python-passlib is installed
+  - name: Ensure python-passlib is installed
     apt:
       name: python-passlib
       state: present
