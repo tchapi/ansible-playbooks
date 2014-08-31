@@ -14,7 +14,7 @@ MYSQL_USER='backup'
 
 # Folders to ignore and patterns to ignore
 IGNORE_FOLDERS="(mantis|public|photo)"
-IGNORE_PATTERNS="(rel\-|prod|beta)"
+IGNORE_PATTERNS="(rel\-|prod|beta|var)"
 
 # Create a backup folder for each run
 TIMESTAMP=$(date +"%F_%s")
