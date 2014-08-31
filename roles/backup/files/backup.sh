@@ -1,4 +1,27 @@
 #!/bin/bash
+# Available options :
+#   --no-ugc : do not backup the user generated content
+#   --no-db : do not backup the databases
+#
+
+OPTS=`getopt -a -l no-db -l no-ugc -- "$0" "$@"`
+if [ $? != 0 ] # There was an error parsing the options
+then
+  exit 1 
+fi
+
+eval set -- "$OPTS"
+
+NO_DB_FLAG=0
+NO_UGC_FLAG=0
+
+while true; do
+  case "$1" in
+    --no-db) NO_DB_FLAG=1; shift;;
+    --no-ugc) NO_UGC_FLAG=1; shift;;
+    --) shift; break;;
+  esac
+done
 
 # Home root directory
 # HOME_DIR=""
@@ -33,72 +56,83 @@ reset="\033[0m"
 
 BACKED_UP="NO"
 
-MYSQL=`type mysql >/dev/null 2>&1 && echo "ok" || echo "nok"`
-if [ "$MYSQL" = "ok" ]; then
+if [ $NO_DB_FLAG -eq 0 ]; then
+  MYSQL=`type mysql >/dev/null 2>&1 && echo "ok" || echo "nok"`
+  if [ "$MYSQL" = "ok" ]; then
 
-  # Retrieves all databases
-  databases=`mysql --user=$MYSQL_USER -p$MYSQL_PASSWORD -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema)"`
-  
-  if [ `echo "$databases" | wc -l` -gt 2 ]; then
+    # Retrieves all databases
+    databases=`mysql --user=$MYSQL_USER -p$MYSQL_PASSWORD -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema)"`
+    
+    if [ `echo "$databases" | wc -l` -gt 2 ]; then
 
-    echo -e "${cyan}Backing up databases${reset} :"
-    mkdir "$THIS_BACKUP_DIR/mysql" 
+      echo -e "${cyan}Backing up databases${reset} :"
+      mkdir "$THIS_BACKUP_DIR/mysql" 
 
-    # Dumps everything
-    for db in $databases; do
-      ([  "$db" = "mysql" ] || [ "$db" = "performance_schema" ]) && continue
-      printf " - $db .."
-      mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip --best > "$THIS_BACKUP_DIR/mysql/$db.sql.gz"
-      echo -e "${green}done${reset}."
-      logger -p cron.info "Database $db backed up [local]"
-    done
+      # Dumps everything
+      for db in $databases; do
+        ([  "$db" = "mysql" ] || [ "$db" = "performance_schema" ]) && continue
+        printf " - $db .."
+        mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip --best > "$THIS_BACKUP_DIR/mysql/$db.sql.gz"
+        echo -e "${green}done${reset}."
+        logger -p cron.info "Database $db backed up [local]"
+      done
 
-    BACKED_UP="YES"
+      BACKED_UP="YES"
 
-  else
-  
-    logger -p cron.info "No database to backup"
-  
+    else
+    
+      logger -p cron.info "No database to backup"
+    
+    fi
+
+
   fi
-
-
+else
+  echo -e "${yellow}The 'no-db' flag was used, not backing up databases${reset}."
+  logger -p cron.info "Flag 'no-db' : not backing up databases"
 fi
 
-folders_count=`find $HOME_DIR/www/ -maxdepth 1 -mindepth 1 -type d | wc -l`
+if [ $NO_UGC_FLAG -eq 0 ]; then 
 
-if [ "$folders_count" -gt 1 ]; then # ./ counts as one ...
+  folders_count=`find $HOME_DIR/www/ -maxdepth 1 -mindepth 1 -type d | wc -l`
 
-  # Retrieves all folders to backup
-  folders=`ls -d $HOME_DIR/www/*/*/ | grep -Ev "$IGNORE_FOLDERS" | grep -Ev "\w\/$IGNORE_PATTERNS"`
+  if [ "$folders_count" -gt 0 ]; then
 
-  if [ `echo "$folders" | wc -l` -gt 0 ]; then
+    # Retrieves all folders to backup
+    folders=`ls -d $HOME_DIR/www/*/*/ | grep -Ev "$IGNORE_FOLDERS" | grep -Ev "\w\/$IGNORE_PATTERNS"`
 
-    # if folders length > 0...
-    echo -e "${cyan}Backing up ugc folders${reset} :"
-    mkdir "$THIS_BACKUP_DIR/ugc" 
+    if [ `echo "$folders" | wc -l` -gt 0 ]; then
 
-    # Backup files
-    for folder in $folders; do 
-      printf " - $folder .."
-      if [ "$(find $folder -type f | wc -l)" -gt 0 ]; then
-        mkdir -p $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))
-        find $folder -type d -o -size -512M -print0 | xargs -0 tar -cPzvf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar > /dev/null
-        echo -e "${green}done${reset}."
-        logger -p cron.info "Folder $(basename $(dirname $folder))/$(basename $folder) backed up [local]"
-      else
-        echo -e "${yellow}empty, not backing up. ${green}done${reset}."
-        logger -p cron.notice "Folder $(basename $(dirname $folder))/$(basename $folder) empty - not backed up [local]"
-      fi
-    done
+      # if folders length > 0...
+      echo -e "${cyan}Backing up ugc folders${reset} :"
+      mkdir "$THIS_BACKUP_DIR/ugc" 
 
-    BACKED_UP="YES"
+      # Backup files
+      for folder in $folders; do 
+        printf " - $folder .."
+        if [ "$(find $folder -type f | wc -l)" -gt 0 ]; then
+          mkdir -p $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))
+          find $folder -type d -o -size -512M -print0 | xargs -0 tar -cPzvf $THIS_BACKUP_DIR/ugc/$(basename $(dirname $folder))/$(basename $folder).tar > /dev/null
+          echo -e "${green}done${reset}."
+          logger -p cron.info "Folder $(basename $(dirname $folder))/$(basename $folder) backed up [local]"
+        else
+          echo -e "${yellow}empty, not backing up. ${green}done${reset}."
+          logger -p cron.notice "Folder $(basename $(dirname $folder))/$(basename $folder) empty - not backed up [local]"
+        fi
+      done
 
-  else
+      BACKED_UP="YES"
 
-    logger -p cron.info "No folders to backup"
+    else
+
+      logger -p cron.info "No folders to backup"
+
+    fi
 
   fi
-
+else
+  echo -e "${yellow}The 'no-ugc' flag was used, not backing up ugc folders${reset}."
+  logger -p cron.info "Flag 'no-ugc' : not backing up ugc folders"
 fi
 
 # Update the "last" symlink
