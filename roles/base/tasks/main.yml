@@ -43,6 +43,7 @@
     - gcc
     - python-mysqldb # Needed to interact with mysql
     - python-passlib # To create password / htaccess
+    - mosh # mobile shell https://mosh.mit.edu/#techinfo
 - name: Ensure apache is present before uninstalling it
   apt:
     pkg: apache2
