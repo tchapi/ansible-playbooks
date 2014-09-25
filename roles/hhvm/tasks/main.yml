@@ -8,6 +8,10 @@
     state: present
   notify:
   - Update apt
+- name: Install libmemcachedutil2
+  apt: 
+    name: libmemcachedutil2
+    state: latest
 - name: Install HHVM
   apt: 
     name: hhvm
