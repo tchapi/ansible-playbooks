@@ -68,6 +68,15 @@
         },
         "7": {
           "id": 7,
+          "query": "app:lechiffre",
+          "alias": "lechiffre",
+          "color": "#F9934E",
+          "pin": true,
+          "type": "lucene",
+          "enable": true
+        },
+        "8": {
+          "id": 8,
           "query": "app:kibana",
           "alias": "monitoring",
           "color": "#2F2F2F",
@@ -75,8 +84,8 @@
           "type": "lucene",
           "enable": true
         },
-        "8": {
-          "id": 8,
+        "9": {
+          "id": 9,
           "query": "response:20*",
           "alias": "20X",
           "color": "#629E51",
@@ -84,8 +93,8 @@
           "type": "lucene",
           "enable": true
         },
-        "9": {
-          "id": 9,
+        "10": {
+          "id": 10,
           "query": "response:40*",
           "alias": "40X",
           "color": "#E0752D",
@@ -93,8 +102,8 @@
           "type": "lucene",
           "enable": true
         },
-        "10": {
-          "id": 10,
+        "11": {
+          "id": 11,
           "query": "response:50*",
           "alias": "50X",
           "color": "#BF1B00",
@@ -102,8 +111,8 @@
           "type": "lucene",
           "enable": true
         },
-        "11": {
-          "id": 11,
+        "12": {
+          "id": 12,
           "query": "type:nginx_access",
           "alias": "access",
           "color": "#2F575E",
@@ -111,8 +120,8 @@
           "type": "lucene",
           "enable": true
         },
-        "12": {
-          "id": 12,
+        "13": {
+          "id": 13,
           "query": "type:nginx_error",
           "alias": "error",
           "color": "#58140C",
@@ -120,8 +129,8 @@
           "type": "lucene",
           "enable": true
         },
-        "13": {
-          "id": 13,
+        "14": {
+          "id": 14,
           "query": "type:syslog",
           "alias": "syslog",
           "color": "#511749",
@@ -129,8 +138,8 @@
           "type": "lucene",
           "enable": true
         },
-        "14": {
-          "id": 14,
+        "15": {
+          "id": 15,
           "query": "type: bradlog",
           "alias": "brad",
           "color": "#052B51",
@@ -154,7 +163,8 @@
         11,
         12,
         13,
-        14
+        14,
+        15
       ]
     },
     "filter": {
@@ -219,7 +229,8 @@
               3,
               4,
               5,
-              6
+              6,
+              7
             ]
           },
           "title": "Applications",
@@ -283,9 +294,9 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              8,
               9,
-              10
+              10,
+              11
             ]
           },
           "title": "Response codes"
@@ -308,7 +319,8 @@
               11,
               12,
               13,
-              14
+              14,
+              15
             ]
           },
           "style": {
@@ -369,7 +381,7 @@
             "mode": "selected",
             "ids": [
               12,
-              14
+              13
             ]
           },
           "field_list": false,
