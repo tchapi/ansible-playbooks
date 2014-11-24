@@ -5,12 +5,14 @@
     state: latest
   with_items:
    - ruby
+   - ruby-dev
    - yui-compressor
 - name: Ensure SASS / COMPASS / LESS are here
   sudo: yes
   gem:
     name: "{{item}}"
     state: latest
+    user_install: yes
   with_items:
    - sass
    - compass
