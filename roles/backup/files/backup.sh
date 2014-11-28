@@ -36,7 +36,7 @@ BACKUP_DIR="$HOME_DIR/backup"
 MYSQL_USER='backup'
 
 # Folders to ignore and patterns to ignore
-IGNORE_FOLDERS="(mantis|public|photo)"
+IGNORE_FOLDERS="(mantis|public|photo|lechiffre)"
 IGNORE_PATTERNS="(rel\-|prod|beta|var)"
 
 # Create a backup folder for each run
