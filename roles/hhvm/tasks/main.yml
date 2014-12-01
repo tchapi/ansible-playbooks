@@ -35,6 +35,10 @@
   copy:
     src: server.hdf
     dest: /etc/hhvm/server.hdf
+- name: Ensure the php ini specific hhvm config is ok
+  copy:
+    src: hhvm.php.ini
+    dest: /etc/hhvm/php.ini
 - name: Ensure the www directory is correctly written in the conf
   lineinfile:
     dest: /etc/hhvm/server.hdf
