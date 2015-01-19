@@ -4,6 +4,9 @@ A collection of roles and standard playbooks for deploying a common deployment /
 
 _I use a common username for all management processes on my servers, you can configure it globally in each playbook or play — it's the `{{ user }}` var. I would recommend to use a global variable by defining `user` in `<INVENTORY_FILE_LOCATION>/group_vars/all` like that :_
 
+
+> NB : the default inventory file location is `/etc/ansible/hosts`
+
 ```yaml
 ---
 # Your user
@@ -18,7 +21,7 @@ If you use an ELK (Elastic Search - Logstash - Kibana) monitoring stack, you can
 monitoring_server: "kibana.myHost.com"
 ```
 
-> NB : Your inventory file should have the two groups `[front-servers]` and `[deploy-servers]`.
+> NB : Your inventory file should have the three groups `[front-servers]`, `[monitoring-servers]` and `[deploy-servers]`.
 
 
 ## Roles available
