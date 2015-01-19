@@ -5,7 +5,7 @@ A collection of roles and standard playbooks for deploying a common deployment /
 _I use a common username for all management processes on my servers, you can configure it globally in each playbook or play — it's the `{{ user }}` var. I would recommend to use a global variable by defining `user` in `<INVENTORY_FILE_LOCATION>/group_vars/all` like that :_
 
 
-> NB : the default inventory file location is `/etc/ansible/hosts`
+> NB : the default inventory file location is `/etc/ansible/hosts` and `/usr/local/etc/ansible/hosts` on Mac OS X
 
 ```yaml
 ---
