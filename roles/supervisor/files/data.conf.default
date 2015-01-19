@@ -1,0 +1,9 @@
+[program:data]
+command = node /home/myUser/www/data/prod/index.js
+directory = /home/myUser/www/data/prod/
+user = myUser
+autostart = true
+autorestart = true
+stdout_logfile = /var/log/supervisor/data.log
+stderr_logfile = /var/log/supervisor/data_err.log
+environment = NODE_ENV="production"

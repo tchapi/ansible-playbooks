@@ -19,3 +19,7 @@
   copy:
     src: ghost.conf.default
     dest: /etc/supervisor/conf.d/ghost.conf.default
+- name: Copy default data configuration
+  copy:
+    src: data.conf.default
+    dest: /etc/supervisor/conf.d/data.conf.default
