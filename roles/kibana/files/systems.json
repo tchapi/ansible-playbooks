@@ -38,13 +38,33 @@
           "pin": true,
           "type": "lucene",
           "enable": true
+        },
+        "4": {
+          "id": 4,
+          "color": "#99440A",
+          "alias": "riven",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "host: riven"
+        },
+        "5": {
+          "id": 5,
+          "color": "#E0752D",
+          "alias": "myst",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "host: myst"
         }
       },
       "ids": [
         0,
         1,
         2,
-        3
+        3,
+        4,
+        5
       ]
     },
     "filter": {
@@ -68,7 +88,7 @@
   "rows": [
     {
       "title": "Graph",
-      "height": "350px",
+      "height": "300px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
@@ -109,7 +129,7 @@
               3
             ]
           },
-          "title": "Applications",
+          "title": "Events",
           "intervals": [
             "auto",
             "1s",
@@ -156,6 +176,90 @@
       "notice": false
     },
     {
+      "title": "",
+      "height": "250px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 12,
+          "editable": false,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "count",
+          "time_field": "@timestamp",
+          "value_field": null,
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              4,
+              5
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "10m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": false,
+          "fill": 0,
+          "linewidth": 3,
+          "points": false,
+          "pointradius": 5,
+          "bars": true,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": true,
+          "options": true,
+          "legend": true,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Events per Servers"
+        }
+      ],
+      "notice": false
+    },
+    {
       "title": "Events",
       "height": "350px",
       "editable": true,
@@ -173,9 +277,9 @@
           "type": "table",
           "size": 100,
           "pages": 10,
-          "offset": 100,
+          "offset": 0,
           "sort": [
-            "timestamp",
+            "@timestamp",
             "desc"
           ],
           "style": {
@@ -183,7 +287,7 @@
           },
           "overflow": "min-height",
           "fields": [
-            "timestamp",
+            "@timestamp",
             "host",
             "syslog_program",
             "syslog_message",
@@ -231,16 +335,16 @@
       "query": "*",
       "pinned": true,
       "history": [
-        "app:lechiffre",
+        "host:myst",
+        "host:riven",
         "type: bradlog",
         "type:syslog",
         "type:nginx_error",
         "type:nginx_access",
+        "app:lechiffre",
         "response:50*",
         "response:40*",
-        "response:20*",
-        "app:kibana",
-        "app:blog.igneet.com"
+        "response:20*"
       ],
       "remember": 10,
       "enable": true
