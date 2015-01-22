@@ -4,7 +4,7 @@
     url: http://packages.elasticsearch.org/GPG-KEY-elasticsearch
 - name: Add repository
   apt_repository:
-    repo: 'deb http://packages.elasticsearch.org/elasticsearch/1.1/debian stable main'
+    repo: 'deb http://packages.elasticsearch.org/elasticsearch/1.4/debian stable main'
     state: present
   notify:
   - Update apt
