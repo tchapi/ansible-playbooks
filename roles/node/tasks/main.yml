@@ -1,16 +1,30 @@
 ---
-- name: Ensure node is installed
+- name: Ensure apt-transport-https is installed
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+   - apt-transport-https
+   - sqlite # required for node / ghost generally
+- name: Ensure the key is present
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+- name: Add repository
+  apt_repository:
+    repo: 'deb https://deb.nodesource.com/node wheezy main'
+    state: present
+  notify:
+  - Update apt
+- name: Add repository
+  apt_repository:
+    repo: 'deb-src https://deb.nodesource.com/node wheezy main'
+    state: present
+  notify:
+  - Update apt
+- name: Ensure nodejs is installed as root
+  sudo: yes
   apt:
     pkg: "{{item}}"
     state: latest
   with_items:
    - nodejs
-   - nodejs-legacy
-   - sqlite # required for node / ghost generally
-- name: Check if NPM is here
-  command: "which npm || echo '0'"
-  register: npm_is_here
-  ignore_errors: True
-- name: Install NPM
-  shell: curl -L -k https://npmjs.org/install.sh | sudo sh
-  when: npm_is_here.stdout == 0
