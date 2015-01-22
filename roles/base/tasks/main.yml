@@ -61,6 +61,8 @@
     force: True
   with_items:
    - apache2
+   - apache2.2
+   - apache2-utils
    - php
 - name: To be sure that apache is gone
   shell: "sudo apt-get -y autoremove && sudo update-rc.d -f apache2 remove"
