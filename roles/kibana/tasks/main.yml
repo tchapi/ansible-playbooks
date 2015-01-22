@@ -29,6 +29,10 @@
     copy:
       src: systems.json
       dest: "/home/{{user}}/kibana/app/dashboards/systems.json"
+  - name: Copy Energy dashboard
+    copy:
+      src: energy.json
+      dest: "/home/{{user}}/kibana/app/dashboards/energy.json"
   - name: Write server_name
     lineinfile:
       dest: /etc/nginx/available/kibana.conf
