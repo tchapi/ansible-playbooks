@@ -277,6 +277,43 @@
           "derivative": false
         },
         {
+          "error": false,
+          "span": 2,
+          "editable": true,
+          "type": "terms",
+          "loadingEditor": false,
+          "field": "clientip",
+          "exclude": [
+            "",
+            ""
+          ],
+          "missing": false,
+          "other": true,
+          "size": 10,
+          "order": "count",
+          "style": {
+            "font-size": "10pt"
+          },
+          "donut": true,
+          "tilt": false,
+          "labels": true,
+          "arrangement": "vertical",
+          "chart": "table",
+          "counter_pos": "above",
+          "spyable": true,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              12,
+              13
+            ]
+          },
+          "tmode": "terms",
+          "tstat": "total",
+          "valuefield": "",
+          "title": "Trafic sources"
+        },
+        {
           "span": 2,
           "editable": true,
           "type": "hits",
@@ -300,20 +337,29 @@
             ]
           },
           "title": "Response codes"
-        },
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Trends",
+      "height": "100px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
         {
-          "span": 2,
+          "span": 12,
           "editable": true,
           "type": "trends",
           "loadingEditor": false,
           "ago": "1d",
-          "arrangement": "vertical",
+          "arrangement": "horizontal",
           "reverse": false,
           "spyable": true,
           "queries": {
             "mode": "selected",
             "ids": [
-              8,
               9,
               10,
               11,
@@ -324,7 +370,7 @@
             ]
           },
           "style": {
-            "font-size": "24pt"
+            "font-size": "20pt"
           },
           "title": "Trends"
         }
@@ -428,7 +474,7 @@
     },
     {
       "type": "filtering",
-      "collapse": false,
+      "collapse": true,
       "notice": false,
       "enable": true
     }
