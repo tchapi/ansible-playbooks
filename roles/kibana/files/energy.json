@@ -48,7 +48,7 @@
   "rows": [
     {
       "title": "Graph",
-      "height": "350px",
+      "height": "300px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
@@ -135,7 +135,7 @@
     },
     {
       "title": "Events",
-      "height": "150px",
+      "height": "400px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
@@ -143,7 +143,7 @@
         {
           "title": "All events",
           "error": false,
-          "span": 4,
+          "span": 3,
           "editable": true,
           "group": [
             "default"
@@ -188,27 +188,6 @@
         {
           "span": 2,
           "editable": true,
-          "type": "trends",
-          "loadingEditor": false,
-          "ago": "1d",
-          "arrangement": "vertical",
-          "reverse": false,
-          "spyable": true,
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              0,
-              1
-            ]
-          },
-          "style": {
-            "font-size": "24pt"
-          },
-          "title": "Trends"
-        },
-        {
-          "span": 4,
-          "editable": true,
           "type": "sparklines",
           "loadingEditor": false,
           "mode": "mean",
@@ -223,7 +202,81 @@
               1
             ]
           },
-          "title": "Trends"
+          "title": "General Trend"
+        },
+        {
+          "error": false,
+          "span": 4,
+          "editable": true,
+          "type": "stats",
+          "loadingEditor": false,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              0
+            ]
+          },
+          "style": {
+            "font-size": "24pt"
+          },
+          "format": "float",
+          "mode": "mean",
+          "display_breakdown": "yes",
+          "sort_field": "",
+          "sort_reverse": false,
+          "label_name": "Query",
+          "value_name": "Value",
+          "spyable": false,
+          "show": {
+            "count": false,
+            "min": true,
+            "max": true,
+            "mean": true,
+            "std_deviation": false,
+            "sum_of_squares": false,
+            "total": false,
+            "variance": true
+          },
+          "title": "Temperature",
+          "field": "value",
+          "unit": "°C"
+        },
+        {
+          "error": false,
+          "span": 3,
+          "editable": true,
+          "type": "stats",
+          "loadingEditor": false,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              1
+            ]
+          },
+          "style": {
+            "font-size": "24pt"
+          },
+          "format": "number",
+          "mode": "max",
+          "display_breakdown": "yes",
+          "sort_field": "",
+          "sort_reverse": false,
+          "label_name": "Query",
+          "value_name": "Value",
+          "spyable": true,
+          "show": {
+            "count": false,
+            "min": true,
+            "max": true,
+            "mean": true,
+            "std_deviation": false,
+            "sum_of_squares": false,
+            "total": false,
+            "variance": true
+          },
+          "title": "Power",
+          "field": "value",
+          "unit": "W"
         }
       ],
       "notice": false
