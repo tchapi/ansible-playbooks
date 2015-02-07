@@ -32,7 +32,7 @@
         "0": {
           "type": "time",
           "field": "@timestamp",
-          "from": "now-1h",
+          "from": "now-6h",
           "to": "now",
           "mandate": "must",
           "active": true,
@@ -54,7 +54,7 @@
       "collapsable": true,
       "panels": [
         {
-          "span": 12,
+          "span": 6,
           "editable": true,
           "group": [
             "default"
@@ -65,7 +65,7 @@
           "value_field": "value",
           "auto_int": true,
           "resolution": 100,
-          "interval": "30s",
+          "interval": "5m",
           "fill": 1,
           "linewidth": 3,
           "timezone": "browser",
@@ -81,13 +81,12 @@
           "percentage": false,
           "interactive": true,
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0,
               1
             ]
           },
-          "title": "Events over time",
+          "title": "Power consumption",
           "intervals": [
             "auto",
             "1s",
@@ -129,6 +128,79 @@
           "legend_counts": true,
           "zerofill": false,
           "derivative": false
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              0
+            ]
+          },
+          "annotate": {
+            "enable": true,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "5m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 3,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": false,
+          "zoomlinks": true,
+          "options": true,
+          "legend": true,
+          "show_query": false,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Temperature"
         }
       ],
       "notice": false
@@ -193,7 +265,7 @@
           "mode": "mean",
           "time_field": "@timestamp",
           "value_field": "value",
-          "interval": "5m",
+          "interval": "30m",
           "spyable": true,
           "queries": {
             "mode": "selected",
@@ -310,7 +382,7 @@
     {
       "type": "filtering",
       "collapse": true,
-      "notice": false,
+      "notice": true,
       "enable": true
     }
   ],
@@ -363,5 +435,5 @@
     "load_local": true,
     "hide": false
   },
-  "refresh": false
+  "refresh": "10s"
 }
