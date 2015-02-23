@@ -126,7 +126,7 @@
           "pointradius": 5,
           "show_query": true,
           "legend_counts": true,
-          "zerofill": false,
+          "zerofill": true,
           "derivative": false
         },
         {
@@ -435,5 +435,5 @@
     "load_local": true,
     "hide": false
   },
-  "refresh": "10s"
+  "refresh": false
 }
