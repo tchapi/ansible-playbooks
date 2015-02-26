@@ -6,6 +6,9 @@
 default-character-set = utf8 
 
 [mysqld]
+# Useful for PDO session handlers
+binlog_format = 'MIXED'
+
 #
 # * Character sets
 # 
