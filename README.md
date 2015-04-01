@@ -113,6 +113,10 @@ mx_domain: "mydomain.com"
 
     Standard role that performs a full upgrade (see the upgrade playbook below).
 
+  - #### mlmmj 
+
+    Installs postfix along with mlmmj using the configured MX domain. For more info on Mlmmj see [this blog post](http://www.foobarflies.io/a-simple-web-interface-for-mlmmj/)
+
 ## Playbooks
 
 #### base & deploy
@@ -123,19 +127,25 @@ The playbook is rather straightforward.
 
 When deploying a new server :
 
-    ansible-playbook -v -l myNewServer base.yml
+    ansible-playbook -v -l myNewServer playbooks/base.yml
     # Then
-    ansible-playbook -l myNewServer deploy.yml --ask-vault
+    ansible-playbook -l myNewServer playbooks/deploy.yml --ask-vault-pass
 
-#### upgrade
+#### dist-upgrade
 
-    ansible-playbook upgrade.yml
+    ansible-playbook playbooks/dist-upgrade.yml
 
 Performs a full upgrade on all hosts, basically boiling down to :
 
     sudo apt-get update
     sudo apt-get upgrade
     sudo apt-get dist-upgrade
+
+#### mlmmj
+
+Just plays the mlmmj role alone :
+
+    ansible-playbook playbooks/mlmmj.yml
 
 ## Licence
 
