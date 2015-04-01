@@ -1,0 +1,53 @@
+
+mydomain = #mydomain.fr
+myorigin = $mydomain
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+
+# MLMMJ
+alias_maps = hash:/etc/postfix/mlmmj.aliases
+alias_database = hash:/etc/postfix/mlmmj.aliases
+
+virtual_alias_maps = hash:/etc/postfix/virtual, regexp:/etc/postfix/mlmmj.lists.reg
+transport_maps = regexp:/etc/postfix/mlmmj.transport.reg
+
+# Verp
+smtpd_authorized_verp_clients = 127.0.0.1,localhost
+
+# Spam filters
+smtpd_helo_required = yes
+disable_vrfy_command = yes
+strict_rfc821_envelopes = yes
+invalid_hostname_reject_code = 554
+multi_recipient_bounce_reject_code = 554
+non_fqdn_reject_code = 554
+relay_domains_reject_code = 554
+unknown_address_reject_code = 554
+unknown_client_reject_code = 554
+unknown_hostname_reject_code = 554
+unknown_local_recipient_reject_code = 554
+unknown_relay_recipient_reject_code = 554
+unknown_sender_reject_code = 554
+unknown_virtual_alias_reject_code = 554
+unknown_virtual_mailbox_reject_code = 554
+unverified_recipient_reject_code = 554
+unverified_sender_reject_code = 554
+
+smtpd_recipient_restrictions =
+            reject_invalid_hostname,
+            reject_unknown_recipient_domain,
+            reject_unauth_pipelining,
+            permit_mynetworks,
+            permit_sasl_authenticated,
+            reject_unauth_destination,
+            reject_rbl_client multi.uribl.com,
+            reject_rbl_client dsn.rfc-ignorant.org,
+            reject_rbl_client dul.dnsbl.sorbs.net,
+            reject_rbl_client list.dsbl.org,
+            reject_rbl_client sbl-xbl.spamhaus.org,
+            reject_rbl_client bl.spamcop.net,
+            reject_rbl_client dnsbl.sorbs.net,
+            reject_rbl_client cbl.abuseat.org,
+            reject_rbl_client ix.dnsbl.manitu.net,
+            reject_rbl_client combined.rbl.msrbl.net,
+            reject_rbl_client rabl.nuclearelephant.com,
+            permit

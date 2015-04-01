@@ -1,0 +1,51 @@
+---
+- name: Ensure dependencies are installed
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+   - postfix
+   - mlmmj
+# Configure postfix
+- name: Ensure postfix config is here
+  copy:
+    src: main.cf
+    dest: /etc/postfix/main.cf
+- name: Adds MX domain
+  lineinfile:
+    dest: /etc/postfix/main.cf
+    state: present
+    regexp: 'mydomain = '
+    line: "mydomain = {{ mx_domain }}"
+- name: Ensure postfix master config is here
+  copy:
+    src: master.cf
+    dest: /etc/postfix/master.cf
+# - name: Ensure mlmmj aliases config is here
+#   copy:
+#     src: mlmmj.aliases
+#     dest: /etc/postfix/mlmmj.aliases
+# - name: Ensure mlmmj lists config is here
+#   copy:
+#     src: mlmmj.lists.reg
+#     dest: /etc/postfix/mlmmj.lists.reg
+# - name: Ensure mlmmj transport config is here
+#   copy:
+#     src: mlmmj.transport.reg
+#     dest: /etc/postfix/mlmmj.transport.reg
+# - name: Ensure virtuals is here
+#   copy:
+#     src: virtual
+#     dest: /etc/postfix/virtual
+- name: Create maps
+  shell: "postmap /etc/postfix/virtual"
+# - name: Create hashes
+#   shell: "postalias /etc/postfix/mlmmj.aliases"
+- name : "Restart postfix"
+  service: 
+    name: "postfix"
+    state: "restarted"
+- name : "Restart mlmmj"
+  service: 
+    name: "mlmmj"
+    state: "restarted"
