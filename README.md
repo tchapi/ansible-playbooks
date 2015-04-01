@@ -21,7 +21,16 @@ If you use an ELK (Elastic Search - Logstash - Kibana) monitoring stack, you can
 monitoring_server: "kibana.myHost.com"
 ```
 
-> NB : Your inventory file should have the three groups `[front-servers]`, `[monitoring-servers]` and `[deploy-servers]`.
+And if you plan to deploy for MX servers, you can add :
+
+```yaml
+---
+# The MX domain
+mx_domain: "mydomain.com"
+```
+
+
+> NB : Your inventory file should have the three groups `[front-servers]`, `[monitoring-servers]`, `[mx-servers]` and `[deploy-servers]`.
 
 
 ## Roles available
