@@ -27,8 +27,8 @@
 - name: Ensure the host is correctly written in the conf
   lineinfile:
     dest: /etc/nginx/available/elasticsearch.proxy.conf
-    insertafter: "  listen   8080;"
-    line: "    server_name  {{ monitoring_server }};"
+    insertafter: "  listen 8080;"
+    line: "  server_name  {{ monitoring_server }};"
 - name: Remove htpasswd file
   file:
     path: /etc/elasticsearch/elasticsearch.htpasswd
