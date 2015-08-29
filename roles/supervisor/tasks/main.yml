@@ -14,7 +14,7 @@
 - name: Ensure supervisor is running
   service: 
     name: supervisor
-    state: started
+    state: restarted
 - name: Copy default Ghost configuration
   copy:
     src: ghost.conf.default
