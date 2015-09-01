@@ -32,7 +32,7 @@
   lineinfile:
     dest: "/home/{{user}}/backup/backup.sh"
     insertafter: "MYSQL_USER='backup'"
-    line: "MYSQL_PASSWORD='{{ lookup('file', '/tmp/ansible.password.mysql_backup') }}'"
+    line: "MYSQL_PASSWORD='{{ lookup('file', '/tmp/ansible.password.mysql_backup_' + inventory_hostname) }}'"
 - name: Add the cron task for backups
   cron:
     user: "{{user}}"

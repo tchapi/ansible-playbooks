@@ -35,9 +35,9 @@
 - name: Sets the root password if needed
   mysql_user:
     name: root
-    password: "{{ lookup('password', '/tmp/ansible.password.mysql_root length=64') }}"
+    password: "{{ lookup('password', '/tmp/ansible.password.mysql_root_' + inventory_hostname + ' length=64') }}"
     state: present
-- name: Writes /root~/.my.cnf with root password
+- name: Writes /root/.my.cnf with root password
   copy:
     src: my.cnf
     dest: /root/.my.cnf
@@ -49,10 +49,10 @@
   lineinfile:
     dest: /root/.my.cnf
     insertafter: "user=root"
-    line: "password={{ lookup('file', '/tmp/ansible.password.mysql_root') }}"
+    line: "password={{ lookup('file', '/tmp/ansible.password.mysql_root_' + inventory_hostname) }}"
 - name: Create user "backup" if it not present
   mysql_user:
     name: backup
-    password: "{{ lookup('password', '/tmp/ansible.password.mysql_backup length=64') }}"
+    password: "{{ lookup('password', '/tmp/ansible.password.mysql_backup_' + inventory_hostname + ' length=64') }}"
     priv: "*.*:SHOW DATABASES,SELECT,LOCK TABLES,RELOAD"
     state: present
