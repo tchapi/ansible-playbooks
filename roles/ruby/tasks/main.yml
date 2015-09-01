@@ -12,8 +12,12 @@
   gem:
     name: "{{item}}"
     state: latest
-    user_install: yes
   with_items:
-   - sass
+   - chunky_png
+   - multi_json
+   - rb-fsevent
+   - compass-core
+   - compass-import-once
    - compass
+   - sass
    - less
