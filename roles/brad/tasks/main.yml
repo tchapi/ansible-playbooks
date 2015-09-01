@@ -6,7 +6,7 @@
     accept_hostkey: True
   sudo: False
 - name: Gets the configuration
-  shell: "cd /home/{{user}}/brad/ && curl -L -o brad.conf https://gist.githubusercontent.com/tchapi/30ace54b6a0d66e00c8b/raw/a5af1794444ceb1983254170395cc3cd32d7445c/brad.conf"
+  shell: "cd /home/{{user}}/brad/ && curl -L -o brad.conf https://gist.githubusercontent.com/tchapi/30ace54b6a0d66e00c8b/raw/6a776462283717a3c3f013975e46374e41805e22/brad.conf"
 - name: Creates the log directory
   file: 
     path: /var/log/brad

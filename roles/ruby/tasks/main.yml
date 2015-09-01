@@ -7,7 +7,7 @@
    - ruby
    - ruby-dev
    - yui-compressor
-- name: Ensure SASS / COMPASS / LESS are here
+- name: Ensure SASS / COMPASS / LESS etc ... are here
   sudo: yes
   gem:
     name: "{{item}}"
