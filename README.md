@@ -30,7 +30,7 @@ mx_domain: "mydomain.com"
 ```
 
 
-> NB : Your inventory file should have the three groups `[front-servers]`, `[monitoring-servers]`, `[mx-servers]` and `[deploy-servers]`.
+> NB : Your inventory file should have the four groups `[front-servers]`, `[monitoring-servers]`, `[mx-servers]` and `[deploy-servers]`.
 
 
 ## Roles available
@@ -125,7 +125,16 @@ Ensures that all servers have the correct basis for management, common administr
 
 The playbook is rather straightforward.
 
-When deploying a new server :
+> Before deploying a new server, you must create a new user `{{ user }}`` (_as root_) and copy your ssh keys :
+
+    useradd -s /bin/bash {{user}} && mkdir /home/{{ user }} && chown {{user}}:{{user}} /home/{{user}}
+    passwd tchap
+    mkdir /home/tchap/.ssh && vi authorized_keys
+    cd /root/.shh && vi authorized_keys
+    vi /etc/hostname # change hostname 
+    /etc/init.d/hostname.sh start
+
+This done, when deploying a new server :
 
     ansible-playbook -v -l myNewServer playbooks/base.yml
     # Then
