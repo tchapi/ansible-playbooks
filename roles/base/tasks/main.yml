@@ -1,7 +1,7 @@
 ---
 - name: Add correct /etc/apt/sources.list file
   copy:
-    src: sources.list
+    src: "sources.{{ ansible_distribution_release }}.list"
     dest: "/etc/apt/sources.list"
     owner: root
 - name: Update apt

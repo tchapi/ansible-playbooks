@@ -4,7 +4,7 @@
     url: http://nginx.org/keys/nginx_signing.key
 - name: Add repository
   apt_repository:
-    repo: 'deb http://nginx.org/packages/debian/ wheezy nginx'
+    repo: 'deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx'
     state: present
   notify:
   - Update apt

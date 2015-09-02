@@ -11,13 +11,13 @@
     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
 - name: Add repository
   apt_repository:
-    repo: 'deb https://deb.nodesource.com/node wheezy main'
+    repo: 'deb https://deb.nodesource.com/node {{ ansible_distribution_release }} main'
     state: present
   notify:
   - Update apt
 - name: Add repository
   apt_repository:
-    repo: 'deb-src https://deb.nodesource.com/node wheezy main'
+    repo: 'deb-src https://deb.nodesource.com/node {{ ansible_distribution_release }} main'
     state: present
   notify:
   - Update apt

@@ -4,7 +4,7 @@
     url: http://dl.hhvm.com/conf/hhvm.gpg.key
 - name: Add repository
   apt_repository:
-    repo: 'deb http://dl.hhvm.com/debian wheezy main'
+    repo: 'deb http://dl.hhvm.com/debian {{ ansible_distribution_release }} main'
     state: present
   notify:
   - Update apt

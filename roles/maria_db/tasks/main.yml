@@ -11,7 +11,7 @@
     keyserver: keyserver.ubuntu.com
 - name: Add repository
   apt_repository:
-    repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian wheezy main'
+    repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.0/debian {{ ansible_distribution_release }} main'
     state: present
   notify:
   - Update apt
