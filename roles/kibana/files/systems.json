@@ -56,6 +56,15 @@
           "type": "lucene",
           "enable": true,
           "query": "host: myst"
+        },
+        "6": {
+          "id": 6,
+          "color": "#E5AC0E",
+          "alias": "cyan",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "host:cyan"
         }
       },
       "ids": [
@@ -64,7 +73,8 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ]
     },
     "filter": {
@@ -202,7 +212,8 @@
             "mode": "selected",
             "ids": [
               4,
-              5
+              5,
+              6
             ]
           },
           "annotate": {
@@ -335,16 +346,16 @@
       "query": "*",
       "pinned": true,
       "history": [
-        "host:myst",
-        "host:riven",
+        "host: cyan",
+        "host: myst",
+        "host: riven",
         "type: bradlog",
         "type:syslog",
         "type:nginx_error",
         "type:nginx_access",
-        "app:lechiffre",
-        "response:50*",
-        "response:40*",
-        "response:20*"
+        "host:myst",
+        "host:riven",
+        "app:lechiffre"
       ],
       "remember": 10,
       "enable": true
@@ -352,7 +363,7 @@
     {
       "type": "filtering",
       "collapse": true,
-      "notice": false,
+      "notice": true,
       "enable": true
     }
   ],
