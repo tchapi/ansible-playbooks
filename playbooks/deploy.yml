@@ -28,10 +28,12 @@
     - nginx
     - supervisor
     - hhvm
+    - php-fpm
     - node
     - maria_db
     - backup
     - logstash
+
 # Other available roles :
 #   - mongo
 

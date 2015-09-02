@@ -1,0 +1,35 @@
+---
+- name: Ensure php5 fpm + libs is installed
+  apt:
+    pkg: "{{item}}"
+    state: latest
+  with_items:
+   - php5-fpm
+   - php5-mysqlnd
+   - php5-curl
+   - php5-gd
+   - php5-pgsql
+- name: Add correct timezone
+  lineinfile:
+    dest: /etc/php5/fpm/php.ini
+    line: 'date.timezone = "Europe/Paris"'
+    state: present
+    insertafter: "^[Date]"
+- name: Add correct fix pathinfo
+  lineinfile:
+    dest: /etc/php5/fpm/php.ini
+    line: 'cgi.fix_pathinfo=0'
+    state: present
+    insertafter: "^[Date]"
+- name: Install Nginx conf for PHP-FPM
+  copy:
+    src: php-fpm.nginx.conf
+    dest: /etc/nginx/php-fpm.conf
+  notify:
+  - Restart Nginx
+- name: Writes the correct version of the configuration
+  copy:
+    src: www.conf
+    dest: /etc/php5/fpm/pool.d/www.conf
+  notify:
+  - Restart PHP FPM

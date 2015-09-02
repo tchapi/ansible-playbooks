@@ -8,6 +8,10 @@
     state: present
   notify:
   - Update apt
+- name: Install linux-tools
+  apt: 
+    name: linux-tools-3.2 # linux-tools
+    state: latest
 - name: Install libmemcachedutil2
   apt: 
     name: libmemcachedutil2
@@ -27,23 +31,15 @@
     backup: yes
   notify:
   - Reread supervisor conf
-- name: Ensure the global config is ok
-  copy:
-    src: config.hdf
-    dest: /etc/hhvm/config.hdf
-- name: Ensure the server config is ok
-  copy:
-    src: server.hdf
-    dest: /etc/hhvm/server.hdf
 - name: Ensure the php ini specific hhvm config is ok
   copy:
     src: hhvm.php.ini
     dest: /etc/hhvm/php.ini
 - name: Ensure the www directory is correctly written in the conf
   lineinfile:
-    dest: /etc/hhvm/server.hdf
-    insertafter: "  # SourceRoot = /home/myUser/www/"
-    line: "  SourceRoot = /home/{{user}}/www/"
+    dest: /etc/hhvm/php.ini
+    insertafter: "; hhvm.source_root = /home/myUser/www/"
+    line: "hhvm.source_root = /home/{{user}}/www/"
 - name: Install Nginx conf for HHVM
   copy:
     src: hhvm.nginx.conf

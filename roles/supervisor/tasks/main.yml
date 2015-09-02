@@ -16,6 +16,8 @@
   file:
     path: /etc/supervisor/conf.d
     state: directory
+- name: Ensure supervisord is not running
+  shell: sudo service supervisor stop
 - name: Ensure supervisor is running
   shell: sudo service supervisor restart
 - name: Copy default Ghost configuration
