@@ -44,6 +44,10 @@
     dest: /etc/nginx/available/default.hhvm.conf
 - name: Writes the default confs
   copy:
+    src: default.php-fpm.conf
+    dest: /etc/nginx/available/default.php-fpm.conf
+- name: Writes the default confs
+  copy:
     src: default.ghost.conf
     dest: /etc/nginx/available/default.ghost.conf
 - name: Writes the secured version of the configuration

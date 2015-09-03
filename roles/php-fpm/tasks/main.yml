@@ -20,7 +20,7 @@
     dest: /etc/php5/fpm/php.ini
     line: 'cgi.fix_pathinfo=0'
     state: present
-    insertafter: "^[Date]"
+    insertafter: ";cgi.fix_pathinfo=1"
 - name: Install Nginx conf for PHP-FPM
   copy:
     src: php-fpm.nginx.conf

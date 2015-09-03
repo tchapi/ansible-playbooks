@@ -24,13 +24,6 @@
   file:
     path: /var/www
     state: directory
-- name: Install Supervisor conf for HHVM
-  copy:
-    src: hhvm.supervisor.conf
-    dest: /etc/supervisor/conf.d/hhvm.conf
-    backup: yes
-  notify:
-  - Reread supervisor conf
 - name: Ensure the php ini specific hhvm config is ok
   copy:
     src: hhvm.php.ini
@@ -47,6 +40,7 @@
   notify:
   - Restart Nginx
 - name: Ensure HHVM is running
-  supervisorctl:
+  service:
     name: hhvm
-    state: started
+    state: restarted
+    enabled: yes

@@ -2,10 +2,6 @@
 - name: Update apt
   apt:
     update_cache: yes
-- name: Reread supervisor conf
-  supervisorctl:
-    name: hhvm
-    state: present
 - name: Restart Nginx
   service:
     name: nginx
