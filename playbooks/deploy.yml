@@ -34,6 +34,13 @@
     - backup
     - logstash
 
+  tasks:
+    - name: Ensure certain packages are here
+      apt:
+        pkg: "{{ item }}"
+        state: installed
+      with_items:
+        - wkhtmltopdf
 # Other available roles :
 #   - mongo
 
