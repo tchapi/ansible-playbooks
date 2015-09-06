@@ -41,6 +41,17 @@
         state: installed
       with_items:
         - wkhtmltopdf
+## 
+## Install broker configuration
+##
+- name: Install the base config for brokering
+  hosts: broker-servers
+  remote_user: "{{user}}"
+  sudo: yes
+
+  roles:
+    - mosquitto
+
 # Other available roles :
 #   - mongo
 
