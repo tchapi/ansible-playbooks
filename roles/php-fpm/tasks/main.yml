@@ -29,6 +29,10 @@
   - Restart Nginx
 - name: Writes the correct version of the configuration
   copy:
+    src: php-fpm.conf
+    dest: /etc/php5/fpm/php-fpm.conf
+- name: Writes the correct version of the pool
+  copy:
     src: www.conf
     dest: /etc/php5/fpm/pool.d/www.conf
   notify:
