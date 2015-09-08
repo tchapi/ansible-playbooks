@@ -10,7 +10,7 @@
   - Update apt
 - name: Install linux-tools
   apt: 
-    name: linux-tools-3.2 # linux-tools
+    name: linux-tools # linux-tools
     state: latest
 - name: Install libmemcachedutil2
   apt: 

@@ -1,4 +1,7 @@
 ---
+- name: Update apt
+  apt:
+    update_cache: yes
 - name: Ensure php5 fpm + libs is installed
   apt:
     pkg: "{{item}}"
@@ -31,6 +34,12 @@
   copy:
     src: php-fpm.conf
     dest: /etc/php5/fpm/php-fpm.conf
+- name: Ensure the log folder is here
+  file:
+    path: /var/log/php-fpm
+    state: directory
+    owner: root
+    group: root
 - name: Writes the correct version of the pool
   copy:
     src: www.conf

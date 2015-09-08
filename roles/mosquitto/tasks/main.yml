@@ -12,6 +12,12 @@
   apt: 
     name: mosquitto
     state: latest
+- name: Ensure the log folder is here
+  file:
+    path: /var/log/mosquitto
+    state: directory
+    owner: mosquitto
+    group: nogroup
 - name: Ensure the mosquitto config is ok
   copy:
     src: mosquitto.conf
