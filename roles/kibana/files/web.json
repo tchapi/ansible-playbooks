@@ -115,7 +115,7 @@
           "id": 12,
           "query": "type:nginx_access",
           "alias": "access",
-          "color": "#2F575E",
+          "color": "#3F6833",
           "pin": true,
           "type": "lucene",
           "enable": true
@@ -138,14 +138,14 @@
           "type": "lucene",
           "enable": true
         },
-        "15": {
-          "id": 15,
-          "query": "type: bradlog",
-          "alias": "brad",
-          "color": "#052B51",
+        "16": {
+          "id": 16,
+          "color": "#2F575E",
+          "alias": "php_error",
           "pin": true,
           "type": "lucene",
-          "enable": true
+          "enable": true,
+          "query": "type:php_error"
         }
       },
       "ids": [
@@ -164,7 +164,7 @@
         12,
         13,
         14,
-        15
+        16
       ]
     },
     "filter": {
@@ -365,8 +365,7 @@
               11,
               12,
               13,
-              14,
-              15
+              14
             ]
           },
           "style": {
@@ -385,9 +384,9 @@
       "collapsable": true,
       "panels": [
         {
-          "title": "Errors & Brad logs",
+          "title": "Nginx Errors",
           "error": false,
-          "span": 12,
+          "span": 6,
           "editable": true,
           "group": [
             "default"
@@ -408,10 +407,6 @@
             "@timestamp",
             "app",
             "host",
-            "verb",
-            "request",
-            "response",
-            "type",
             "errmsg"
           ],
           "localTime": true,
@@ -426,7 +421,7 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              12,
+              11,
               13
             ]
           },
@@ -435,6 +430,47 @@
           "trimFactor": 300,
           "normTimes": true,
           "all_fields": false
+        },
+        {
+          "error": false,
+          "span": 6,
+          "editable": true,
+          "type": "table",
+          "loadingEditor": false,
+          "size": 100,
+          "pages": 5,
+          "offset": 0,
+          "sort": [
+            "_score",
+            "desc"
+          ],
+          "overflow": "min-height",
+          "fields": [
+            "@timestamp",
+            "errmsg",
+            "message"
+          ],
+          "highlight": [],
+          "sortable": true,
+          "header": true,
+          "paging": true,
+          "field_list": false,
+          "all_fields": true,
+          "trimFactor": 300,
+          "localTime": false,
+          "timeField": "@timestamp",
+          "spyable": true,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              16
+            ]
+          },
+          "style": {
+            "font-size": "9pt"
+          },
+          "normTimes": true,
+          "title": "PHP Errors"
         }
       ],
       "notice": false
@@ -458,7 +494,7 @@
       "query": "*",
       "pinned": true,
       "history": [
-        "type: bradlog",
+        "type:php_error",
         "type:syslog",
         "type:nginx_error",
         "type:nginx_access",
@@ -466,8 +502,8 @@
         "response:40*",
         "response:20*",
         "app:kibana",
-        "app:blog.igneet.com",
-        "app:thirdplace"
+        "app:lechiffre",
+        "app:blog.igneet.com"
       ],
       "remember": 10,
       "enable": true
