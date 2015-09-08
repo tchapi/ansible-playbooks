@@ -1,4 +1,8 @@
 ---
+- name: Install ftp
+  apt: 
+    name: ftp
+    state: latest
 - name: Create the backup directory.
   file:
     state: directory
