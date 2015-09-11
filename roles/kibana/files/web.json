@@ -407,7 +407,7 @@
             "@timestamp",
             "app",
             "host",
-            "errmsg"
+            "message"
           ],
           "localTime": true,
           "timeField": "@timestamp",
@@ -447,7 +447,7 @@
           "overflow": "min-height",
           "fields": [
             "@timestamp",
-            "errmsg",
+            "host",
             "message"
           ],
           "highlight": [],

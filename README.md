@@ -156,6 +156,13 @@ Just plays the mlmmj role alone :
 
     ansible-playbook playbooks/mlmmj.yml
 
+#### Reminder
+
+If you want to execute a single shell command :
+
+    # Gets the speed of each cpu 
+    ansible all -m shell -a "cat /proc/cpuinfo | grep MHz"
+
 ## Licence
 
 These roles and playbooks are released under the MIT licence. Enjoy !!
