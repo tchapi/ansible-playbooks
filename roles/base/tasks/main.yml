@@ -4,6 +4,10 @@
     src: "sources.{{ ansible_distribution_release }}.list"
     dest: "/etc/apt/sources.list"
     owner: root
+- name: Ensure aptitude is installed
+  apt:
+    pkg: aptitude
+    state: latest
 - name: Update apt
   apt: update_cache=yes
 - name: Upgrade apt
