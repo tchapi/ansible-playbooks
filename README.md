@@ -127,7 +127,7 @@ The playbook is rather straightforward.
 
 > Before deploying a new server, you must create a new user `{{ user }}`` (_as root_) and copy your ssh keys :
 
-    useradd -s /bin/bash {{user}} && mkdir /home/{{ user }} && chown {{user}}:{{user}} /home/{{user}}
+    useradd -s /bin/bash {{user}} && mkdir /home/{{user}} && chown {{user}}:{{user}} /home/{{user}}
     passwd tchap
     mkdir /home/tchap/.ssh && vi authorized_keys
     cd /root/.shh && vi authorized_keys
