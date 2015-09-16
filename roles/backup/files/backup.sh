@@ -72,7 +72,8 @@ if [ $NO_DB_FLAG -eq 0 ]; then
       for db in $databases; do
         ([  "$db" = "mysql" ] || [ "$db" = "performance_schema" ]) && continue
         printf " - $db .."
-        mysqldump --single-transaction --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --databases $db | gzip --best > "$THIS_BACKUP_DIR/mysql/$db.sql.gz"
+        mysqldump --single-transaction --routines --default-character-set=utf8 --hex-blob --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --result-file=$THIS_BACKUP_DIR/mysql/$db.sql --databases $db
+        gzip --best $THIS_BACKUP_DIR/mysql/$db.sql
         echo -e "${green}done${reset}."
         logger -p cron.info "Database $db backed up [local]"
       done
