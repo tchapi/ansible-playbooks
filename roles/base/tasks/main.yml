@@ -46,6 +46,7 @@
     - cron
     - htop
     - gcc
+    - gettext
     - python-mysqldb # Needed to interact with mysql
     - python-passlib # To create password / htaccess
     - mosh # mobile shell https://mosh.mit.edu/#techinfo
