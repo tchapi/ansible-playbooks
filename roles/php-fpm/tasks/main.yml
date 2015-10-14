@@ -18,6 +18,12 @@
     line: 'date.timezone = "Europe/Paris"'
     state: present
     insertafter: "^[Date]"
+- name: Add correct timezone
+  lineinfile:
+    dest: /etc/php5/fpm/php.ini
+    line: 'always_populate_raw_post_data = -1'
+    state: present
+    insertafter: ";always_populate_raw_post_data = -1"
 - name: Add correct fix pathinfo
   lineinfile:
     dest: /etc/php5/fpm/php.ini
