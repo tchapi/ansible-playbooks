@@ -12,30 +12,16 @@
    - php5-curl
    - php5-gd
    - php5-pgsql
-- name: Add correct timezone
-  lineinfile:
-    dest: /etc/php5/fpm/php.ini
-    line: 'date.timezone = "Europe/Paris"'
-    state: present
-    insertafter: "^[Date]"
-- name: Add correct timezone
-  lineinfile:
-    dest: /etc/php5/fpm/php.ini
-    line: 'always_populate_raw_post_data = -1'
-    state: present
-    insertafter: ";always_populate_raw_post_data = -1"
-- name: Add correct fix pathinfo
-  lineinfile:
-    dest: /etc/php5/fpm/php.ini
-    line: 'cgi.fix_pathinfo=0'
-    state: present
-    insertafter: ";cgi.fix_pathinfo=1"
 - name: Install Nginx conf for PHP-FPM
   copy:
     src: php-fpm.nginx.conf
     dest: /etc/nginx/php-fpm.conf
   notify:
   - Restart Nginx
+- name: Writes the correct version of the ini configuration
+  copy:
+    src: php.ini
+    dest: /etc/php5/fpm/php.ini
 - name: Writes the correct version of the configuration
   copy:
     src: php-fpm.conf
