@@ -20,11 +20,21 @@
           "type": "lucene",
           "enable": true,
           "query": "type:power"
+        },
+        "2": {
+          "id": 2,
+          "color": "#6ED0E0",
+          "alias": "heap",
+          "pin": true,
+          "type": "lucene",
+          "enable": true,
+          "query": "type:heap"
         }
       },
       "ids": [
         0,
-        1
+        1,
+        2
       ]
     },
     "filter": {
@@ -53,6 +63,79 @@
       "collapse": false,
       "collapsable": true,
       "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "value",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "none",
+          "grid": {
+            "max": null,
+            "min": 17
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              0
+            ]
+          },
+          "annotate": {
+            "enable": true,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": true,
+          "resolution": 100,
+          "interval": "5m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 3,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": false,
+          "zoomlinks": true,
+          "options": true,
+          "legend": true,
+          "show_query": false,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": false,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Temperature"
+        },
         {
           "span": 6,
           "editable": true,
@@ -126,81 +209,8 @@
           "pointradius": 5,
           "show_query": true,
           "legend_counts": true,
-          "zerofill": true,
+          "zerofill": false,
           "derivative": false
-        },
-        {
-          "span": 6,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "mean",
-          "time_field": "@timestamp",
-          "value_field": "value",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "none",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              0
-            ]
-          },
-          "annotate": {
-            "enable": true,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 100,
-          "interval": "5m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 2,
-          "linewidth": 3,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": false,
-          "zoomlinks": true,
-          "options": true,
-          "legend": true,
-          "show_query": false,
-          "interactive": true,
-          "legend_counts": false,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "title": "Temperature"
         }
       ],
       "notice": false
@@ -248,7 +258,8 @@
             "mode": "selected",
             "ids": [
               0,
-              1
+              1,
+              2
             ]
           },
           "field_list": false,
@@ -278,7 +289,7 @@
         },
         {
           "error": false,
-          "span": 4,
+          "span": 3,
           "editable": true,
           "type": "stats",
           "loadingEditor": false,
@@ -291,12 +302,12 @@
           "style": {
             "font-size": "24pt"
           },
-          "format": "float",
+          "format": "number",
           "mode": "mean",
           "display_breakdown": "yes",
           "sort_field": "",
           "sort_reverse": false,
-          "label_name": "Query",
+          "label_name": "Quantity",
           "value_name": "Value",
           "spyable": false,
           "show": {
@@ -307,7 +318,7 @@
             "std_deviation": false,
             "sum_of_squares": false,
             "total": false,
-            "variance": true
+            "variance": false
           },
           "title": "Temperature",
           "field": "value",
@@ -315,7 +326,7 @@
         },
         {
           "error": false,
-          "span": 3,
+          "span": 2,
           "editable": true,
           "type": "stats",
           "loadingEditor": false,
@@ -333,7 +344,7 @@
           "display_breakdown": "yes",
           "sort_field": "",
           "sort_reverse": false,
-          "label_name": "Query",
+          "label_name": "Quantity",
           "value_name": "Value",
           "spyable": true,
           "show": {
@@ -344,11 +355,48 @@
             "std_deviation": false,
             "sum_of_squares": false,
             "total": false,
-            "variance": true
+            "variance": false
           },
           "title": "Power",
           "field": "value",
           "unit": "W"
+        },
+        {
+          "error": false,
+          "span": 2,
+          "editable": true,
+          "type": "stats",
+          "loadingEditor": false,
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              2
+            ]
+          },
+          "style": {
+            "font-size": "24pt"
+          },
+          "format": "number",
+          "mode": "min",
+          "display_breakdown": "yes",
+          "sort_field": "",
+          "sort_reverse": false,
+          "label_name": "Size",
+          "value_name": "Value",
+          "spyable": true,
+          "show": {
+            "count": false,
+            "min": true,
+            "max": true,
+            "mean": false,
+            "std_deviation": false,
+            "sum_of_squares": false,
+            "total": false,
+            "variance": false
+          },
+          "title": "Heap",
+          "field": "heap",
+          "unit": "b"
         }
       ],
       "notice": false
@@ -372,6 +420,7 @@
       "query": "*",
       "pinned": true,
       "history": [
+        "type:heap",
         "type:power",
         "type:temperature",
         "*"
