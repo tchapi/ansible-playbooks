@@ -2,7 +2,8 @@
 - name: Upgrades and Dist-Upgrades servers
   hosts: all
   remote_user: "{{user}}"
-  sudo: yes
+  become: true
+  become_user: root
 
   roles:
     - upgrade

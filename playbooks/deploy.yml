@@ -6,7 +6,8 @@
 - name: Install the monitoring config
   hosts: monitoring-servers
   remote_user: "{{user}}"
-  sudo: yes
+  become: true
+  become_user: root
 
   roles:
     - git
@@ -22,7 +23,8 @@
 - name: Install the base config for serving content
   hosts: front-servers
   remote_user: "{{user}}"
-  sudo: yes
+  become: true
+  become_user: root
 
   roles:
     - nginx
@@ -51,7 +53,8 @@
 - name: Install the base config for brokering
   hosts: broker-servers
   remote_user: "{{user}}"
-  sudo: yes
+  become: true
+  become_user: root
 
   roles:
     - mosquitto
@@ -62,7 +65,8 @@
 - name: Install the base config for deployment
   hosts: deploy-servers
   remote_user: "{{user}}"
-  sudo: yes
+  become: true
+  become_user: root
 
   roles:
     - git
@@ -91,7 +95,8 @@
 - name: Cleans up password files
   hosts: 127.0.0.1
   connection: local
-  sudo: yes
+  become: true
+  become_user: root
 
   tasks:
     - name: Delete tmp passwords

@@ -2,7 +2,8 @@
 - name: Deploys Postfix configuration for mlmmj on the MX instances
   hosts: mx-servers
   remote_user: "{{user}}"
-  sudo: yes
+  become: true
+  become_user: root
 
   roles:
     - mlmmj
