@@ -11,6 +11,10 @@
 # Don't use ^D to exit
 # set -o ignoreeof
 
+if [ -f "$HOME/.bashrc" ]; then
+      . "$HOME/.bashrc"
+fi
+
 # Completion options
 # ##################
 
