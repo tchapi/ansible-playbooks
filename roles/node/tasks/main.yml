@@ -11,14 +11,16 @@
     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
 - name: Add repository
   apt_repository:
-    repo: 'deb https://deb.nodesource.com/node {{ ansible_distribution_release }} main'
+    repo: 'deb https://deb.nodesource.com/node_4.x {{ ansible_distribution_release }} main'
     state: present
+    filename: "nodesource"
   notify:
   - Update apt
-- name: Add repository
+- name: Add repository (SRC)
   apt_repository:
-    repo: 'deb-src https://deb.nodesource.com/node {{ ansible_distribution_release }} main'
+    repo: 'deb-src https://deb.nodesource.com/node_4.x {{ ansible_distribution_release }} main'
     state: present
+    filename: "nodesource"
   notify:
   - Update apt
 - name: Ensure nodejs is installed as root
