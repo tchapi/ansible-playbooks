@@ -44,7 +44,10 @@
   notify:
     - Restart Nginx
 - name: Link Nginx proxy conf
-  shell: ln -sf /etc/nginx/available/elasticsearch.proxy.conf /etc/nginx/enabled/elasticsearch.proxy.conf
+  file:
+    src: /etc/nginx/available/elasticsearch.proxy.conf
+    dest: /etc/nginx/enabled/elasticsearch.proxy.conf
+    state: links
 - name: Start elasticsearch
   service:
     name: elasticsearch
