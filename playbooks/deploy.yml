@@ -14,8 +14,8 @@
     - nginx
     - elasticsearch
     - logstash
-    - mongo
-    - kibana
+    #- mongo
+    - kibana4
 
 ## 
 ## Install webserver configuration
@@ -105,6 +105,3 @@
     - name: Say done
       debug:
         msg: "Done."
-
-
-
