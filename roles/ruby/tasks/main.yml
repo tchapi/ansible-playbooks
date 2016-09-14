@@ -8,7 +8,7 @@
    - ruby-dev
    - yui-compressor
 - name: Ensure SASS / COMPASS / LESS etc ... are here
-  sudo: yes
+  become: yes
   gem:
     name: "{{item}}"
     state: latest

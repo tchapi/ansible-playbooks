@@ -8,7 +8,7 @@
     path: /run/supervisord.lock
     state: absent
 - name: Remove supervisor sock file
-  sudo: yes
+  become: yes
   file: 
     path: /var/run/supervisor.sock
     state: absent

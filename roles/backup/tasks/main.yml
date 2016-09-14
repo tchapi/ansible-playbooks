@@ -26,7 +26,7 @@
         machine {{ ftp_server }}
             login {{ ftp_login }}
             password {{ ftp_password }}
-  sudo: yes
+  become: yes
 - name: Ensure the base directory is written in the conf
   lineinfile:
     dest: "/home/{{user}}/backup/backup.sh"

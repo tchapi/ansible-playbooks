@@ -24,7 +24,7 @@
   notify:
   - Update apt
 - name: Ensure nodejs is installed as root
-  sudo: yes
+  become: yes
   apt:
     pkg: "{{item}}"
     state: latest

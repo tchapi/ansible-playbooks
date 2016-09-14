@@ -44,7 +44,7 @@
     mode: 0600
     owner: root
     group: root
-  sudo: yes
+  become: yes
 - name: Adds root password
   lineinfile:
     dest: /root/.my.cnf

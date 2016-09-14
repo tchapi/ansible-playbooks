@@ -4,7 +4,7 @@
     repo: git@github.com:tchapi/brad.git
     dest: "/home/{{user}}/brad"
     accept_hostkey: True
-  sudo: False
+  become: no
 - name: Gets the configuration
   shell: "cd /home/{{user}}/brad/ && curl -L -o brad.conf https://gist.githubusercontent.com/tchapi/30ace54b6a0d66e00c8b/raw"
 - name: Creates the log directory
