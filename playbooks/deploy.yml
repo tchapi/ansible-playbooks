@@ -29,7 +29,7 @@
   roles:
     - nginx
     - supervisor
-    - hhvm
+    #- hhvm
     - php-fpm
     - node
     - maria_db
