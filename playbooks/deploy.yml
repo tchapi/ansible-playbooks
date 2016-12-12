@@ -15,7 +15,7 @@
     - elasticsearch
     - logstash
     #- mongo
-    - kibana4
+    - kibana
 
 ## 
 ## Install webserver configuration

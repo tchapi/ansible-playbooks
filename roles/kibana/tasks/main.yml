@@ -1,50 +1,39 @@
 ---
-  - name: Ensure kibana folder is here
-    file:
-      path: "/home/{{user}}/kibana"
-      state: directory
-      owner: "{{user}}"
-      group: www-data
-  - name: Download Kibana
-    shell: "cd /home/{{user}} && curl -L https://download.elasticsearch.org/kibana/kibana/kibana-3.1.2.tar.gz | tar -xz -C kibana --strip-components 1"
-  - name: Write config.js 
+  - name: Ensure the key is present
+    apt_key:
+      url: https://packages.elastic.co/GPG-KEY-elasticsearch
+  - name: Add repository
     copy:
-      src: config.js
-      dest: "/home/{{user}}/kibana/config.js"
-  - name: Write config.js line for elasticsearch instance
-    lineinfile:
-      dest: "/home/{{user}}/kibana/config.js"
-      state: present
-      regexp: '    elasticsearch: '
-      line: "    elasticsearch: 'http://{{ monitoring_server }}:80',"
+      src: elk.list
+      dest: "/etc/apt/sources.list.d/elk.list"
+    notify:
+    - Update apt
+  - name: Ensure kibana is installed
+    apt:
+      pkg: kibana
+      state: latest
+  - name: Ensure kibana is reloaded
+    service: 
+      name: kibana
+      state: restarted
+  - name: Ensure kibana starts at boot
+    service: 
+      name: kibana
+      enabled: yes
+  - name: Write kibana.yml 
+    copy:
+      src: kibana.yml
+      dest: "/opt/kibana/config/kibana.yml"
   - name: Ensure kibana nginx conf is here
     copy:
       src: kibana.conf
       dest: /etc/nginx/available/kibana.conf
-  - name: Copy Web dashboard
-    copy:
-      src: web.json
-      dest: "/home/{{user}}/kibana/app/dashboards/web.json"
-  - name: Copy Systems dashboard
-    copy:
-      src: systems.json
-      dest: "/home/{{user}}/kibana/app/dashboards/systems.json"
-  - name: Copy Energy dashboard
-    copy:
-      src: energy.json
-      dest: "/home/{{user}}/kibana/app/dashboards/energy.json"
   - name: Write server_name
     lineinfile:
       dest: /etc/nginx/available/kibana.conf
       state: present
       regexp: '  server_name           '
       line: "  server_name           {{ monitoring_server }};"
-  - name: Write web folder
-    lineinfile:
-      dest: /etc/nginx/available/kibana.conf
-      state: present
-      regexp: '    root  '
-      line: "    root  /home/{{user}}/kibana;"
   - name: Ensure kibana nginx conf is enabled
     shell: "ln -fs /etc/nginx/available/kibana.conf /etc/nginx/enabled/kibana.conf"
   - name: Ensure python-passlib is installed
