@@ -82,7 +82,7 @@ mx_domain: "mydomain.com"
 
   - #### php-cli
 
-    Installs the `php5` command line interface (for running in shell, or running Symfony 2 tasks when deploying).
+    Installs the `php7` command line interface (for running in shell, or running Symfony 3 tasks when deploying).
 
   - #### rsa_pub
 
