@@ -14,7 +14,6 @@
     - nginx
     - elasticsearch
     - logstash
-    #- mongo
     - kibana
 
 ## 
@@ -29,7 +28,6 @@
   roles:
     - nginx
     - supervisor
-    #- hhvm
     - php-fpm
     - node
     - maria_db
@@ -38,6 +36,7 @@
 
 # Other available roles :
 #   - mongo
+#   - hhvm
 
   tasks:
     - name: Ensure the web folder is here

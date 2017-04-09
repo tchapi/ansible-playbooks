@@ -47,7 +47,7 @@
   file:
     src: /etc/nginx/available/elasticsearch.proxy.conf
     dest: /etc/nginx/enabled/elasticsearch.proxy.conf
-    state: links
+    state: link
 - name: Start elasticsearch
   service:
     name: elasticsearch

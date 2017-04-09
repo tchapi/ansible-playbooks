@@ -40,6 +40,7 @@
     - make
     - sed
     - curl
+    - file
     - vim
     - wget
     - rsync
@@ -50,6 +51,7 @@
     - python-mysqldb # Needed to interact with mysql
     - python-passlib # To create password / htaccess
     - mosh # mobile shell https://mosh.mit.edu/#techinfo
+    - apt-transport-https
 - name: Ensure apache is present before uninstalling it
   apt:
     pkg: apache2
@@ -71,4 +73,6 @@
    - apache2-utils
    - php
 - name: To be sure that apache is gone
-  shell: "sudo apt-get -y autoremove && sudo update-rc.d -f apache2 remove"
+  shell: "apt-get -y autoremove && update-rc.d -f apache2 remove"
+  become: true
+  become_user: root
