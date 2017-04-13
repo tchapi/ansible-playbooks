@@ -2,12 +2,17 @@
 - name: Ensure the key is present
   apt_key:
     url: https://packages.elastic.co/GPG-KEY-elasticsearch
-  - name: Add repository
-    copy:
-      src: elk.list
-      dest: "/etc/apt/sources.list.d/elk.list"
-    notify:
-    - Update apt
+- name: Add repository
+  copy:
+    src: elk.list
+    dest: "/etc/apt/sources.list.d/elk.list"
+  notify:
+  - Update apt
+- name: Ensure java (JRE 8) is installed
+  apt:
+    pkg: openjdk-8-jre-headless
+    state: latest
+    default_release: jessie-backports
 - name: Ensure logstash is installed
   apt:
     pkg: logstash
@@ -16,6 +21,14 @@
   copy:
     src: logstash.conf
     dest: /etc/logstash/conf.d/logstash.conf
+- name: Use the adm group for reading logs
+  copy:
+    src: startup.options
+    dest: /etc/logstash/startup.options
+- name: Re-run system-install
+  shell: /usr/share/logstash/bin/system-install
+  become: true
+  become_user: root
 - name: Ensure the host is correctly written in the conf
   lineinfile:
     dest: /etc/logstash/conf.d/logstash.conf

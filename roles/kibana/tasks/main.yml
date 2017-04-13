@@ -20,10 +20,10 @@
     service: 
       name: kibana
       enabled: yes
-  - name: Write kibana.yml 
+  - name: Write /etc/kibana/kibana.yml 
     copy:
       src: kibana.yml
-      dest: "/opt/kibana/config/kibana.yml"
+      dest: "/etc/kibana/kibana.yml"
   - name: Ensure kibana nginx conf is here
     copy:
       src: kibana.conf
@@ -35,7 +35,10 @@
       regexp: '  server_name           '
       line: "  server_name           {{ monitoring_server }};"
   - name: Ensure kibana nginx conf is enabled
-    shell: "ln -fs /etc/nginx/available/kibana.conf /etc/nginx/enabled/kibana.conf"
+    copy:
+      src: "/etc/nginx/available/kibana.conf"
+      dest: "/etc/nginx/enabled/kibana.conf"
+      state: link
   - name: Ensure python-passlib is installed
     apt:
       name: python-passlib

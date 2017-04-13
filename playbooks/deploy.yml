@@ -73,6 +73,7 @@
     - ruby
     - node
     - brad
+    - logstash
 
   tasks:
     - name: Ensure the deploy folder is here
