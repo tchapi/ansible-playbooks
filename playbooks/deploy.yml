@@ -27,6 +27,7 @@
 
   roles:
     - nginx
+    - git
     - supervisor
     - php-fpm
     - node
@@ -57,37 +58,6 @@
 
   roles:
     - mosquitto
-
-## 
-## Install deployment server configuration
-##
-- name: Install the base config for deployment
-  hosts: deploy-servers
-  remote_user: "{{user}}"
-  become: true
-  become_user: root
-
-  roles:
-    - git
-    - php-cli
-    - ruby
-    - node
-    - brad
-    - logstash
-
-  tasks:
-    - name: Ensure the deploy folder is here
-      file:
-        path: "/home/{{user}}/deploy"
-        state: directory
-        owner: "{{user}}"
-        group: www-data
-    - name: Ensure the release folder is here
-      file:
-        path: "/home/{{user}}/release"
-        state: directory
-        owner: "{{user}}"
-        group: www-data
 
 ## 
 ## Cleans up
