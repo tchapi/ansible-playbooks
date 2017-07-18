@@ -17,7 +17,9 @@
     path: /var/log/mosquitto
     state: directory
     owner: mosquitto
-    group: nogroup
+    group: adm
+    recurse: yes
+    mode: 0755
 - name: Ensure the mosquitto config is ok
   copy:
     src: mosquitto.conf

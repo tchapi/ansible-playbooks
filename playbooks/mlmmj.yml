@@ -6,4 +6,5 @@
   become_user: root
 
   roles:
+    - node # for mlmmj-interface
     - mlmmj

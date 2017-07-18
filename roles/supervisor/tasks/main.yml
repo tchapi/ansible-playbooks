@@ -3,24 +3,25 @@
   apt:
     pkg: supervisor
     state: latest
-- name: Remove supervisor lock
-  file: 
-    path: /run/supervisord.lock
-    state: absent
-- name: Remove supervisor sock file
-  become: yes
-  file: 
-    path: /var/run/supervisor.sock
-    state: absent
+# - name: Remove supervisor lock
+#   file: 
+#     path: /run/supervisord.lock
+#     state: absent
+# - name: Remove supervisor sock file
+#   become: yes
+#   file: 
+#     path: /var/run/supervisor.sock
+#     state: absent
 - name: Ensure specific supervisor conf is here
   file:
     path: /etc/supervisor/conf.d
     state: directory
-- name: Ensure supervisor is restarted
-  service:
-    name: supervisor
-    state: restarted
-  become: yes
+# stop does not wait for supervisor to be really stopped and subsequent start fails then 
+# - name: Ensure supervisor is restarted
+#   service:
+#     name: supervisor
+#     state: restarted
+#   become: yes
 - name: Copy default Ghost configuration
   copy:
     src: ghost.conf.default
