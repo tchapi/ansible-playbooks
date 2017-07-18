@@ -1,0 +1,17 @@
+[Unit]
+Description=This script provides a simple wrapper for mlmmjweb
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/tchap/groups/index.js
+WorkingDirectory=/home/tchap/groups
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=mlmmjweb
+User=list
+Group=list
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

@@ -17,30 +17,63 @@
     state: present
     regexp: 'mydomain = '
     line: "mydomain = {{ mx_domain }}"
+- name: Ensure mlmmj service file is here
+  copy:
+    src: mlmmj.service
+    dest: /etc/systemd/system/mlmmj.service
+    mode: 0755
+- name: enable service for mlmmj
+  systemd:
+    name: mlmmj
+    enabled: yes
+- name: Ensure mlmmjweb service file is here
+  copy:
+    src: mlmmjweb.service
+    dest: /etc/systemd/system/mlmmjweb.service
+    mode: 0755
+- name: enable service for mlmmjweb
+  systemd:
+    name: mlmmjweb
+    enabled: yes
+- name: Ensure mlmmjweb nginx config is here
+  copy:
+    src: groups.proxy.conf
+    dest: /etc/nginx/available/groups.proxy.conf
+- name: Adds groups nginx domain
+  lineinfile:
+    dest: /etc/nginx/available/groups.proxy.conf
+    state: present
+    regexp: 'server_name  #groups;'
+    line: "server_name  groups.{{ mx_domain }};"
+- name: Ensure mlmmjweb nginx conf is enabled
+  file:
+    src: "/etc/nginx/available/groups.proxy.conf"
+    dest: "/etc/nginx/enabled/groups.proxy.conf"
+    state: link
 - name: Ensure postfix master config is here
   copy:
     src: master.cf
     dest: /etc/postfix/master.cf
-# - name: Ensure mlmmj aliases config is here
-#   copy:
-#     src: mlmmj.aliases
-#     dest: /etc/postfix/mlmmj.aliases
-# - name: Ensure mlmmj lists config is here
-#   copy:
-#     src: mlmmj.lists.reg
-#     dest: /etc/postfix/mlmmj.lists.reg
-# - name: Ensure mlmmj transport config is here
-#   copy:
-#     src: mlmmj.transport.reg
-#     dest: /etc/postfix/mlmmj.transport.reg
-# - name: Ensure virtuals is here
-#   copy:
-#     src: virtual
-#     dest: /etc/postfix/virtual
+- name: Ensure mlmmj aliases config is here
+  copy:
+    src: mlmmj.aliases
+    dest: /etc/postfix/mlmmj.aliases
+- name: Ensure mlmmj lists config is here
+  copy:
+    src: mlmmj.lists.reg
+    dest: /etc/postfix/mlmmj.lists.reg
+- name: Ensure mlmmj transport config is here
+  copy:
+    src: mlmmj.transport.reg
+    dest: /etc/postfix/mlmmj.transport.reg
+- name: Ensure virtuals is here
+  copy:
+    src: virtual
+    dest: /etc/postfix/virtual
 - name: Create maps
   shell: "postmap /etc/postfix/virtual"
-# - name: Create hashes
-#   shell: "postalias /etc/postfix/mlmmj.aliases"
+- name: Create hashes
+  shell: "postalias /etc/postfix/mlmmj.aliases"
 - name : "Restart postfix"
   service: 
     name: "postfix"
