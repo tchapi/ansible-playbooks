@@ -30,7 +30,7 @@ mx_domain: "mydomain.com"
 ```
 
 
-> NB : Your inventory file should have the four groups `[front-servers]`, `[monitoring-servers]`, `[mx-servers]` and `[deploy-servers]`.
+> NB : Your inventory file should have the four groups `[front-servers]`, `[monitoring-servers]`, `[mx-servers]` and `[broker-servers]`.
 
 
 ## Roles available
@@ -121,7 +121,7 @@ mx_domain: "mydomain.com"
 
 #### base & deploy
 
-Ensures that all servers have the correct basis for management, common administrative tasks and standard packages, that they are up to date, and then applies the webserver play to webservers (front-servers) and the deploy play to deployment-servers.
+Ensures that all servers have the correct basis for management, common administrative tasks and standard packages, that they are up to date, and then applies each relevant config to each group.
 
 The playbook is rather straightforward.
 
