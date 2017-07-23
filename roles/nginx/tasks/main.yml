@@ -62,6 +62,12 @@
     dest: /etc/nginx/favicon.robots.conf
   notify:
   - Restart Nginx
+- name: Writes the ssl configuration
+  copy:
+    src: ssl.conf
+    dest: /etc/nginx/ssl.conf
+  notify:
+  - Restart Nginx
 - name: Ensure nginx is running
   service: 
     name: nginx

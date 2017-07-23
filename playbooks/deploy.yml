@@ -29,6 +29,7 @@
     - supervisor
     - php-fpm
     - node
+    - certbot
 
 # Other available roles :
 #   - mongo

@@ -55,6 +55,8 @@ mx_domain: "mydomain.com"
 
     Ensures that `maria_db` is the lastest and that the service is runnning correctly. Adds a consistent `/root/.my.cnf` file for logging in.
 
+    Remember to set a root password afterwards with `sudo mysql` or `mysql_secure_installation`
+
   - #### git
 
     Ensures `git` is here, and writes a reasonable `gitconfig` file.
