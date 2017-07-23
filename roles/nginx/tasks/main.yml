@@ -62,6 +62,14 @@
     dest: /etc/nginx/favicon.robots.conf
   notify:
   - Restart Nginx
+- name: Create nginx htpasswd
+  htpasswd:
+    path: /etc/nginx/available/.htpasswd
+    name: "{{ user }}"
+    password: "{{ htpasswd }}"
+    owner: root
+    group: www-data
+    mode: 0640
 - name: Writes the ssl configuration
   copy:
     src: ssl.conf
