@@ -38,7 +38,7 @@
   htpasswd:
     path: /etc/elasticsearch/elasticsearch.htpasswd
     name: "{{ user }}"
-    password: "{{ lookup('password', '/tmp/ansible.password.elasticsearch_proxy length=64') }}"
+    password: "{{ lookup('password', '/tmp/ansible.password.elasticsearch_proxy length=64 chars=ascii_letters,digits,hexdigits') }}"
     owner: root
     group: www-data
     mode: 0640
