@@ -1,0 +1,52 @@
+---
+
+## 
+## This playbook installs interdependant softwares and config
+## files and must be played at once without retries, else
+## each instance will not be able to connect / authenticate
+## with each other.
+##
+
+## 
+## Install monitoring server configuration
+##
+- name: Install the monitoring config
+  hosts: monitoring-servers
+  remote_user: "{{user}}"
+  become: true
+  become_user: root
+
+  roles:
+    - elasticsearch
+    - logstash
+
+## 
+## Install webserver configuration
+##
+- name: Install the base config for serving content
+  hosts: front-servers
+  remote_user: "{{user}}"
+  become: true
+  become_user: root
+
+  roles:
+    - maria_db
+    - backup
+    - logstash
+
+## 
+## Cleans up
+##
+- name: Cleans up password files
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Delete tmp passwords
+      shell: "rm -f /tmp/ansible.password.*"
+      ignore_errors: True
+    - name: Say done
+      debug:
+        msg: "Done."

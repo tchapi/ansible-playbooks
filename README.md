@@ -63,7 +63,7 @@ mx_domain: "mydomain.com"
 
     Ensures that `nginx` is the lastest and that the service is runnning correctly. Also uploads a secured configuration for `nginx`.
 
-  - #### brad 
+  - #### brad [deprecated] 
 
     Instantiates a standard [brad](https://github.com/tchapi/brad) configuration on the deployment server. _Brad is a very simple and straightforward companion for deployment written in pure bash 4 (see more [here](https://github.com/tchapi/brad))._
 

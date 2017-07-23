@@ -8,6 +8,9 @@
     dest: "/etc/apt/sources.list.d/elk.list"
   notify:
   - Update apt
+- name: Update apt
+  apt:
+    update_cache: yes
 - name: Ensure java (JRE 8) is installed
   apt:
     pkg: openjdk-8-jre-headless

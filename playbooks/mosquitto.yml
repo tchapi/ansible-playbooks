@@ -1,9 +1,0 @@
----
-- name: Install the base config for brokering
-  hosts: broker-servers
-  remote_user: "{{user}}"
-  become: true
-  become_user: root
-
-  roles:
-    - mosquitto

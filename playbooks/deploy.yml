@@ -12,8 +12,6 @@
   roles:
     - git
     - nginx
-    - elasticsearch
-    - logstash
     - kibana
 
 ## 
@@ -31,9 +29,6 @@
     - supervisor
     - php-fpm
     - node
-    - maria_db
-    - backup
-    - logstash
 
 # Other available roles :
 #   - mongo
@@ -58,20 +53,3 @@
 
   roles:
     - mosquitto
-
-## 
-## Cleans up
-##
-- name: Cleans up password files
-  hosts: 127.0.0.1
-  connection: local
-  become: true
-  become_user: root
-
-  tasks:
-    - name: Delete tmp passwords
-      shell: "rm -f /tmp/ansible.password.*"
-      ignore_errors: True
-    - name: Say done
-      debug:
-        msg: "Done."
