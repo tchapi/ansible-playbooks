@@ -22,6 +22,12 @@
     append: yes
     groups: sudo
     createhome: no
+- name: "Add user to adm group"
+  user:
+    name: "{{user}}"
+    append: yes
+    groups: adm
+    createhome: no
 - name: "Make user sudo with no-password"
   lineinfile:
     dest: /etc/sudoers
