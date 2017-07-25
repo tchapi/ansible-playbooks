@@ -46,7 +46,7 @@ mkdir "$THIS_BACKUP_DIR"
 
 # FTP Stuff
 HOSTNAME=`hostname`
-FTP_HOST="dedibackup-dc2.online.net"
+FTP_HOST="dedibackup-dc3.online.net"
 
 # Colors
 green="\033[32m"
