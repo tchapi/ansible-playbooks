@@ -36,8 +36,9 @@ BACKUP_DIR="$HOME_DIR/backup"
 MYSQL_USER='backup'
 
 # Folders to ignore and patterns to ignore
-IGNORE_FOLDERS="(mantis|public|photo|lechiffre)"
-IGNORE_PATTERNS="(rel\-|prod|beta|var)"
+IGNORE_FOLDERS="(mantis|public|lechiffre|data|default)"
+IGNORE_PATTERNS="(prod|releases|current|\.dep)"
+IGNORE_DB="(Database|information_schema|performance_schema|mysql|creative_engine)"
 
 # Create a backup folder for each run
 TIMESTAMP=$(date +"%F_%s")
@@ -61,7 +62,7 @@ if [ $NO_DB_FLAG -eq 0 ]; then
   if [ "$MYSQL" = "ok" ]; then
 
     # Retrieves all databases
-    databases=`mysql --user=$MYSQL_USER -p$MYSQL_PASSWORD -e "SHOW DATABASES;" | grep -Ev "(Database|information_schema)"`
+    databases=`mysql --user=$MYSQL_USER -p$MYSQL_PASSWORD -e "SHOW DATABASES;" | grep -Ev "$IGNORE_DB"`
     
     if [ `echo "$databases" | wc -l` -gt 2 ]; then
 
@@ -70,7 +71,6 @@ if [ $NO_DB_FLAG -eq 0 ]; then
 
       # Dumps everything
       for db in $databases; do
-        ([  "$db" = "mysql" ] || [ "$db" = "performance_schema" ]) && continue
         printf " - $db .."
         mysqldump --single-transaction --routines --default-character-set=utf8 --hex-blob --force --opt --user=$MYSQL_USER -p$MYSQL_PASSWORD --result-file=$THIS_BACKUP_DIR/mysql/$db.sql --databases $db
         gzip --best $THIS_BACKUP_DIR/mysql/$db.sql
