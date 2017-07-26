@@ -10,7 +10,7 @@
   apt:
     pkg: certbot
     state: latest
-    default_release: {{ ansible_distribution_release }}-backports
+    default_release: "{{ ansible_distribution_release }}-backports"
 - name: Generate Diffie-Hellman Group (will be long)
   shell: "openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048"
   become: true
