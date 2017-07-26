@@ -1,5 +1,5 @@
 ---
-- name: Ensure php7 jessie GPG key is present
+- name: Ensure php7.1 jessie GPG key is present
   apt_key:
     url: https://www.dotdeb.org/dotdeb.gpg
 - name: Add repository
@@ -8,17 +8,17 @@
     state: present
   notify:
   - Update apt
-- name: Ensure php7 cli and php7-mysql is installed
+- name: Ensure php7.1 cli and php7.1-mysql is installed
   apt:
     pkg: "{{item}}"
     state: latest
   with_items:
-   - php7.0
-   - php7.0-cli
-   - php7.0-mysql
+   - php7.1
+   - php7.1-cli
+   - php7.1-mysql
 - name: Add correct timezone
   lineinfile:
-    dest: /etc/php/7.0/cli/php.ini
+    dest: /etc/php/7.1/cli/php.ini
     line: 'date.timezone = "Europe/Paris"'
     state: present
     insertafter: "^[Date]"

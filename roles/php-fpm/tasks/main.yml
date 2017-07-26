@@ -1,26 +1,27 @@
 ---
-- name: Ensure php7 jessie GPG key is present
+- name: Ensure php7.1 jessie GPG key is present (Ondrej Sury)
   apt_key:
-    url: https://www.dotdeb.org/dotdeb.gpg
+    url: https://packages.sury.org/php/apt.gpg
 - name: Add repository
   apt_repository:
-    repo: 'deb http://packages.dotdeb.org {{ ansible_distribution_release }} all'
+    repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'
     state: present
   notify:
   - Update apt
 - name: Update apt
   apt:
     update_cache: yes
-- name: Ensure php7 fpm + libs is installed
+- name: Ensure php7.1 fpm + libs is installed
   apt:
     pkg: "{{item}}"
     state: latest
   with_items:
-   - php7.0-fpm
-   - php7.0-mysql
-   - php7.0-curl
-   - php7.0-gd
-   - php7.0-xml # Drupal
+   - php7.1-fpm
+   - php7.1-mysql
+   - php7.1-curl
+   - php7.1-gd
+   - php7.1-mbstring
+   - php7.1-xml # Drupal
 - name: Install Nginx conf for PHP-FPM
   copy:
     src: php-fpm.nginx.conf
@@ -30,11 +31,11 @@
 - name: Writes the correct version of the ini configuration
   copy:
     src: php.ini
-    dest: /etc/php/7.0/fpm/php.ini
+    dest: /etc/php/7.1/fpm/php.ini
 - name: Writes the correct version of the configuration
   copy:
     src: php-fpm.conf
-    dest: /etc/php/7.0/fpm/php-fpm.conf
+    dest: /etc/php/7.1/fpm/php-fpm.conf
 - name: Ensure the log folder is here
   file:
     path: /var/log/php-fpm
@@ -44,6 +45,6 @@
 - name: Writes the correct version of the pool
   copy:
     src: www.conf
-    dest: /etc/php/7.0/fpm/pool.d/www.conf
+    dest: /etc/php/7.1/fpm/pool.d/www.conf
   notify:
   - Restart PHP FPM
