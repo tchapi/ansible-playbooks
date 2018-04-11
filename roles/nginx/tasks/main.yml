@@ -56,6 +56,10 @@
     dest: /etc/nginx/nginx.conf
   notify:
   - Restart Nginx
+- name: Writes the php-fpm standard configuration
+  copy:
+    src: php-fpm.conf
+    dest: /etc/nginx/php-fpm.conf
 - name: Writes the favicon/robots configuration
   copy:
     src: favicon.robots.conf
