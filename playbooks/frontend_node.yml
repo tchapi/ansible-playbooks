@@ -1,0 +1,9 @@
+---
+- name: Provision NodeJS frontend servers
+  hosts: frontend_node
+  become: yes
+
+  roles:
+    - base
+    - nginx
+    - node
