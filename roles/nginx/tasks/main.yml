@@ -6,8 +6,9 @@
   apt_repository:
     repo: 'deb http://nginx.org/packages/debian/ {{ ansible_distribution_release }} nginx'
     state: present
-  notify:
-  - Update apt
+- name: Update apt
+  apt:
+    update_cache: yes
 - name: Ensure nginx is at the latest version
   apt:
     pkg: nginx
@@ -38,44 +39,18 @@
   file:
     path: /etc/nginx/conf.d
     state: absent
-- name: Writes the default confs
-  copy:
-    src: default.hhvm.conf
-    dest: /etc/nginx/available/default.hhvm.conf
-- name: Writes the default confs
-  copy:
-    src: default.php-fpm.conf
-    dest: /etc/nginx/available/default.php-fpm.conf
-- name: Writes the default confs
-  copy:
-    src: default.ghost.conf
-    dest: /etc/nginx/available/default.ghost.conf
 - name: Writes the secured version of the configuration
   copy:
     src: nginx.conf
     dest: /etc/nginx/nginx.conf
-  notify:
-  - Restart Nginx
 - name: Writes the favicon/robots configuration
   copy:
     src: favicon.robots.conf
     dest: /etc/nginx/favicon.robots.conf
-  notify:
-  - Restart Nginx
-- name: Create nginx htpasswd
-  htpasswd:
-    path: /etc/nginx/available/.htpasswd
-    name: "{{ user }}"
-    password: "{{ htpasswd }}"
-    owner: root
-    group: www-data
-    mode: 0640
 - name: Writes the ssl configuration
   copy:
     src: ssl.conf
     dest: /etc/nginx/ssl.conf
-  notify:
-  - Restart Nginx
 - name: Ensure nginx is running
   service: 
     name: nginx

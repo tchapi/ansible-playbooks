@@ -47,9 +47,13 @@ mx_domain: "mydomain.com"
     - Creates a DB + files backup script
     - Creates a cron task for daily backups and ensures that there is a backup user with correct permissions on the DB if needed
 
-  - #### terminal
+  - #### mongo
 
-    Changes the `.bash_profile` and `.vimrc` for ones with colors and aliases.
+    Ensures that `mongo-10gen` is the lastest and that the service is runnning correctly. 
+
+  - #### node
+
+    Ensures that `node`, `npm` and some other tools are installed correctly. 
 
   - #### maria_db
 
@@ -65,59 +69,51 @@ mx_domain: "mydomain.com"
 
     Ensures that `nginx` is the lastest and that the service is runnning correctly. Also uploads a secured configuration for `nginx`.
 
-  - #### brad [deprecated] 
-
-    Instantiates a standard [brad](https://github.com/tchapi/brad) configuration on the deployment server. _Brad is a very simple and straightforward companion for deployment written in pure bash 4 (see more [here](https://github.com/tchapi/brad))._
-
-  - #### hhvm
-
-    - Ensures that `hhvm` is installed.
-    - Copies a standard `supervisor` configuration for running `hhvm` as a server that respawns automatically.
-
-  - #### mongo
-
-    Ensures that `mongo-10gen` is the lastest and that the service is runnning correctly. 
-
-  - #### node
-
-    Ensures that `node`, `npm` and some other tools are installed correctly. 
-
   - #### php-cli
 
     Installs the `php7` command line interface (for running in shell, or running Symfony 3 tasks when deploying).
 
-  - #### rsa_pub
-
-    Copies over your ssh key to the servers.
-
-  - #### ruby
-
-    Installs `ruby` and CSS tools : `sass`, `compass` and `lessc`.
-
-  - #### supervisor
-
-    Ensures `supervisor` is present and at the latest, and performs various fixes for standard installs.
-
-  - #### logstash
-
-    Ensures logstash is up and running, and parses logs from Nginx, as well as `messages` and `syslog`.
-
-  - #### elasticsearch
-
-    Ensures elasticsearch is at the latest version.
-
-  - #### kibana
-
-    Downloads the latest release of Kibana and adds the correct nginx conf for it, adding an `htpasswd` configuration file.
-    Also adds general dashboard for logstash.
-
-  - #### upgrade
-
-    Standard role that performs a full upgrade (see the upgrade playbook below).
-
   - #### mlmmj 
 
     Installs postfix along with mlmmj using the configured MX domain. For more info on Mlmmj see [this blog post](http://www.foobarflies.io/a-simple-web-interface-for-mlmmj/)
+
+  - #### terminal [deprecated]
+
+    Changes the `.bash_profile` and `.vimrc` for ones with colors and aliases.
+
+  - #### brad [deprecated] 
+
+    Instantiates a standard [brad](https://github.com/tchapi/brad) configuration on the deployment server. _Brad is a very simple and straightforward companion for deployment written in pure bash 4 (see more [here](https://github.com/tchapi/brad))._
+
+  - #### hhvm [deprecated] 
+
+    - Ensures that `hhvm` is installed.
+    - Copies a standard `supervisor` configuration for running `hhvm` as a server that respawns automatically.
+
+  - #### rsa_pub [deprecated]
+
+    Copies over your ssh key to the servers.
+
+  - #### ruby [deprecated] 
+
+    Installs `ruby` and CSS tools : `sass`, `compass` and `lessc`.
+
+  - #### supervisor [deprecated] 
+
+    Ensures `supervisor` is present and at the latest, and performs various fixes for standard installs.
+
+  - #### logstash [deprecated] 
+
+    Ensures logstash is up and running, and parses logs from Nginx, as well as `messages` and `syslog`.
+
+  - #### elasticsearch [deprecated] 
+
+    Ensures elasticsearch is at the latest version.
+
+  - #### kibana [deprecated] 
+
+    Downloads the latest release of Kibana and adds the correct nginx conf for it, adding an `htpasswd` configuration file.
+    Also adds general dashboard for logstash.
 
 ## Playbooks
 
@@ -141,16 +137,6 @@ This done, when deploying a new server :
     ansible-playbook -v -l myNewServer playbooks/base.yml
     # Then
     ansible-playbook -l myNewServer playbooks/deploy.yml --ask-vault-pass
-
-#### dist-upgrade
-
-    ansible-playbook playbooks/dist-upgrade.yml
-
-Performs a full upgrade on all hosts, basically boiling down to :
-
-    sudo apt-get update
-    sudo apt-get upgrade
-    sudo apt-get dist-upgrade
 
 #### mlmmj
 

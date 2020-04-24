@@ -1,32 +1,29 @@
 ---
 - name: Ensure apt-transport-https is installed
   apt:
-    pkg: "{{item}}"
+    pkg: ['apt-transport-https']
     state: latest
-  with_items:
-   - apt-transport-https
-   - sqlite # required for node / ghost generally
 - name: Ensure the key is present
   apt_key:
     url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
 - name: Add repository
   apt_repository:
-    repo: 'deb https://deb.nodesource.com/node_6.x {{ ansible_distribution_release }} main'
+    repo: 'deb https://deb.nodesource.com/node_12.x {{ ansible_distribution_release }} main'
     state: present
     filename: "nodesource"
-  notify:
-  - Update apt
 - name: Add repository (SRC)
   apt_repository:
-    repo: 'deb-src https://deb.nodesource.com/node_6.x {{ ansible_distribution_release }} main'
+    repo: 'deb-src https://deb.nodesource.com/node_12.x {{ ansible_distribution_release }} main'
     state: present
     filename: "nodesource"
-  notify:
-  - Update apt
-- name: Ensure nodejs is installed as root
-  become: yes
+- name: Update apt
   apt:
-    pkg: "{{item}}"
+    update_cache: yes
+- name: Ensure nodejs is installed as root
+  apt:
+    pkg: ['nodejs']
     state: latest
-  with_items:
-   - nodejs
+- name: Ensure pm2 is present globally
+  npm:
+    name: pm2@latest
+    global: yes
