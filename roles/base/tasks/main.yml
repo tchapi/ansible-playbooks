@@ -7,5 +7,5 @@
     upgrade: full
 - name: Install base packages
   apt:
-    pkg: ['unzip', 'tar', 'sed', 'curl', 'file', 'vim', 'wget', 'ntp', 'rsync', 'cron', 'htop', 'git', 'apt-transport-https', 'lsb-release', 'ca-certificates']
+    pkg: ['unzip', 'tar', 'sed', 'curl', 'file', 'vim', 'wget', 'ntp', 'rsync', 'cron', 'build-essential', 'htop', 'git', 'apt-transport-https', 'lsb-release', 'ca-certificates']
     state: present
