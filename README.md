@@ -1,6 +1,6 @@
 # Ansible playbooks
 
-A collection of roles and standard playbooks for deploying a common deployment / front application stack. These are mostly for HHVM + PHP and Node + Ghost infrastructures.
+A collection of roles and standard playbooks for deploying a common deployment / front application stack. These are mostly for PHP / Node + Caddy infrastructures.
 
 _I use a common username for all management processes on my servers, you can configure it globally in each playbook or play — it's the `{{ user }}` var. I would recommend to use a global variable by defining `user` in `<INVENTORY_FILE_LOCATION>/group_vars/all` like that :_
 
@@ -13,14 +13,6 @@ _I use a common username for all management processes on my servers, you can con
 user: "myUser"
 ```
 
-If you use an ELK (Elastic Search - Logstash - Kibana) monitoring stack, you can also indicate it here :
-
-```yaml
----
-# Your ELK monitoring Server
-monitoring_server: "kibana.myHost.com"
-```
-
 And if you plan to deploy for MX servers, you can add :
 
 ```yaml
@@ -30,7 +22,7 @@ mx_domain: "mydomain.com"
 ```
 
 
-> NB : Your inventory file should have the four groups `[front-servers]`, `[monitoring-servers]`, `[mx-servers]` and `[broker-servers]`.
+> NB : Your inventory file should have the following groups `[frontend_node]`, `[frontend_php]` at least.
 
 
 ## Roles available
@@ -61,10 +53,6 @@ mx_domain: "mydomain.com"
 
     Remember to set a root password afterwards with `sudo mysql` or `mysql_secure_installation`
 
-  - #### git
-
-    Ensures `git` is here, and writes a reasonable `gitconfig` file.
-
   - #### nginx
 
     Ensures that `nginx` is the lastest and that the service is runnning correctly. Also uploads a secured configuration for `nginx`.
@@ -76,44 +64,6 @@ mx_domain: "mydomain.com"
   - #### mlmmj 
 
     Installs postfix along with mlmmj using the configured MX domain. For more info on Mlmmj see [this blog post](http://www.foobarflies.io/a-simple-web-interface-for-mlmmj/)
-
-  - #### terminal [deprecated]
-
-    Changes the `.bash_profile` and `.vimrc` for ones with colors and aliases.
-
-  - #### brad [deprecated] 
-
-    Instantiates a standard [brad](https://github.com/tchapi/brad) configuration on the deployment server. _Brad is a very simple and straightforward companion for deployment written in pure bash 4 (see more [here](https://github.com/tchapi/brad))._
-
-  - #### hhvm [deprecated] 
-
-    - Ensures that `hhvm` is installed.
-    - Copies a standard `supervisor` configuration for running `hhvm` as a server that respawns automatically.
-
-  - #### rsa_pub [deprecated]
-
-    Copies over your ssh key to the servers.
-
-  - #### ruby [deprecated] 
-
-    Installs `ruby` and CSS tools : `sass`, `compass` and `lessc`.
-
-  - #### supervisor [deprecated] 
-
-    Ensures `supervisor` is present and at the latest, and performs various fixes for standard installs.
-
-  - #### logstash [deprecated] 
-
-    Ensures logstash is up and running, and parses logs from Nginx, as well as `messages` and `syslog`.
-
-  - #### elasticsearch [deprecated] 
-
-    Ensures elasticsearch is at the latest version.
-
-  - #### kibana [deprecated] 
-
-    Downloads the latest release of Kibana and adds the correct nginx conf for it, adding an `htpasswd` configuration file.
-    Also adds general dashboard for logstash.
 
 ## Playbooks
 
@@ -140,7 +90,7 @@ This done, when deploying a new server :
 
 #### mlmmj
 
-Just plays the mlmmj role alone :
+Just plays the mlmmj playbook alone :
 
     ansible-playbook playbooks/mlmmj.yml
 
