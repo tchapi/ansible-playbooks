@@ -11,6 +11,6 @@
     update_cache: yes
 - name: Install Yarn
   apt:
-    pkg: ['yarn']
+    pkg: 'yarn'
     state: present
     install_recommends: no
