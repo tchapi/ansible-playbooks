@@ -1,20 +1,20 @@
 ---
 - name: Ensure python-soft-prop is installed
   apt:
-    pkg: "{{item}}"
+    pkg: "python-software-properties"
     state: latest
-  with_items:
-   - python-software-properties
 - name: Ensure the key is present
   apt_key:
     id: "0xcbcb082a1bb943db"
     keyserver: keyserver.ubuntu.com
 - name: Add repository
   apt_repository:
-    repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.3/debian {{ ansible_distribution_release }} main'
+    repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.4/debian {{ ansible_distribution_release }} main'
     state: present
-  notify:
-  - Update apt
+    filename: maria_db
+- name: Update apt
+  apt:
+    update_cache: yes
 - name: Ensure mariadb is installed
   apt:
     pkg: mariadb-server
@@ -23,6 +23,7 @@
   copy:
     src: mariadb.cnf
     dest: /etc/mysql/conf.d/mariadb.cnf
+    force: no
 - name: Remove TokuDB config file
   file:
     path: /etc/mysql/conf.d/tokudb.cnf
@@ -44,8 +45,7 @@
     mode: 0600
     owner: root
     group: root
-  become: yes
-- name: Adds root password
+- name: Add root password to .my.cnf
   lineinfile:
     dest: /root/.my.cnf
     insertafter: "user=root"
