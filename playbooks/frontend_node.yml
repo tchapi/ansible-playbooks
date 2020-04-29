@@ -8,3 +8,4 @@
     - certbot
     - nginx
     - node
+    - yarn

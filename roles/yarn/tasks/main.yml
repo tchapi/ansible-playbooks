@@ -1,0 +1,16 @@
+---
+- name: Ensure the key is present
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+- name: Add repository
+  apt_repository:
+    repo: 'deb https://dl.yarnpkg.com/debian/ stable main'
+    state: present
+- name: Update apt
+  apt:
+    update_cache: yes
+- name: Install Yarn
+  apt:
+    pkg: ['yarn']
+    state: present
+    install_recommends: no
