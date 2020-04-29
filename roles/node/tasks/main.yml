@@ -27,3 +27,5 @@
   npm:
     name: pm2@latest
     global: yes
+- name: Install pm2 completion
+  shell: pm2 completion install
