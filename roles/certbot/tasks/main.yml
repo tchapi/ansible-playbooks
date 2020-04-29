@@ -1,7 +1,0 @@
----
-- name: Ensure certbot is installed for nginx
-  apt:
-    pkg: ['certbot','python-certbot-nginx']
-    state: latest
-- name: Generate Diffie-Hellman Group (will be long)
-  shell: "openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048"

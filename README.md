@@ -30,28 +30,33 @@ mx_domain: "mydomain.com"
   - #### base
 
     - Ensures that the server has at least some basics tools like `sudo` and `python-apt` for Ansible to run correctly. 
-    - Updates and upgrades `apt`, adds a backports repository for Debian.
-    - Grants the `user` a no-password `sudo` and install base packages like `curl`, and the like.
-
+    - Updates and upgrades `apt`
+  
   - #### backup
 
     - Ensures a /home/{{user}}/backup folder is present for backups
     - Creates a DB + files backup script
     - Creates a cron task for daily backups and ensures that there is a backup user with correct permissions on the DB if needed
 
+  - #### caddy
+
+    Ensures that `caddy`, is installed correctly and runs as a service. 
+
   - #### mongo
 
-    Ensures that `mongo-10gen` is the lastest and that the service is runnning correctly. 
+    Ensures that `mongo-org` is the lastest and that the service is runnning correctly. 
 
   - #### node
 
-    Ensures that `node`, `npm` and some other tools are installed correctly. 
+    Ensures that `node`, `npm` are installed correctly. 
+
+  - #### node
+
+    Ensures that `yarn` is installed correctly. 
 
   - #### maria_db
 
     Ensures that `maria_db` is the lastest and that the service is runnning correctly. Adds a consistent `/root/.my.cnf` file for logging in.
-
-    Remember to set a root password afterwards with `sudo mysql` or `mysql_secure_installation`
 
   - #### nginx
 

@@ -33,7 +33,7 @@
     name: mysql
     state: started
     enabled: yes
-- name: Sets the root password if needed
+- name: Sets the root password
   mysql_user:
     name: root
     password: "{{ lookup('password', '/tmp/ansible.password.mysql_root_' + inventory_hostname + ' length=64') }}"
