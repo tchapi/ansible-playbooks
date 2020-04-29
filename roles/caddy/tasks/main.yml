@@ -8,6 +8,7 @@
     src: https://github.com/caddyserver/caddy/releases/download/v2.0.0-rc.3/caddy_2.0.0-rc.3_linux_amd64.tar.gz
     dest: /usr/bin/
     remote_src: yes
+    creates: /usr/bin/caddy
 - name: Ensure group "caddy" exists
   group:
     name: caddy
@@ -26,6 +27,7 @@
   copy:
     src: caddy.service
     dest: /etc/systemd/system/caddy.service
+    force: no
 - name: Ensure Caddyfile is here
   file:
     path: /etc/caddy/Caddyfile

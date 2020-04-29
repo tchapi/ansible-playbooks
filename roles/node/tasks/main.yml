@@ -1,7 +1,7 @@
 ---
 - name: Ensure apt-transport-https is installed
   apt:
-    pkg: ['apt-transport-https']
+    pkg: 'apt-transport-https'
     state: latest
 - name: Ensure the key is present
   apt_key:
@@ -21,7 +21,7 @@
     update_cache: yes
 - name: Ensure nodejs is installed as root
   apt:
-    pkg: ['nodejs']
+    pkg: 'nodejs'
     state: latest
 - name: Ensure pm2 is present globally
   npm:

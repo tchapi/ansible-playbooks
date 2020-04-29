@@ -6,6 +6,7 @@
   apt_repository:
     repo: 'deb https://dl.yarnpkg.com/debian/ stable main'
     state: present
+    filename: "yarn"
 - name: Update apt
   apt:
     update_cache: yes
