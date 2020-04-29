@@ -13,20 +13,6 @@
   apt:
     pkg: nginx
     state: latest
-# - name: Ensure logrotate is at the latest version
-#   apt:
-#     pkg: logrotate
-#     state: latest
-# - name: Ensure the log archive folder is here
-#   file:
-#     path: /var/log/nginx/archive
-#     state: directory
-# - name: Rotate logs and archive
-#   lineinfile:
-#     dest: /etc/logrotate.d/nginx
-#     state: present
-#     line: '        olddir /var/log/nginx/archive'
-#     insertafter: '        sharedscripts'
 - name: Ensure the enabled folder is here
   file:
     path: /etc/nginx/enabled

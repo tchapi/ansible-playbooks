@@ -35,11 +35,8 @@
 - name: Reread Systemd config
   systemd:
     daemon_reload: yes
-- name: Enable Caddy service
-  systemd:
-    name: caddy
-    enabled: yes
 - name: Start Caddy service
   systemd:
     name: caddy
     state: started
+    enabled: yes
