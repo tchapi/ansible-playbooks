@@ -57,9 +57,9 @@ mx_domain: "mydomain.com"
 
     Ensures that `nginx` is the lastest and that the service is runnning correctly. Also uploads a secured configuration for `nginx`.
 
-  - #### php-cli
+  - #### php
 
-    Installs the `php7` command line interface (for running in shell, or running Symfony 3 tasks when deploying).
+    Installs `php7.4` FPM and command line interface with a few standard modules.
 
   - #### mlmmj 
 
