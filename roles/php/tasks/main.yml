@@ -12,7 +12,7 @@
     update_cache: yes
 - name: Ensure php-fpm + libs is installed
   apt:
-    pkg: ["php7.4-fpm", "php7.4-cli", "php7.4-mysql", "php7.4-intl", "php7.4-curl", "php7.4-gd", "php7.4-mbstring", "php7.4-xml", "php7.4-json", "php7.4-bcmath"]
+    pkg: ["php7.4", "php7.4-fpm", "php7.4-cli", "php7.4-mysql", "php7.4-intl", "php7.4-curl", "php7.4-gd", "php7.4-mbstring", "php7.4-xml", "php7.4-json", "php7.4-bcmath"]
     state: latest
 - name: Writes the correct version of the ini configuration (fpm)
   copy:
@@ -38,7 +38,7 @@
   copy:
     src: www.conf
     dest: "/etc/php/7.4/fpm/pool.d/www.conf"
-- name: Start PHP FPM
+- name: Start php-fpm
   service:
     name: "php7.4-fpm"
     state: started
