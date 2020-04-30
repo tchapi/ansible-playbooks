@@ -64,7 +64,7 @@ mx_domain: "mydomain.com"
 
   - #### php
 
-    Installs `php7.4` FPM and command line interface with a few standard modules.
+    Installs `php7.4` FPM and command line interface with a few standard modules, a sensible configuration file for cli and FPM, and the `composer` package manager.
 
   - #### mlmmj 
 
