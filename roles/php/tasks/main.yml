@@ -43,3 +43,20 @@
     name: "php7.4-fpm"
     state: started
     enabled: yes
+- name: Download composer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/installer
+- name: Install composer
+  shell: cat /tmp/installer | php -- --install-dir=/usr/local/bin
+  args:
+    creates: /usr/local/bin/composer
+- name: Rename composer.phar to composer
+  shell: mv /usr/local/bin/composer.phar /usr/local/bin/composer
+  args:
+    creates: /usr/local/bin/composer
+- name: Make composer executable
+  file:
+    path: /usr/local/bin/composer
+    mode: a+x
+    state: file
