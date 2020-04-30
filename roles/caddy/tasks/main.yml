@@ -28,10 +28,14 @@
     src: caddy.service
     dest: /etc/systemd/system/caddy.service
     force: no
+- name: Ensure caddy etc directory exists
+  file:
+    path: /etc/caddy
+    state: directory
 - name: Ensure Caddyfile is here
   file:
     path: /etc/caddy/Caddyfile
-    state: file
+    state: touch
 - name: Reread Systemd config
   systemd:
     daemon_reload: yes
