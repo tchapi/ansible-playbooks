@@ -1,0 +1,17 @@
+---
+- name: Provision PHP frontend servers
+  hosts: frontend_php
+  become: yes
+
+  roles:
+    - base
+    - caddy
+    - php
+
+  tasks:
+    - name: Ensure the web folder is here
+      file:
+        path: "/var/www"
+        state: directory
+        group: "{{ ansible_user }}"
+        owner: "{{ ansible_user }}"
