@@ -16,9 +16,6 @@
     repo: 'deb-src https://deb.nodesource.com/node_12.x {{ ansible_distribution_release }} main'
     state: present
     filename: "nodesource"
-- name: Update apt
-  apt:
-    update_cache: yes
 - name: Ensure nodejs is installed as root
   apt:
     pkg: 'nodejs'

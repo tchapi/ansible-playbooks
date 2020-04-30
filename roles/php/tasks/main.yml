@@ -7,9 +7,6 @@
     repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'
     state: present
     filename: php
-- name: Update apt
-  apt:
-    update_cache: yes
 - name: Ensure php-fpm + libs is installed
   apt:
     pkg: ["php7.4", "php7.4-fpm", "php7.4-cli", "php7.4-mysql", "php7.4-intl", "php7.4-curl", "php7.4-gd", "php7.4-mbstring", "php7.4-xml", "php7.4-json", "php7.4-bcmath"]
