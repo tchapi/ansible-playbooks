@@ -1,23 +1,16 @@
 ---
-- name: Ensure python-soft-prop is installed
-  apt:
-    pkg: "python-software-properties"
-    state: latest
 - name: Ensure the key is present
   apt_key:
-    id: "0xcbcb082a1bb943db"
+    id: "0xF1656F24C74CD1D8"
     keyserver: keyserver.ubuntu.com
 - name: Add repository
   apt_repository:
-    repo: 'deb http://ftp.igh.cnrs.fr/pub/mariadb/repo/10.4/debian {{ ansible_distribution_release }} main'
+    repo: 'deb http://mirrors.dotsrc.org/mariadb/repo/10.3/debian {{ ansible_distribution_release }} main'
     state: present
-    filename: maria_db
-- name: Update apt
+    filename: "maria_db"
+- name: Ensure mariadb is installed (along with ansible tools for mysql_user)
   apt:
-    update_cache: yes
-- name: Ensure mariadb is installed
-  apt:
-    pkg: mariadb-server
+    pkg: ['python-mysqldb', 'mariadb-server']
     state: latest
 - name: Writes the UTF-8 version of the configuration
   copy:
@@ -38,7 +31,8 @@
     name: root
     password: "{{ lookup('password', '/tmp/ansible.password.mysql_root_' + inventory_hostname + ' length=64') }}"
     state: present
-- name: Writes /root/.my.cnf with root password
+  no_log: yes
+- name: Writes /root/.my.cnf
   copy:
     src: my.cnf
     dest: /root/.my.cnf
@@ -50,9 +44,36 @@
     dest: /root/.my.cnf
     insertafter: "user=root"
     line: "password={{ lookup('file', '/tmp/ansible.password.mysql_root_' + inventory_hostname) }}"
-- name: Create user "backup" if it not present
-  mysql_user:
-    name: backup
-    password: "{{ lookup('password', '/tmp/ansible.password.mysql_backup_' + inventory_hostname + ' length=64') }}"
-    priv: "*.*:SHOW DATABASES,SELECT,LOCK TABLES,RELOAD"
-    state: present
+  no_log: yes
+- name: Ensure var/backups directory exists
+  file:
+    path: /var/backups/databases
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+# mysqlbackup.cron by josephdpurcell
+#
+# This cron will export all databases every day at 4am. Those exports are
+# automatically rotating from servername.com.day0 to servername.com.day6 so you
+# always have a backup of the last 7 days of backups.
+- name: Add daily backups for 7 days, rotating
+  cron:
+    name: "Backup: databases, daily"
+    minute: "0"
+    hour: "4"
+    user: "root"
+    job: "mysqldump --single-transaction --routines --default-character-set=utf8 --hex-blob --force --opt --all-databases | gzip --best > /var/backups/databases/{{ ansible_hostname }}.day$(date +\\%w).sql.gz"
+    cron_file: backups_databases_daily
+# This cron will export all databases every week for the last 4 weeks at
+# 2am on Sunday. Those exports are automatically rotating from
+# servername.com.week0 to servername.com.week3 so you always have a backup of the
+# last 4 weeks of backups.
+- name: Add weekly backups for 4 weeks, rotating
+  cron:
+    name: "Backup: databases, weekly"
+    minute: "0"
+    hour: "2"
+    weekday: "0"
+    user: "root"
+    job: "mysqldump --single-transaction --routines --default-character-set=utf8 --hex-blob --force --opt --all-databases | gzip --best > /var/backups/databases/{{ ansible_hostname }}.week$(expr $(date +\\%U) \\% 4).sql.gz"
+    cron_file: backups_databases_weekly
