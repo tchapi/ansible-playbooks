@@ -1,26 +1,12 @@
 ---
-- name: Ensure mosquitto GPG key is present
-  apt_key:
-    url: http://repo.mosquitto.org/debian/mosquitto-repo.gpg.key
-- name: Add repository
-  apt_repository:
-    repo: 'deb http://repo.mosquitto.org/debian {{ ansible_distribution_release }} main'
-    state: present
-  notify:
-  - Update apt
+- name: Update apt
+  apt:
+    update_cache: yes
 - name: Install mosquitto
   apt: 
     name: mosquitto
     state: latest
-- name: Ensure the log folder is here
-  file:
-    path: /var/log/mosquitto
-    state: directory
-    owner: mosquitto
-    group: adm
-    recurse: yes
-    mode: 0755
-- name: Ensure the mosquitto config is ok
+- name: Ensure the mosquitto config is present
   copy:
     src: mosquitto.conf
     dest: /etc/mosquitto/conf.d/mosquitto.conf
