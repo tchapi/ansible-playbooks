@@ -9,3 +9,5 @@
   apt:
     pkg: ['unzip', 'tar', 'sed', 'curl', 'file', 'vim', 'wget', 'ntp', 'rsync', 'cron', 'build-essential', 'htop', 'git', 'apt-transport-https', 'lsb-release', 'ca-certificates']
     state: present
+- name: Set correct timezone
+  shell: timedatectl set-timezone 'Europe/Paris'
