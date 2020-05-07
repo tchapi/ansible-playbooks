@@ -1,28 +1,17 @@
 # Ansible playbooks
 
-A collection of roles and standard playbooks for deploying a common deployment / front application stack. These are mostly for PHP / Node + Caddy infrastructures.
-
-_I use a common username for all management processes on my servers, you can configure it globally in each playbook or play — it's the `{{ user }}` var. I would recommend to use a global variable by defining `user` in `<INVENTORY_FILE_LOCATION>/group_vars/all` like that :_
-
+A simple collection of roles and standard playbooks for deploying a common deployment / front application stack. These are mostly for PHP / Node + Caddy infrastructures, with MariaDB and Mongo database engines.
 
 > NB : the default inventory file location is `/etc/ansible/hosts`, and `/usr/local/etc/ansible/hosts` on Mac OS X
+> You should include the ansible user to use when loging in, as so :
 
-```yaml
----
-# Your user
-user: "myUser"
+```
+[frontend_server]
+my.frontend.server.com ansible_user=ubuntu
+my.other.frontend.server.com ansible_user=ubuntu
 ```
 
-And if you plan to deploy for MX servers, you can add :
-
-```yaml
----
-# The MX domain
-mx_domain: "mydomain.com"
-```
-
-
-> NB : Your inventory file should have the following groups `[frontend_node]`, `[frontend_php]` at least.
+> NB : We use the following groups `[frontend_node]`, `[frontend_php]` in the playbooks.
 
 
 ## Roles available
