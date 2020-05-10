@@ -7,10 +7,13 @@
     repo: 'deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/4.2 main'
     state: present
     filename: mongodb
-- name: Ensure mongo is installed
+- name: Ensure mongo and necessary python packages for managing users are installed
   apt:
-    pkg: mongodb-org
+    pkg: ["mongodb-org", "python-pip", "python-setuptools"]
     state: latest
+- name: Install pymongo package
+  pip:
+    name: pymongo
 - name: Reread Systemd config
   systemd:
     daemon_reload: yes
@@ -19,3 +22,26 @@
     name: mongod
     state: started
     enabled: yes
+- name: Add admin user
+  mongodb_user:
+    user: "admin"
+    database: "admin"
+    password: "{{ lookup('password', '/tmp/ansible.password.mongo_root_' + inventory_hostname + ' length=64') }}"
+    state: present
+    roles: "root"
+  no_log: yes
+- name: Add root password to .mongorc.js
+  copy:
+    dest: "/home/{{ ansible_user }}/.mongorc.js"
+    content: |
+      db = connect('localhost:27017/admin');
+      db.auth('admin', '{{ lookup('file', '/tmp/ansible.password.mongo_root_' + inventory_hostname) }}');
+  no_log: yes
+- name: Copy correct conf file
+  copy:
+    src: mongod.conf
+    dest: /etc/mongod.conf
+- name: Restart Mongo service with auth (from conf)
+  systemd:
+    name: mongod
+    state: restarted
