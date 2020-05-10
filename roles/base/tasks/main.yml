@@ -11,3 +11,8 @@
     state: present
 - name: Set correct timezone
   shell: timedatectl set-timezone 'Europe/Paris'
+- name: Lower swappiness to 10
+  sysctl:
+    name: vm.swappiness
+    value: '10'
+    state: present
