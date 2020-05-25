@@ -22,7 +22,7 @@
     name: mongod
     state: started
     enabled: yes
-- name: Add admin user
+- name: Add admin user if it does not already exist
   mongodb_user:
     user: "admin"
     database: "admin"
@@ -30,9 +30,11 @@
     state: present
     roles: "root"
   no_log: yes
+  ignore_errors: true
 - name: Add root password to .mongorc.js
   copy:
     dest: "/home/{{ ansible_user }}/.mongorc.js"
+    force: no
     content: |
       db = connect('localhost:27017/admin');
       db.auth('admin', '{{ lookup('file', '/tmp/ansible.password.mongo_root_' + inventory_hostname) }}');
@@ -45,3 +47,13 @@
   systemd:
     name: mongod
     state: restarted
+- name: Lower dirty ratio
+  sysctl:
+    name: vm.dirty_ratio
+    value: '15'
+    state: present
+- name: Lower dirty background ratio
+  sysctl:
+    name: vm.dirty_background_ratio
+    value: '5'
+    state: present
