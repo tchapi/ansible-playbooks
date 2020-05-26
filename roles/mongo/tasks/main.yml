@@ -57,3 +57,33 @@
     name: vm.dirty_background_ratio
     value: '5'
     state: present
+- name: Ensure var/backups directory exists
+  file:
+    path: /var/backups/databases
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+# This cron will export all databases every day at 4am. Those exports are
+# automatically rotating from servername.com.day0 to servername.com.day6 so you
+# always have a backup of the last 7 days of backups.
+- name: Add daily backups for 7 days, rotating
+  cron:
+    name: "Backup: databases, daily"
+    minute: "0"
+    hour: "4"
+    user: "root"
+    job: "mongodump -u admin -p '{{ lookup('file', '/tmp/ansible.password.mongo_root_' + inventory_hostname) }}' --gzip --archive=/var/backups/databases/{{ ansible_hostname }}.day$(date +\\%w).gz"
+    cron_file: backups_databases_daily
+# This cron will export all databases every week for the last 4 weeks at
+# 2am on Sunday. Those exports are automatically rotating from
+# servername.com.week0 to servername.com.week3 so you always have a backup of the
+# last 4 weeks of backups.
+- name: Add weekly backups for 4 weeks, rotating
+  cron:
+    name: "Backup: databases, weekly"
+    minute: "0"
+    hour: "2"
+    weekday: "0"
+    user: "root"
+    job: "mongodump -u admin -p '{{ lookup('file', '/tmp/ansible.password.mongo_root_' + inventory_hostname) }}' --gzip --archive=/var/backups/databases/{{ ansible_hostname }}.week$(expr $(date +\\%U) \\% 4).gz"
+    cron_file: backups_databases_weekly
