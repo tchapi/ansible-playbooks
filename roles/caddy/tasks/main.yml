@@ -5,10 +5,9 @@
     state: latest
 - name: Download caddy and extract into /usr/bin
   unarchive:
-    src: https://github.com/caddyserver/caddy/releases/download/v2.0.0-rc.3/caddy_2.0.0-rc.3_linux_amd64.tar.gz
+    src: https://github.com/caddyserver/caddy/releases/download/v2.1.1/caddy_2.1.1_linux_amd64.tar.gz
     dest: /usr/bin/
     remote_src: yes
-    creates: /usr/bin/caddy
 - name: Ensure group "caddy" exists
   group:
     name: caddy
