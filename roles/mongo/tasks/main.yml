@@ -1,13 +1,89 @@
 ---
 - name: Ensure the key is present
-  shell: apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
+  apt_key:
+    url: https://www.mongodb.org/static/pgp/server-4.2.asc
 - name: Add repository
   apt_repository:
-    repo: 'deb http://downloads-distro.mongodb.org/repo/debian-sysvinit dist 10gen'
+    repo: 'deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/4.2 main'
     state: present
-  notify:
-  - Update apt
-- name: Ensure mongo is installed
+    filename: mongodb
+- name: Ensure mongo and necessary python packages for managing users are installed
   apt:
-    pkg: mongodb-10gen
+    pkg: ["mongodb-org", "python-pip", "python-setuptools"]
     state: latest
+- name: Install pymongo package
+  pip:
+    name: pymongo
+- name: Reread Systemd config
+  systemd:
+    daemon_reload: yes
+- name: Start Mongo service
+  systemd:
+    name: mongod
+    state: started
+    enabled: yes
+- name: Add admin user if it does not already exist
+  mongodb_user:
+    user: "admin"
+    database: "admin"
+    password: "{{ lookup('password', '/tmp/ansible.password.mongo_root_' + inventory_hostname + ' length=64') }}"
+    state: present
+    roles: "root"
+  no_log: yes
+  ignore_errors: true
+- name: Add root password to .mongorc.js
+  copy:
+    dest: "/home/{{ ansible_user }}/.mongorc.js"
+    force: no
+    content: |
+      db = connect('localhost:27017/admin');
+      db.auth('admin', '{{ lookup('file', '/tmp/ansible.password.mongo_root_' + inventory_hostname) }}');
+  no_log: yes
+- name: Copy correct conf file
+  copy:
+    src: mongod.conf
+    dest: /etc/mongod.conf
+- name: Restart Mongo service with auth (from conf)
+  systemd:
+    name: mongod
+    state: restarted
+- name: Lower dirty ratio
+  sysctl:
+    name: vm.dirty_ratio
+    value: '15'
+    state: present
+- name: Lower dirty background ratio
+  sysctl:
+    name: vm.dirty_background_ratio
+    value: '5'
+    state: present
+- name: Ensure var/backups directory exists
+  file:
+    path: /var/backups/databases
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+# This cron will export all databases every day at 4am. Those exports are
+# automatically rotating from servername.com.day0 to servername.com.day6 so you
+# always have a backup of the last 7 days of backups.
+- name: Add daily backups for 7 days, rotating
+  cron:
+    name: "Backup: databases, daily"
+    minute: "0"
+    hour: "4"
+    user: "root"
+    job: "mongodump -u admin -p '{{ lookup('file', '/tmp/ansible.password.mongo_root_' + inventory_hostname) }}' --gzip --archive=/var/backups/databases/{{ ansible_hostname }}.day$(date +\\%w).gz"
+    cron_file: backups_databases_daily
+# This cron will export all databases every week for the last 4 weeks at
+# 2am on Sunday. Those exports are automatically rotating from
+# servername.com.week0 to servername.com.week3 so you always have a backup of the
+# last 4 weeks of backups.
+- name: Add weekly backups for 4 weeks, rotating
+  cron:
+    name: "Backup: databases, weekly"
+    minute: "0"
+    hour: "2"
+    weekday: "0"
+    user: "root"
+    job: "mongodump -u admin -p '{{ lookup('file', '/tmp/ansible.password.mongo_root_' + inventory_hostname) }}' --gzip --archive=/var/backups/databases/{{ ansible_hostname }}.week$(expr $(date +\\%U) \\% 4).gz"
+    cron_file: backups_databases_weekly

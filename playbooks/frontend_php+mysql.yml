@@ -1,0 +1,34 @@
+---
+- name: Provision PHP frontend servers
+  hosts: frontend_php
+  become: yes
+
+  roles:
+    - base
+    - caddy
+    - php
+    - maria_db
+
+  tasks:
+    - name: Ensure the web folder is here
+      file:
+        path: "/var/www"
+        state: directory
+        group: "{{ ansible_user }}"
+        owner: "{{ ansible_user }}"
+
+##
+## Cleans up
+##
+- name: Cleans up password files
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Delete tmp passwords
+      shell: "rm -f /tmp/ansible.password.*"
+      ignore_errors: true
+      args:
+        warn: false

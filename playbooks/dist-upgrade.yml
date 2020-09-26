@@ -1,9 +1,0 @@
----
-- name: Upgrades and Dist-Upgrades servers
-  hosts: all
-  remote_user: "{{user}}"
-  become: true
-  become_user: root
-
-  roles:
-    - upgrade

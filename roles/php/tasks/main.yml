@@ -1,0 +1,59 @@
+---
+- name: Ensure php GPG key is present (Ondrej Sury)
+  apt_key:
+    url: https://packages.sury.org/php/apt.gpg
+- name: Add repository
+  apt_repository:
+    repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'
+    state: present
+    filename: php
+- name: Ensure php-fpm + libs is installed
+  apt:
+    pkg: ["php7.4", "php7.4-fpm", "php7.4-cli", "php7.4-mysql", "php7.4-intl", "php7.4-curl", "php7.4-gd", "php7.4-mbstring", "php7.4-xml", "php7.4-json", "php7.4-bcmath"]
+    state: latest
+- name: Writes the correct version of the ini configuration (fpm)
+  copy:
+    src: php.ini
+    dest: "/etc/php/7.4/fpm/php.ini"
+- name: Add correct timezone (cli)
+  lineinfile:
+    dest: /etc/php/7.4/cli/php.ini
+    line: 'date.timezone = "Europe/Paris"'
+    state: present
+    insertafter: "^[Date]"
+- name: Writes the correct version of the configuration
+  copy:
+    src: php-fpm.conf
+    dest: "/etc/php/7.4/fpm/php-fpm.conf"
+- name: Ensure the log folder is here
+  file:
+    path: /var/log/php-fpm
+    state: directory
+    owner: root
+    group: adm
+- name: Writes the correct version of the pool
+  copy:
+    src: www.conf
+    dest: "/etc/php/7.4/fpm/pool.d/www.conf"
+- name: Start php-fpm
+  service:
+    name: "php7.4-fpm"
+    state: started
+    enabled: yes
+- name: Download composer
+  get_url:
+    url: https://getcomposer.org/installer
+    dest: /tmp/installer
+- name: Install composer
+  shell: cat /tmp/installer | php -- --install-dir=/usr/local/bin
+  args:
+    creates: /usr/local/bin/composer
+- name: Rename composer.phar to composer
+  shell: mv /usr/local/bin/composer.phar /usr/local/bin/composer
+  args:
+    creates: /usr/local/bin/composer
+- name: Make composer executable
+  file:
+    path: /usr/local/bin/composer
+    mode: a+x
+    state: file
