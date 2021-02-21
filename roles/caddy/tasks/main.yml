@@ -1,32 +1,13 @@
 ---
-- name: Ensure dependencies are installed
-  apt:
-    pkg: 'libnss3-tools'
-    state: latest
-- name: Download caddy and extract into /usr/bin
-  unarchive:
-    src: https://github.com/caddyserver/caddy/releases/download/v2.2.0/caddy_2.2.0_linux_amd64.tar.gz
-    dest: /usr/bin/
-    remote_src: yes
-- name: Ensure group "caddy" exists
-  group:
-    name: caddy
-    system: yes
+- name: Add repository
+  apt_repository:
+    repo: 'deb [trusted=yes] https://apt.fury.io/caddy/ /'
     state: present
-- name: Create Caddy user
-  user:
-    name: "caddy"
-    group: "caddy"
-    system: true
-    create_home: yes
-    home: "/var/lib/caddy"
-    shell: "/usr/sbin/nologin"
-    comment: "Caddy web server"
-- name: Writes the Caddy service file
-  copy:
-    src: caddy.service
-    dest: /etc/systemd/system/caddy.service
-    force: no
+    filename: caddy
+- name: Ensure Caddy is installed
+  apt:
+    pkg: 'caddy'
+    state: latest
 - name: Ensure caddy etc directory exists
   file:
     path: /etc/caddy
