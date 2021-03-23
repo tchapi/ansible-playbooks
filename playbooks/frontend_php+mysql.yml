@@ -8,6 +8,7 @@
     - caddy
     - php
     - maria_db
+    - backup
 
   tasks:
     - name: Ensure the web folder is here

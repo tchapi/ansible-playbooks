@@ -1,46 +1,50 @@
 ---
-- name: Install ftp
-  apt: 
-    name: ftp
-    state: latest
-- name: Create the backup directory.
+- name: Ensure that the backup folder is here
   file:
+    path: /var/backups/rolling
     state: directory
-    path: "/home/{{user}}/backup/"
-    owner: "{{user}}"
-    group: www-data
-    mode: 0755
-- name: Copy the backup script
-  copy:
-    src: backup.sh
-    dest: "/home/{{user}}/backup/backup.sh"
-    owner: tchap
-    group: www-data
-    mode: 0755
-- name: Copy the .netrc conf file
-  copy:
-    dest: "/home/{{user}}/.netrc"
-    owner: tchap
-    mode: 0600 # needed since it contains a password
-    content: |
-        machine {{ ftp_server }}
-            login {{ ftp_login }}
-            password {{ ftp_password }}
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+- name: Get AWS cli source
+  unarchive:
+    src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    dest: /tmp
+    remote_src: yes
+- name: Install the AWS cli
+  command: /tmp/aws/install --update
   become: yes
-- name: Ensure the base directory is written in the conf
-  lineinfile:
-    dest: "/home/{{user}}/backup/backup.sh"
-    insertafter: "# Home root directory"
-    line: "HOME_DIR='/home/{{user}}'"
-- name: Ensure the backup password is written in the conf
-  lineinfile:
-    dest: "/home/{{user}}/backup/backup.sh"
-    insertafter: "MYSQL_USER='backup'"
-    line: "MYSQL_PASSWORD='{{ lookup('file', '/tmp/ansible.password.mysql_backup_' + inventory_hostname) }}'"
-- name: Add the cron task for backups
+- name: Ensure that the .aws folder is here
+  file:
+    path: /root/.aws
+    state: directory
+    owner: root
+    group: root
+- name: Writes the config file for AWS cli
+  copy:
+    src: config
+    dest: /root/.aws/config
+- name: Writes the credentials file for AWS cli
+  copy:
+    src: credentials
+    dest: /root/.aws/credentials
+- name: Writes the backup script
+  copy:
+    src: backup_rolling.sh
+    dest: /var/backups/rolling/backup.sh
+    mode: a+x
+    force: yes
+- name: Ensure the backup folder list is here (empty, but here)
+  file:
+    path: /var/backups/rolling/ugc.list
+    state: touch
+# Those exports are automatically rotating from day0 to day6 so you
+# always have a backup of the last 7 days on the server, and the rest
+# on AWS, stored with the date and server.
+- name: Add daily backups for 7 days, rotating
   cron:
-    user: "{{user}}"
-    name: "Backup"
-    hour: "03"
-    minute: "42"
-    job: "/home/{{user}}/backup/backup.sh"
+    name: "Backup: UGC + db, daily, then to AWS S3 or equivalent"
+    minute: "0"
+    hour: "4"
+    user: "root"
+    job: "/var/backups/rolling/backup.sh"
+    cron_file: backup_daily
