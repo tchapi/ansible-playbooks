@@ -2,7 +2,7 @@
 
 A simple collection of roles and standard playbooks for deploying a common deployment / front application stack. These are mostly for PHP / Node + Caddy infrastructures, with MariaDB and Mongo database engines.
 
-> NB : the default inventory file location is `/etc/ansible/hosts`, and `/usr/local/etc/ansible/hosts` on Mac OS X
+> NB : the default inventory file location is `/etc/ansible/hosts`, and `/usr/local/etc/ansible/hosts` on macOS
 > You should include the ansible user to use when loging in, as so :
 
 ```
@@ -65,9 +65,9 @@ The playbooks are rather straightforward.
 
 > Before deploying a new server, you must make sure that your user has sudo rights, and that your SSH key is authorized for a password-less login
 
-This done, when deploying a new node server for instance:
+This done, when deploying a new node server for instance (on macOS):
 
-    ansible-playbook -v -l myNewServer playbooks/frontend_node.yml
+    ansible-playbook --inventory=/usr/local/etc/ansible/hosts playbooks/frontend_node.yml
 
 #### mlmmj
 
