@@ -9,6 +9,7 @@
     - node
     - yarn
     - mongo
+    - backup
 
   tasks:
     - name: Ensure the web folder is here
