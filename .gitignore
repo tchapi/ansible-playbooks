@@ -1,5 +1,6 @@
-test.yml
 TODO.todo
 .DS_Store
 
 *.retry
+
+/roles/backup/files/credentials
