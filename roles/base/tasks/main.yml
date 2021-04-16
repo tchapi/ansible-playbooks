@@ -1,4 +1,8 @@
 ---
+- name: Refresh apt keys
+  shell: apt-key adv --refresh-keys --keyserver keyserver.ubuntu.com
+  become: yes
+  become_user: root
 - name: Update apt
   apt:
     update_cache: yes
