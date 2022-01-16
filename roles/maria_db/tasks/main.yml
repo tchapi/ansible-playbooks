@@ -5,12 +5,12 @@
     keyserver: keyserver.ubuntu.com
 - name: Add repository
   apt_repository:
-    repo: 'deb http://mirrors.dotsrc.org/mariadb/repo/10.3/debian {{ ansible_distribution_release }} main'
+    repo: 'deb http://mirrors.dotsrc.org/mariadb/repo/10.6/debian {{ ansible_distribution_release }} main'
     state: present
     filename: "maria_db"
 - name: Ensure mariadb is installed (along with ansible tools for mysql_user)
   apt:
-    pkg: ['python-mysqldb', 'mariadb-server']
+    pkg: ['python-mysqldb', 'mariadb-server', 'python3-mysqldb']
     state: latest
 - name: Writes the UTF-8 version of the configuration
   copy:
@@ -26,6 +26,8 @@
     name: mysql
     state: started
     enabled: yes
+- name: Upgrade mysql if needed
+  shell: mysql_upgrade
 - name: Sets the root password
   mysql_user:
     name: root
@@ -44,5 +46,10 @@
     dest: /root/.my.cnf
     insertafter: "user=root"
     line: "password={{ lookup('file', '/tmp/ansible.password.mysql_root_' + inventory_hostname) }}"
+  no_log: yes
+- name: Remove test database
+  mysql_db:
+    db: 'test'
+    state: 'absent'
   no_log: yes
 
