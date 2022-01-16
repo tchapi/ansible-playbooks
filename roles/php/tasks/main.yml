@@ -6,25 +6,35 @@
   apt_repository:
     repo: 'deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main'
     state: present
-    filename: php
+    filename: "php{{ php_version }}"
 - name: Ensure php-fpm + libs is installed
   apt:
-    pkg: ["php7.4", "php7.4-fpm", "php7.4-cli", "php7.4-mysql", "php7.4-intl", "php7.4-curl", "php7.4-gd", "php7.4-mbstring", "php7.4-xml", "php7.4-json", "php7.4-bcmath"]
+    pkg: ["php{{ php_version }}", "php{{ php_version }}-fpm", "php{{ php_version }}-cli", "php{{ php_version }}-mysql", "php{{ php_version }}-pgsql", "php{{ php_version }}-intl", "php{{ php_version }}-curl", "php{{ php_version }}-gd", "php{{ php_version }}-mbstring", "php{{ php_version }}-xml", "php{{ php_version }}-bcmath", "php{{ php_version }}-zip", "php{{ php_version }}-imagick"]
     state: latest
+- name: "[PHP 7.X ONLY] Install legacy packages"
+  apt:
+    pkg: ["php{{ php_version }}-json"]
+    state: latest
+  when: "php_version.startswith('7.')"
 - name: Writes the correct version of the ini configuration (fpm)
   copy:
     src: php.ini
-    dest: "/etc/php/7.4/fpm/php.ini"
+    dest: "/etc/php/{{ php_version }}/fpm/php.ini"
 - name: Add correct timezone (cli)
   lineinfile:
-    dest: /etc/php/7.4/cli/php.ini
+    dest: /etc/php/{{ php_version }}/cli/php.ini
     line: 'date.timezone = "Europe/Paris"'
     state: present
     insertafter: "^[Date]"
 - name: Writes the correct version of the configuration
   copy:
     src: php-fpm.conf
-    dest: "/etc/php/7.4/fpm/php-fpm.conf"
+    dest: "/etc/php/{{ php_version }}/fpm/php-fpm.conf"
+- name: Replaces the version of php in the configuration file
+  replace:
+    path: "/etc/php/{{ php_version }}/fpm/php-fpm.conf"
+    regexp: '7\.4'
+    replace: "{{ php_version }}"
 - name: Ensure the log folder is here
   file:
     path: /var/log/php-fpm
@@ -34,12 +44,18 @@
 - name: Writes the correct version of the pool
   copy:
     src: www.conf
-    dest: "/etc/php/7.4/fpm/pool.d/www.conf"
+    dest: "/etc/php/{{ php_version }}/fpm/pool.d/www.conf"
 - name: Start php-fpm
   service:
-    name: "php7.4-fpm"
-    state: started
+    name: "php{{ php_version }}-fpm"
+    state: restarted
+    daemon_reload: yes
     enabled: yes
+- name: Add debian to www-data group
+  user:
+    name: debian
+    groups: www-data
+    append: yes
 - name: Download composer
   get_url:
     url: https://getcomposer.org/installer
