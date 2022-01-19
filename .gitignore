@@ -4,3 +4,5 @@ TODO.todo
 *.retry
 
 /roles/backup/files/credentials
+
+playbooks/private_*
