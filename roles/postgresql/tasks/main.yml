@@ -1,0 +1,40 @@
+---
+- name: Ensure php GPG key is present
+  apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+- name: Add repository
+  apt_repository:
+    repo: 'deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main'
+    state: present
+    filename: "postgresql"
+- name: "[Debian <= 10] Install legacy python-psycopg2 packages"
+  apt:
+    pkg: ['python-psycopg2']
+    state: latest
+  when: "ansible_distribution_release.startswith('buster')"
+- name: Ensure PostgreSQL is installed
+  apt:
+    # We need acl for become_user for an unprivileged user
+    pkg: ['postgresql-{{ postgresql_version }}', 'postgresql-client-{{ postgresql_version }}', 'python3-psycopg2', 'acl']
+    state: latest
+- name: Ensure PostgreSQL is running
+  systemd:
+    name: postgresql
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+- name: Sets the root password
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: postgres
+    password: "{{ lookup('password', '/tmp/ansible.password.pgsql_root_' + inventory_hostname + ' length=64') }}"
+  no_log: yes
+- name: Writes /root/.pgpass
+  copy:
+    dest: /root/.pgpass
+    mode: 0600
+    owner: root
+    group: root
+    content: "localhost:*:*:postgres:{{ lookup('file', '/tmp/ansible.password.pgsql_root_' + inventory_hostname) }}"
+  no_log: yes
