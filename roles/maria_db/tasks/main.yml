@@ -10,7 +10,7 @@
     filename: "maria_db"
 - name: Ensure mariadb is installed (along with ansible tools for mysql_user)
   apt:
-    pkg: ['python-mysqldb', 'mariadb-server', 'python3-mysqldb']
+    pkg: ['mariadb-server', 'python3-mysqldb']
     state: latest
 - name: Writes the UTF-8 version of the configuration
   copy:

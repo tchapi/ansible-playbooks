@@ -1,19 +1,16 @@
 ---
 - name: Ensure the key is present
   apt_key:
-    url: https://www.mongodb.org/static/pgp/server-4.2.asc
+    url: https://www.mongodb.org/static/pgp/server-4.4.asc
 - name: Add repository
   apt_repository:
-    repo: 'deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/4.2 main'
+    repo: 'deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/4.4 main'
     state: present
     filename: mongodb
 - name: Ensure mongo and necessary python packages for managing users are installed
   apt:
-    pkg: ["mongodb-org", "python-pip", "python-setuptools"]
+    pkg: ["mongodb-org", "python-setuptools"]
     state: latest
-- name: Install pymongo package
-  pip:
-    name: pymongo
 - name: Reread Systemd config
   systemd:
     daemon_reload: yes
