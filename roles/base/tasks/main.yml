@@ -9,14 +9,41 @@
 - name: Upgrade apt
   apt:
     upgrade: full
+# - name: Install sudo package
+#   apt:
+#     pkg: sudo
+#     update_cache: yes
+#     state: present
+# - name: Add debian to sudo group
+#   user:
+#     name: debian
+#     groups: sudo
+#     append: yes
+# - name: Allow sudo for debian
+#   copy:
+#     content: "debian ALL=(ALL) NOPASSWD: ALL"
+#     dest: /etc/sudoers.d/debian
+#     mode: 0600
 - name: Install base packages
   apt:
     pkg: ['unzip', 'tar', 'sed', 'curl', 'file', 'vim', 'wget', 'ntp', 'rsync', 'tmux', 'cron', 'fail2ban', 'build-essential', 'htop', 'git', 'apt-transport-https', 'lsb-release', 'ca-certificates']
     state: present
 - name: Set correct timezone
   shell: timedatectl set-timezone 'Europe/Paris'
-- name: Lower swappiness to 10
+- name: Lower swappiness to 10 # For hosts hosting databases
   sysctl:
     name: vm.swappiness
     value: '10'
     state: present
+- name: Check if Ansible warning is present
+  register: ansible_warning_msg
+  shell: "grep -i 'THIS SERVER IS MANAGED VIA' /etc/motd"
+  check_mode: no
+  ignore_errors: yes
+  changed_when: no
+- name: Insert a warning block at the start of /etc/motd
+  lineinfile:
+    line: "{{ lookup('file', 'motd') }}"
+    dest: /etc/motd
+    insertbefore: BOF
+  when: ansible_warning_msg.rc == 1
