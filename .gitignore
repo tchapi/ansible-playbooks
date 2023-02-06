@@ -6,3 +6,5 @@ TODO.todo
 /roles/backup/files/credentials
 
 playbooks/private_*
+
+hosts
