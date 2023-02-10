@@ -31,5 +31,3 @@
     - name: Delete tmp passwords
       shell: "rm -f /tmp/ansible.password.*"
       ignore_errors: true
-      args:
-        warn: false
