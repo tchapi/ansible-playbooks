@@ -1,16 +1,19 @@
 ---
 - name: Ensure the key is present
   apt_key:
-    url: https://www.mongodb.org/static/pgp/server-4.4.asc
+    url: https://www.mongodb.org/static/pgp/server-5.0.asc
 - name: Add repository
   apt_repository:
-    repo: 'deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/4.4 main'
+    repo: 'deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/5.0 main'
     state: present
     filename: mongodb
 - name: Ensure mongo and necessary python packages for managing users are installed
   apt:
-    pkg: ["mongodb-org", "python-setuptools"]
+    pkg: ["mongodb-org", "python-setuptools", "python3-pip"]
     state: latest
+- name: Install pymongo
+  pip:
+    name: pymongo
 - name: Reread Systemd config
   systemd:
     daemon_reload: yes
@@ -28,9 +31,9 @@
     roles: "root"
   no_log: yes
   ignore_errors: true
-- name: Add root password to .mongorc.js
+- name: Add root password to .mongoshrc.js
   copy:
-    dest: "/home/{{ ansible_user }}/.mongorc.js"
+    dest: "/home/{{ ansible_user }}/.mongoshrc.js"
     force: no
     content: |
       db = connect('localhost:27017/admin');
