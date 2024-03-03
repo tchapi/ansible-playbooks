@@ -23,7 +23,7 @@ fi
 echo "Backing up MongoDB ..."
 if type mongodump >/dev/null 2>&1; then
   # We need to retrieve the password since mongodump does not use .mongorc.js :sigh:
-  MONGODB_PASS=$(grep -oP "(?<=db\.auth\('admin', ').*(?='\);)" /home/debian/.mongorc.js)
+  MONGODB_PASS=$(grep -oP "(?<=db\.auth\('admin', ').*(?='\);)" /home/debian/.mongoshrc.js)
   mongodump -u admin -p "$MONGODB_PASS" --gzip --archive=$THIS_BACKUP_DIR/db.mongo.gz
   MONGODB_PASS=null # for safety
   echo " - $THIS_BACKUP_DIR/db.mongo.gz"
