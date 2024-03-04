@@ -35,6 +35,16 @@
     name: vm.swappiness
     value: '10'
     state: present
+- name: Limit journald size
+  lineinfile:
+    dest: /etc/systemd/journald.conf
+    regexp: '^#SystemMaxUse'
+    line: SystemMaxUse=100M
+- name: Restart journald
+  systemd:
+    name: systemd-journald
+    state: restarted
+    enabled: yes
 - name: Check if Ansible warning is present
   register: ansible_warning_msg
   shell: "grep -i 'THIS SERVER IS MANAGED VIA' /etc/motd"
